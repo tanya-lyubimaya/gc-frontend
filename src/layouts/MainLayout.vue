@@ -103,9 +103,37 @@
         />
       </q-list>
     </q-drawer>
-
     <q-page-container>
-      <router-view/>
+      <q-table
+      style="height: 400px"
+      title="Курсы"
+      :data="data"
+      :columns="columns"
+      row-key="index"
+      virtual-scroll
+      :pagination.sync="pagination"
+      :rows-per-page-options="[0]"
+    />
+          <q-table
+      style="height: 400px"
+      title="КИмы"
+      :data="data"
+      :columns="columns"
+      row-key="index"
+      virtual-scroll
+      :pagination.sync="pagination"
+      :rows-per-page-options="[0]"
+    />
+          <q-table
+      style="height: 400px"
+      title="Тесты"
+      :data="data"
+      :columns="columns"
+      row-key="index"
+      virtual-scroll
+      :pagination.sync="pagination"
+      :rows-per-page-options="[0]"
+    />
     </q-page-container>
   </q-layout>
 </template>
