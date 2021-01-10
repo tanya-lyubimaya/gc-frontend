@@ -11,9 +11,12 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
-        <q-toolbar-title>
+        <q-toolbar-title class="gt-sm">
           Учебные сервисы МИЭМ
+          <q-badge align="top">&beta;</q-badge>
         </q-toolbar-title>
+
+        <q-space/>
 
 
         <q-btn flat round dense icon="apps" class="q-mr-sm">
@@ -51,21 +54,14 @@
           </q-menu>
         </q-btn>
 
-        <q-btn flat round dense icon="notifications" class="q-mr-xs" />
+        <q-btn flat round dense icon="notifications" class="q-mr-xs"/>
 
-        <div class="gt-sm m">
-          <q-chip>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            Иван Иванов
-          </q-chip>
+        <div>
+          <q-avatar color="pink" text-color="white">{{ name_abbr }}</q-avatar>
         </div>
-        <div class="lt-sm">
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-          </q-avatar>
-        </div>
+
+        <q-btn flat round dense icon="exit_to_app" @click="logout" v-if="$router.currentRoute.name !== 'Login'"
+               class="q-ml-sm"/>
       </q-toolbar>
     </q-header>
 
@@ -88,20 +84,20 @@
           v-bind="link"
         />
       </q-list>
-      <q-separator/>
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Помощь
-        </q-item-label>
-        <EssentialLink
-          v-for="link in supportLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+      <!--      <q-separator/>-->
+      <!--      <q-list>-->
+      <!--        <q-item-label-->
+      <!--          header-->
+      <!--          class="text-grey-8"-->
+      <!--        >-->
+      <!--          Помощь-->
+      <!--        </q-item-label>-->
+      <!--        <EssentialLink-->
+      <!--          v-for="link in supportLinks"-->
+      <!--          :key="link.title"-->
+      <!--          v-bind="link"-->
+      <!--        />-->
+      <!--      </q-list>-->
     </q-drawer>
 
     <q-page-container>
@@ -115,29 +111,37 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const commonLinksData = [
   {
-    title: 'Тесты',
-    caption: 'Формы и всякое такое',
-    icon: 'list',
-    link: 'https://quasar.dev'
+    title: 'Главная',
+    icon: 'home',
+    link: '/',
+    exact: true
   },
+  // {
+  //   title: 'Тесты',
+  //   caption: 'Формы и всякое такое',
+  //   icon: 'list',
+  //   link: 'https://quasar.dev'
+  // },
   {
     title: 'Онлайн-занятия',
     caption: 'Выбор платформы для занятий',
     icon: 'today',
-    link: 'https://github.com/quasarframework'
+    link: 'online-platforms',
+    visible: false,
   },
-  {
-    title: 'CI/CD грейдеры',
-    caption: 'Проверка решений студентов',
-    icon: 'code',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Управление СКУД',
-    caption: 'Доступ в помещения МИЭМ',
-    icon: 'room_preferences',
-    link: 'https://forum.quasar.dev'
-  }
+
+  // {
+  //   title: 'CI/CD грейдеры',
+  //   caption: 'Проверка решений студентов',
+  //   icon: 'code',
+  //   link: 'https://chat.quasar.dev'
+  // },
+  // {
+  //   title: 'Управление СКУД',
+  //   caption: 'Доступ в помещения МИЭМ',
+  //   icon: 'room_preferences',
+  //   link: 'https://forum.quasar.dev'
+  // }
 ];
 
 const supportLinksData = [
@@ -145,25 +149,25 @@ const supportLinksData = [
     title: 'Справка',
     caption: 'Как пользоваться сервисами',
     icon: 'help_center',
-    link: 'https://awesome.quasar.dev'
+    link: ''
   },
   {
     title: 'Поддержка',
-    caption: 'Как пользоваться сервисами',
+    caption: 'Задать вопрос',
     icon: 'support',
-    link: 'https://awesome.quasar.dev'
+    link: ''
   },
   {
     title: 'Обновления',
-    caption: 'Как пользоваться сервисами',
+    caption: 'Новый функционал',
     icon: 'update',
-    link: 'https://awesome.quasar.dev'
+    link: ''
   },
   {
     title: 'О сервисе',
-    caption: 'Как пользоваться сервисами',
+    caption: '',
     icon: 'info',
-    link: 'https://awesome.quasar.dev'
+    link: ''
   },
 ];
 
@@ -178,6 +182,40 @@ export default {
       commonLinks: commonLinksData,
       supportLinks: supportLinksData,
       studentsLinks: studentsLinksData
+    }
+  },
+  mounted() {
+    if (this.$q.sessionStorage.getItem('is_teacher')) {
+      this.commonLinks[1].visible = true;
+    }
+  },
+  computed: {
+    name_abbr() {
+      return this.$q.sessionStorage.getItem('name_abbr');
+    },
+    full_name() {
+      return this.$q.sessionStorage.getItem('full_name');
+    },
+    is_student() {
+      return this.$q.sessionStorage.getItem('is_student');
+    },
+    is_teacher() {
+      return this.$q.sessionStorage.getItem('is_teacher');
+    },
+  },
+  methods: {
+    logout() {
+      this.$axios.post('https://constructor.auditory.ru/auth/logout', {}, {withCredentials: true}).then((res) => {
+        this.$router.push({name: 'Login'});
+      }).catch((err) => {
+        this.$q.notify({
+          position: this.notificationsPos,
+          icon: 'warning',
+          type: 'negative',
+          multiLine: true,
+          message: "При выполнении выхода произошла ошибка.",
+        })
+      })
     }
   }
 }
