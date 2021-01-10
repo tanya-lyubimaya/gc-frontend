@@ -15,6 +15,10 @@ const routes = [
       {name: 'Login', path: '', component: () => import('pages/Login.vue')},
     ]
   },
+  {
+    path: '/form-create',
+    component: () => import('pages/588/CreateForm.vue'),
+  },
 
 
   // Always leave this as last one,
