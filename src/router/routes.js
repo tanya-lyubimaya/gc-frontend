@@ -7,6 +7,10 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') }
     ]
   },
+  {
+    path: '/form-create',
+    component: () => import('pages/588/CreateForm.vue'),
+  },
 
   // Always leave this as last one,
   // but you can also remove it

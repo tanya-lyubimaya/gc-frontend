@@ -74,51 +74,11 @@
         <q-item-label header class="text-grey-8">
           Сервисы
         </q-item-label>
-        <q-item to="/form-create" clickable>
-          <q-item-section avatar>
-            <q-icon name="list"></q-icon>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Тесты</q-item-label>
-            <q-item-label caption>Формы и всякое такое</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item to="/form-create" clickable>
-          <q-item-section avatar>
-            <q-icon name="today"></q-icon>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Онлайн-занятия</q-item-label>
-            <q-item-label caption>Выбор платформы для занятий</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item to="/form-create" clickable>
-          <q-item-section avatar>
-            <q-icon name="code"></q-icon>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>CI/CD грейдеры</q-item-label>
-            <q-item-label caption>Проверка решений студентов</q-item-label>
-          </q-item-section>
-        </q-item>
-                <q-item to="/form-create" clickable>
-          <q-item-section avatar>
-            <q-icon name="question_answer"></q-icon>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Решебники</q-item-label>
-            <q-item-label caption>Доп. вопросы по лабам</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item to="/form-create" clickable>
-          <q-item-section avatar>
-            <q-icon name="room_preferences"></q-icon>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Управление СКУД</q-item-label>
-            <q-item-label caption>Доступ в помещения МИЭМ</q-item-label>
-          </q-item-section>
-        </q-item>
+        <EssentialLink
+          v-for="link in commonLinks"
+          :key="link.title"
+          v-bind="link"
+        />
       </q-list>
       <q-separator />
       <q-list>
@@ -186,7 +146,7 @@ const commonLinksData = [
     title: "Тесты",
     caption: "Формы и всякое такое",
     icon: "list",
-    link: "/form-create"
+    link: "https://quasar.dev"
   },
   {
     title: "Онлайн-занятия",
