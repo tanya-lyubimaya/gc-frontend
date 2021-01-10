@@ -19,6 +19,7 @@
         <q-space/>
 
 
+<!--
         <q-btn flat round dense icon="apps" class="q-mr-sm">
           <q-menu
             :offset="[0, 20]"
@@ -53,6 +54,7 @@
             </q-list>
           </q-menu>
         </q-btn>
+-->
 
         <q-btn flat round dense icon="notifications" class="q-mr-xs"/>
 
@@ -205,7 +207,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$axios.post('https://constructor.auditory.ru/auth/logout', {}, {withCredentials: true}).then((res) => {
+      this.$axios.post('https://constructor.auditory.ru/auth/logout', {logout: true}, {withCredentials: true}).then((res) => {
         this.$router.push({name: 'Login'});
       }).catch((err) => {
         this.$q.notify({
