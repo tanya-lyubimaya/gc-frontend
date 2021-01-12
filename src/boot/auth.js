@@ -1,5 +1,5 @@
 import {boot} from 'quasar/wrappers'
-import axios from "axios";
+import {axiosInstance} from "boot/axios";
 import {SessionStorage} from "quasar";
 
 export default boot(async ({app, router, Vue, redirect, urlPath}) => {
@@ -7,8 +7,8 @@ export default boot(async ({app, router, Vue, redirect, urlPath}) => {
     let loggedIn = false;
 
     try {
-      const response = await axios
-        .get('https://constructor.auditory.ru/auth/api/v1/users/me', {withCredentials: true});
+      const response = await axiosInstance
+        .get('/auth/api/v1/users/me', {withCredentials: true});
 
       if (response.data && response.data['auth_status'] === 'OK') {
         loggedIn = true;

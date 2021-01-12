@@ -207,7 +207,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$axios.post('https://constructor.auditory.ru/auth/logout', {logout: true}, {withCredentials: true}).then((res) => {
+      this.$axios.post('/auth/api/v1/auth/logout', {logout: true}, {withCredentials: true}).then((res) => {
         this.$router.push({name: 'Login'});
       }).catch((err) => {
         this.$q.notify({

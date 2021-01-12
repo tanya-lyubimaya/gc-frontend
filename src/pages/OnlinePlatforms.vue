@@ -41,7 +41,7 @@
             </q-card-section>
             <q-card-section v-for="(lesson_type, kow_oid) in discipline['lesson_types']" :key="kow_oid">
               <q-form>
-              <span class="text-subtitle1">
+              <span v-if="lesson_type['kind_of_work'] != null" class="text-subtitle1">
                         {{ lesson_type['kind_of_work'] }}
                         <q-tooltip anchor="center right" self="center left">Тип занятия</q-tooltip>
               </span>
@@ -112,33 +112,30 @@ export default {
       delay: 400,
       message: "Синхронизация расписания...."
     })
-    this.syncUserPreferences();
+    this.syncAndGetUserPreferences();
     this.$q.loading.show({
       delay: 400,
       message: "Загрузка..."
     })
-    this.getUserPreferences();
     this.$q.loading.hide()
   },
   methods: {
     getUserPreferences() {
       const path =
-        "https://constructor.auditory.ru/epi/api/v1/users/preferences";
+        "/epi/api/v1/users/preferences";
       this.$axios.get(path, {withCredentials: true}).then(
         (res) => {
           this.prefs = res.data;
-          console.log(res.data);
           this.disciplines = this.prefs.disciplines;
-          console.log(this.disciplines)
         },
         (error) => {
           console.error(error);
         }
       );
     },
-    syncUserPreferences(force = false) {
+    syncAndGetUserPreferences(force = false) {
       const path =
-        "https://constructor.auditory.ru/epi/api/v1/users/preferences/sync";
+        "/epi/api/v1/users/preferences/sync";
       this.$axios
         .post(
           path,
@@ -149,8 +146,7 @@ export default {
           }
         )
         .then((res) => {
-            if (res.data && !(res.data.status === 'CACHED' || res.data.status === 'SYNCED'))
-              this.sync_error = true;
+            this.sync_error = !!(res.data && !(res.data.status === 'CACHED' || res.data.status === 'SYNCED'));
           }
         )
         .catch((error) => {
@@ -166,27 +162,31 @@ export default {
             // Something happened in setting up the request that triggered an Error
             console.log("Error", error.message);
           }
+          this.sync_error = true;
           this.$q.notify({
             position: this.notificationsPos,
             icon: 'warning',
             type: 'negative',
             message: "Не удалось синхронизировать настройки!",
           });
-        });
+        }).then(() => {
+        this.getUserPreferences();
+      });
     },
     sendUpdatedPreferences() {
       const path =
-        "https://constructor.auditory.ru/epi/api/v1/users/preferences";
+        "/epi/api/v1/users/preferences";
       this.$axios
         .put(path, this.prefs, {
           withCredentials: true,
         })
-        .then(
-          this.$q.notify({
-            position: this.notificationsPos,
-            message: 'Предпочтения сохранены',
-            icon: 'check'
-          })
+        .then((res) => {
+            this.$q.notify({
+              position: this.notificationsPos,
+              message: 'Предпочтения сохранены',
+              icon: 'check'
+            })
+          }
         )
         .catch((error) => {
           if (error.response) {
