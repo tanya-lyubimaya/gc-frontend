@@ -25,7 +25,7 @@
                     ]"
                   ></q-input>
                   <q-input
-                    v-model="text"
+                    v-model="desc"
                     label="Описание"
                     stack-label
                   ></q-input>
@@ -43,8 +43,8 @@
                     ]"
                   ></q-input>
                   <q-select
-                    v-model="model"
-                    :options="options"
+                    v-model="questionType"
+                    :options="questionTypes"
                     label="Тип вопроса"
                   />
                   <q-option-group
@@ -64,10 +64,49 @@
                     :options="options2"
                     label="Тип вопроса"
                   />
-                  <q-input filled v-model="text" placeholder="Краткий ответ" readonly />
-                  <q-input v-model="text" filled type="textarea" placeholder="Развёрнутый ответ" readonly />
+                  <q-input
+                    filled
+                    v-model="text"
+                    placeholder="Краткий ответ"
+                    readonly
+                  />
+                  <q-input
+                    v-model="text"
+                    filled
+                    type="textarea"
+                    placeholder="Развёрнутый ответ"
+                    readonly
+                  />
                 </q-card-section>
                 <q-input v-model="text" />
+              </q-card>
+              <q-card style="margin-bottom: 30px">
+                <q-card-section>
+                  <q-input
+                    filled
+                    v-model="formName"
+                    label="Вопрос *"
+                    lazy-rules
+                    :rules="[
+                      val => (val && val.length > 0) || 'Введите вопрос!'
+                    ]"
+                  ></q-input>
+                  <q-select
+                    v-model="questionType"
+                    :options="questionTypes"
+                    label="Тип вопроса"
+                  />
+                  <div v-if="questionType === 'Один из списка'">
+                  <q-input v-model="text" placeholder="Вариант ответа"
+                    ><template v-slot:prepend>
+                      <q-icon name="panorama_fish_eye" /> </template
+                  ></q-input>
+                  <q-input v-model="text" placeholder="Вариант ответа"
+                    ><template v-slot:prepend>
+                      <q-icon name="panorama_fish_eye" /> </template
+                  ></q-input>
+                  </div>
+                </q-card-section>
               </q-card>
               <q-btn
                 round
@@ -87,9 +126,9 @@ export default {
   data() {
     return {
       formName: "",
-      text: "",
-      model: null,
-      options: [
+      desc: "",
+      questionType: "Один из списка",
+      questionTypes: [
         "Один из списка",
         "Несколько из списка",
         "Раскрывающийся список",
@@ -101,7 +140,9 @@ export default {
         { label: "Battery too low", value: "bat" },
         { label: "Friend request", value: "friend", color: "green" },
         { label: "Picture uploaded", value: "upload", color: "red" }
-      ]
+      ],
+      model: null,
+      text: ""
     };
   }
 };
