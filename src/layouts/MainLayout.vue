@@ -54,7 +54,6 @@
           </q-menu>
         </q-btn>
 -->
-
         <q-btn flat round dense icon="notifications" class="q-mr-xs" />
 
         <div>
