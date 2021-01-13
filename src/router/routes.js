@@ -6,6 +6,7 @@ const routes = [
     children: [
       {path: '', component: () => import('pages/Index.vue')},
       {path: 'online-platforms', component: () => import('pages/OnlinePlatforms.vue')},
+      {path: 'form-create', component: () => import('pages/588/CreateForm.vue')}
     ]
   },
   {
@@ -15,11 +16,6 @@ const routes = [
       {name: 'Login', path: '', component: () => import('pages/Login.vue')},
     ]
   },
-  {
-    path: '/form-create',
-    component: () => import('pages/588/CreateForm.vue'),
-  },
-
 
   // Always leave this as last one,
   // but you can also remove it

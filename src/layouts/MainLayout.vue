@@ -87,21 +87,21 @@
           :key="link.title"
           v-bind="link"
         />
+
+        <!--      <q-separator/>-->
+        <!--      <q-list>-->
+        <!--        <q-item-label-->
+        <!--          header-->
+        <!--          class="text-grey-8"-->
+        <!--        >-->
+        <!--          Помощь-->
+        <!--        </q-item-label>-->
+        <!--        <EssentialLink-->
+        <!--          v-for="link in supportLinks"-->
+        <!--          :key="link.title"-->
+        <!--          v-bind="link"-->
+        <!--        />-->
       </q-list>
-      <!--      <q-separator/>-->
-      <!--      <q-list>-->
-      <!--        <q-item-label-->
-      <!--          header-->
-      <!--          class="text-grey-8"-->
-      <!--        >-->
-      <!--          Помощь-->
-      <!--        </q-item-label>-->
-      <!--        <EssentialLink-->
-      <!--          v-for="link in supportLinks"-->
-      <!--          :key="link.title"-->
-      <!--          v-bind="link"-->
-      <!--        />-->
-      <!--      </q-list>-->
     </q-drawer>
 
     <q-page-container>
@@ -120,18 +120,17 @@ const commonLinksData = [
     link: "/",
     exact: true
   },
-  // {
-  //   title: 'Тесты',
-  //   caption: 'Формы и всякое такое',
-  //   icon: 'list',
-  //   link: 'https://quasar.dev'
-  // },
   {
     title: "Онлайн-занятия",
     caption: "Выбор платформы для занятий",
     icon: "today",
-    link: "online-platforms",
-    visible: false
+    link: "online-platforms"
+  },
+  {
+    title: "Тесты",
+    caption: "Формы и всякое такое",
+    icon: "list",
+    link: "form-create"
   }
 
   // {

@@ -1,233 +1,108 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-header elevated>
-      <q-toolbar class="q-gutter-xs">
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
-
-        <q-toolbar-title>
-          Учебные сервисы МИЭМ
-        </q-toolbar-title>
-
-        <q-btn flat round dense icon="apps" class="q-mr-sm">
-          <q-menu :offset="[0, 20]" anchor="bottom middle" self="top middle">
-            <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup>
-                <q-item-section>New tab</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>New incognito tab</q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item clickable v-close-popup>
-                <q-item-section>Recent tabs</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>History</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>Downloads</q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item clickable v-close-popup>
-                <q-item-section>Settings</q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item clickable v-close-popup>
-                <q-item-section>Help &amp; Feedback</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-
-        <q-btn flat round dense icon="notifications" class="q-mr-xs" />
-
-        <div class="gt-sm m">
-          <q-chip>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-            </q-avatar>
-            Иван Иванов
-          </q-chip>
+  <q-page padding>
+    <div id="q-app">
+      <div class="flex flex-center column">
+        <div
+          class="row bg-grey-2"
+          style="min-height: 100%; width: 80%; padding: 24px;"
+        >
+          <div
+            id="parent"
+            class="fit row wrap justify-center items-start content-start"
+            style="overflow: hidden;"
+          >
+            <div class="col-6 bg-grey-2" style="overflow: auto;">
+              <q-card style="margin-bottom: 30px">
+                <q-card-section>
+                  <q-input
+                    filled
+                    v-model="formName"
+                    label="Новая форма *"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Введите название формы!'
+                    ]"
+                  ></q-input>
+                  <q-input
+                    v-model="text"
+                    label="Описание"
+                    stack-label
+                  ></q-input>
+                </q-card-section>
+              </q-card>
+              <q-card style="margin-bottom: 30px">
+                <q-card-section>
+                  <q-input
+                    filled
+                    v-model="formName"
+                    label="Вопрос *"
+                    lazy-rules
+                    :rules="[
+                      val => (val && val.length > 0) || 'Введите вопрос!'
+                    ]"
+                  ></q-input>
+                  <q-select
+                    v-model="model"
+                    :options="options"
+                    label="Тип вопроса"
+                  />
+                  <q-option-group
+                    :options="options2"
+                    label="Notifications"
+                    type="radio"
+                    v-model="group"
+                  />
+                  <q-option-group
+                    :options="options2"
+                    label="Notifications"
+                    type="checkbox"
+                    v-model="group"
+                  />
+                  <q-select
+                    v-model="model"
+                    :options="options2"
+                    label="Тип вопроса"
+                  />
+                  <q-input filled v-model="text" placeholder="Краткий ответ" readonly />
+                  <q-input v-model="text" filled type="textarea" placeholder="Развёрнутый ответ" readonly />
+                </q-card-section>
+                <q-input v-model="text" />
+              </q-card>
+              <q-btn
+                round
+                style="background: #FF0080; color: white"
+                icon="add"
+              />
+            </div>
+          </div>
         </div>
-        <div class="lt-sm">
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-          </q-avatar>
-        </div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label header class="text-grey-8">
-          Сервисы
-        </q-item-label>
-        <EssentialLink
-          v-for="link in commonLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-      <q-separator />
-      <q-list>
-        <q-item-label header class="text-grey-8">
-          Помощь
-        </q-item-label>
-        <EssentialLink
-          v-for="link in supportLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-    <q-page-container>
-      <q-table
-        style="height: 400px"
-        title="Курсы"
-        :data="courses"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-      <q-table
-        style="height: 400px"
-        title="КИмы"
-        :data="cmms"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-      <q-table
-        style="height: 400px"
-        title="Тесты"
-        :data="tests"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-      <q-table
-        style="height: 400px"
-        title="Грейдеры"
-        :data="graders"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-    </q-page-container>
-  </q-layout>
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink.vue";
-import axios from "axios";
-
-const commonLinksData = [
-  {
-    title: "Тесты",
-    caption: "Формы и всякое такое",
-    icon: "list",
-    link: "https://quasar.dev"
-  },
-  {
-    title: "Онлайн-занятия",
-    caption: "Выбор платформы для занятий",
-    icon: "today",
-    link: "https://github.com/quasarframework"
-  },
-  {
-    title: "CI/CD грейдеры",
-    caption: "Проверка решений студентов",
-    icon: "code",
-    link: "https://chat.quasar.dev"
-  },
-  {
-    title: "Управление СКУД",
-    caption: "Доступ в помещения МИЭМ",
-    icon: "room_preferences",
-    link: "https://forum.quasar.dev"
-  }
-];
-
-const supportLinksData = [
-  {
-    title: "Справка",
-    caption: "Как пользоваться сервисами",
-    icon: "help_center",
-    link: "https://awesome.quasar.dev"
-  },
-  {
-    title: "Поддержка",
-    caption: "Как пользоваться сервисами",
-    icon: "support",
-    link: "https://awesome.quasar.dev"
-  },
-  {
-    title: "Обновления",
-    caption: "Как пользоваться сервисами",
-    icon: "update",
-    link: "https://awesome.quasar.dev"
-  },
-  {
-    title: "О сервисе",
-    caption: "Как пользоваться сервисами",
-    icon: "info",
-    link: "https://awesome.quasar.dev"
-  }
-];
-
-const studentsLinksData = [];
-
 export default {
-  name: "MainLayout",
-  components: { EssentialLink },
   data() {
     return {
-      leftDrawerOpen: false,
-      commonLinks: commonLinksData,
-      supportLinks: supportLinksData,
-      studentsLinks: studentsLinksData,
-      courses: [],
-      cmms: [],
-      tests: [],
-      graders: []
+      formName: "",
+      text: "",
+      model: null,
+      options: [
+        "Один из списка",
+        "Несколько из списка",
+        "Раскрывающийся список",
+        "Текст (строка)",
+        "Текст (абзац)"
+      ],
+      group: null,
+      options2: [
+        { label: "Battery too low", value: "bat" },
+        { label: "Friend request", value: "friend", color: "green" },
+        { label: "Picture uploaded", value: "upload", color: "red" }
+      ]
     };
-  },
-  beforeMount() {
-    this.getCourses();
-  },
-  methods: {
-    getCourses() {
-      const path = "https://nvr.miem.hse.ru/lessons";
-      axios.get(path).then(
-        res => {
-          console.log(res);
-          //this.courses = res.data.courses;
-        },
-        error => {
-          console.error(error);
-        }
-      );
-    }
   }
 };
 </script>
