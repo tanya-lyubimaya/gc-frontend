@@ -97,14 +97,49 @@
                     label="Тип вопроса"
                   />
                   <div v-if="questionType === 'Один из списка'">
-                  <q-input v-model="text" placeholder="Вариант ответа"
-                    ><template v-slot:prepend>
-                      <q-icon name="panorama_fish_eye" /> </template
-                  ></q-input>
-                  <q-input v-model="text" placeholder="Вариант ответа"
-                    ><template v-slot:prepend>
-                      <q-icon name="panorama_fish_eye" /> </template
-                  ></q-input>
+                    <q-input v-model="text" placeholder="Вариант ответа"
+                      ><template v-slot:prepend>
+                        <q-icon name="radio_button_unchecked" /> </template
+                    ></q-input>
+                    <q-input v-model="text" placeholder="Вариант ответа"
+                      ><template v-slot:prepend>
+                        <q-icon name="radio_button_unchecked" /> </template
+                    ></q-input>
+                  </div>
+                  <div v-if="questionType === 'Несколько из списка'">
+                    <q-input v-model="text" placeholder="Вариант ответа"
+                      ><template v-slot:prepend>
+                        <q-icon name="check_box_outline_blank" /> </template
+                    ></q-input>
+                    <q-input v-model="text" placeholder="Вариант ответа"
+                      ><template v-slot:prepend>
+                        <q-icon name="check_box_outline_blank" /> </template
+                    ></q-input>
+                  </div>
+                  <div v-if="questionType === 'Раскрывающийся список'">
+                    <q-input v-model="text" placeholder="Вариант ответа"
+                      ><template v-slot:prepend> 1 </template></q-input
+                    >
+                    <q-input v-model="text" placeholder="Вариант ответа"
+                      ><template v-slot:prepend> 2 </template></q-input
+                    >
+                  </div>
+                  <div v-if="questionType === 'Текст (строка)'">
+                    <q-input
+                    filled
+                    v-model="text"
+                    placeholder="Краткий ответ"
+                    readonly
+                  />
+                  </div>
+                  <div v-if="questionType === 'Текст (абзац)'">
+                    <q-input
+                    v-model="text"
+                    filled
+                    type="textarea"
+                    placeholder="Развёрнутый ответ"
+                    readonly
+                  />
                   </div>
                 </q-card-section>
               </q-card>
