@@ -104,10 +104,22 @@
                       @click="addRadioInput"
                     />
                     <ul style="list-style-type:none">
-                      <li v-for="(input, index) in radioInputs" v-bind:key="index">
-                        <q-input v-model="input.one" placeholder="Вариант ответа"
+                      <li
+                        v-for="(input, index) in radioInputs"
+                        v-bind:key="index"
+                      >
+                        <q-input
+                          v-model="input.one"
+                          placeholder="Вариант ответа"
                           ><template v-slot:prepend>
                             <q-icon name="radio_button_unchecked" /> </template
+                        ><template v-slot:append>
+                            <q-btn
+                          round
+                          style="color: grey"
+                          icon="close"
+                          @click="deleteRadioInput(index)"
+                        /> </template
                         ></q-input>
                       </li>
                     </ul>
@@ -192,7 +204,10 @@ export default {
       this.radioInputs.push({
         one: ""
       });
-    }
+    },
+    deleteRadioInput(index) {
+        this.radioInputs.splice(index,1)
+      }
   }
 };
 </script>
