@@ -32,7 +32,7 @@
                 </q-card-section>
               </q-card>
               <ul style="list-style-type:none; padding: 0">
-                <li v-for="(input, index) in questions" v-bind:key="index">
+                <li v-for="(question, index) in questions" v-bind:key="index">
                   <q-card style="margin-bottom: 30px">
                     <q-card-section>
                       <q-input
@@ -45,7 +45,7 @@
                         ]"
                       ></q-input>
                       <q-select
-                        v-model="questionType"
+                        v-model="question.questionType"
                         :options="questionTypes"
                         label="Тип вопроса"
                         color="pink"
@@ -69,7 +69,7 @@
                                   style="color: grey"
                                   icon="close"
                                   size="xs"
-                                  @click="deleteInputRow(index)"
+                                  @click="deleteRadioInputRow(index)"
                                 /> </template
                             ></q-input>
                           </li>
@@ -83,7 +83,7 @@
                               style="color: white"
                               icon="add"
                               size="xs"
-                              @click="addInputRow"
+                              @click="addRadioInputRow"
                             />
                           </div>
                         </ul>
@@ -91,7 +91,7 @@
                       <div v-if="questionType === 'Несколько из списка'">
                         <ul style="list-style-type:none; padding: 0">
                           <li
-                            v-for="(input, index) in radioInputs"
+                            v-for="(input, index) in checkboxInputs"
                             v-bind:key="index"
                           >
                             <q-input v-model="text" placeholder="Вариант ответа"
@@ -105,7 +105,7 @@
                                   style="color: grey"
                                   icon="close"
                                   size="xs"
-                                  @click="deleteInputRow(index)"
+                                  @click="deleteCheckboxInputRow(index)"
                                 /> </template
                             ></q-input>
                           </li>
@@ -119,7 +119,7 @@
                               style="color: white"
                               icon="add"
                               size="xs"
-                              @click="addInputRow"
+                              @click="addCheckboxInputRow"
                             />
                           </div>
                         </ul>
@@ -127,7 +127,7 @@
                       <div v-if="questionType === 'Раскрывающийся список'">
                         <ul style="list-style-type:none; padding: 0">
                           <li
-                            v-for="(input, index) in radioInputs"
+                            v-for="(input, index) in selectInputs"
                             v-bind:key="index"
                           >
                             <q-input v-model="text" placeholder="Вариант ответа"
@@ -138,7 +138,7 @@
                                   style="color: grey"
                                   icon="close"
                                   size="xs"
-                                  @click="deleteInputRow(index)"
+                                  @click="deleteSelectInputRow(index)"
                                 /> </template
                             ></q-input>
                           </li>
@@ -152,7 +152,7 @@
                               style="color: white"
                               icon="add"
                               size="xs"
-                              @click="addInputRow"
+                              @click="addSelectInputRow"
                             />
                           </div>
                         </ul>
@@ -178,30 +178,33 @@
                       </div>
                     </q-card-section>
                     <q-card-section>
-                      <div class="fit row wrap justify-end items-start content-start">
-                      <q-btn
-                                  round
-                                  style="color: grey"
-                                  icon="delete_forever"
-                                  size="s"
-                                  @click="deleteQuestion(index)"
-                                />
-                                </div>
+                      <div
+                        class="fit row wrap justify-end items-start content-start"
+                      >
+                        <q-btn
+                          round
+                          style="color: grey"
+                          icon="delete_forever"
+                          size="s"
+                          @click="deleteQuestion(index)"
+                        />
+                      </div>
                     </q-card-section>
                   </q-card>
                 </li>
+                <div class="row wrap justify-end items-start content-start">
+                  <q-btn
+                    round
+                    style="background: #FF0080; color: white"
+                    icon="add"
+                    @click="addQuestion"
+                  />
+                </div>
               </ul>
-              <div
-                class="fit row wrap justify-center items-start content-start"
-              >
-                <q-btn
-                  round
-                  style="background: #FF0080; color: white"
-                  icon="add"
-                  @click="addQuestion"
-                />
-              </div>
             </div>
+          </div>
+          <div class="fit row wrap justify-center items-start content-start">
+            <q-btn label="Сохранить" color="blue" @click="save" />
           </div>
         </div>
       </div>
@@ -215,7 +218,12 @@ export default {
     return {
       formName: "",
       desc: "",
-      questions: [],
+      questions: [
+        {
+          questionType: "Один из списка",
+          answers: []
+        }
+      ],
       questionType: "Один из списка",
       questionTypes: [
         "Один из списка",
@@ -225,6 +233,8 @@ export default {
         "Текст (абзац)"
       ],
       radioInputs: [],
+      checkboxInputs: [],
+      selectInputs: [],
       group: null,
       options2: [
         { label: "Battery too low", value: "bat" },
@@ -236,21 +246,43 @@ export default {
     };
   },
   methods: {
-    addInputRow() {
+    addRadioInputRow() {
       this.radioInputs.push({
         one: ""
       });
     },
-    deleteInputRow(index) {
+    addCheckboxInputRow() {
+      this.checkboxInputs.push({
+        one: ""
+      });
+    },
+    addSelectInputRow() {
+      this.selectInputs.push({
+        one: ""
+      });
+    },
+    deleteRadioInputRow(index) {
       this.radioInputs.splice(index, 1);
+    },
+    deleteCheckboxInputRow(index) {
+      this.checkboxInputs.splice(index, 1);
+    },
+    deleteSelectInputRow(index) {
+      this.selectInputs.splice(index, 1);
     },
     addQuestion() {
       this.questions.push({
-        one: ""
+        questionType: "Один из списка"
       });
     },
     deleteQuestion(index) {
       this.questions.splice(index, 1);
+    },
+    save() {
+      console.log("Save");
+      console.log("Radio inputs", this.radioInputs);
+      console.log("Checkbox inputs", this.checkboxInputs);
+      console.log("Select inputs", this.selectInputs);
     }
   }
 };
