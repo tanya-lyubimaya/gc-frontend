@@ -11,7 +11,7 @@
             class="fit row wrap justify-center items-start content-start"
             style="overflow: hidden;"
           >
-            <div class="col-6 bg-grey-2" style="overflow: auto;">
+            <div class="col-6 bg-grey-2" style="overflow: auto; padding: 30px">
               <q-card style="margin-bottom: 30px">
                 <q-card-section>
                   <q-input
@@ -48,6 +48,7 @@
                         v-model="questionType"
                         :options="questionTypes"
                         label="Тип вопроса"
+                        color="pink"
                       />
                       <div v-if="questionType === 'Один из списка'">
                         <ul style="list-style-type:none; padding: 0">
@@ -74,7 +75,7 @@
                           </li>
                           <br />
                           <div
-                            class="fit row wrap justify-end items-start content-start"
+                            class="fit row wrap justify-start items-start content-start"
                           >
                             <q-btn
                               round
@@ -110,7 +111,7 @@
                           </li>
                           <br />
                           <div
-                            class="fit row wrap justify-end items-start content-start"
+                            class="fit row wrap justify-start items-start content-start"
                           >
                             <q-btn
                               round
@@ -124,7 +125,7 @@
                         </ul>
                       </div>
                       <div v-if="questionType === 'Раскрывающийся список'">
-                        <ul style="list-style-type:none">
+                        <ul style="list-style-type:none; padding: 0">
                           <li
                             v-for="(input, index) in radioInputs"
                             v-bind:key="index"
@@ -143,7 +144,7 @@
                           </li>
                           <br />
                           <div
-                            class="fit row wrap justify-end items-start content-start"
+                            class="fit row wrap justify-start items-start content-start"
                           >
                             <q-btn
                               round
@@ -176,15 +177,30 @@
                         />
                       </div>
                     </q-card-section>
+                    <q-card-section>
+                      <div class="fit row wrap justify-end items-start content-start">
+                      <q-btn
+                                  round
+                                  style="color: grey"
+                                  icon="delete_forever"
+                                  size="s"
+                                  @click="deleteQuestion(index)"
+                                />
+                                </div>
+                    </q-card-section>
                   </q-card>
                 </li>
               </ul>
-              <q-btn
-                round
-                style="background: #FF0080; color: white"
-                icon="add"
-                @click="addQuestion"
-              />
+              <div
+                class="fit row wrap justify-center items-start content-start"
+              >
+                <q-btn
+                  round
+                  style="background: #FF0080; color: white"
+                  icon="add"
+                  @click="addQuestion"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -233,7 +249,9 @@ export default {
         one: ""
       });
     },
-    deleteQuestion() {}
+    deleteQuestion(index) {
+      this.questions.splice(index, 1);
+    }
   }
 };
 </script>
