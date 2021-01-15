@@ -97,12 +97,6 @@
                     label="Тип вопроса"
                   />
                   <div v-if="questionType === 'Один из списка'">
-                    <q-btn
-                      round
-                      style="background: #FF0080; color: white"
-                      icon="add"
-                      @click="addRadioInput"
-                    />
                     <ul style="list-style-type:none">
                       <li
                         v-for="(input, index) in radioInputs"
@@ -113,36 +107,100 @@
                           placeholder="Вариант ответа"
                           ><template v-slot:prepend>
                             <q-icon name="radio_button_unchecked" /> </template
-                        ><template v-slot:append>
+                          ><template v-slot:append>
                             <q-btn
-                          round
-                          style="color: grey"
-                          icon="close"
-                          @click="deleteRadioInput(index)"
-                        /> </template
+                              round
+                              style="color: grey"
+                              icon="close"
+                              size="xs"
+                              @click="deleteRadioInput(index)"
+                            /> </template
                         ></q-input>
                       </li>
+                      <br />
+                      <div
+                        class="fit row wrap justify-end items-start content-start"
+                      >
+                        <q-btn
+                          round
+                          color="green"
+                          style="color: white"
+                          icon="add"
+                          size="xs"
+                          @click="addRadioInput"
+                        />
+                      </div>
                     </ul>
                   </div>
                   <div v-if="questionType === 'Несколько из списка'">
-                    <q-input v-model="text" placeholder="Вариант ответа"
-                      ><template v-slot:prepend>
-                        <q-icon name="check_box_outline_blank" /> </template
-                    ></q-input>
-                    <q-input v-model="text" placeholder="Вариант ответа"
-                      ><template v-slot:prepend>
-                        <q-icon name="check_box_outline_blank" /> </template
-                    ></q-input>
+                    <ul style="list-style-type:none">
+                      <li
+                        v-for="(input, index) in radioInputs"
+                        v-bind:key="index"
+                      >
+                        <q-input v-model="text" placeholder="Вариант ответа"
+                          ><template v-slot:prepend>
+                            <q-icon name="check_box_outline_blank" /> </template
+                          ><template v-slot:append>
+                            <q-btn
+                              round
+                              style="color: grey"
+                              icon="close"
+                              size="xs"
+                              @click="deleteRadioInput(index)"
+                            /> </template
+                        ></q-input>
+                      </li>
+                      <br />
+                      <div
+                        class="fit row wrap justify-end items-start content-start"
+                      >
+                        <q-btn
+                          round
+                          color="green"
+                          style="color: white"
+                          icon="add"
+                          size="xs"
+                          @click="addRadioInput"
+                        />
+                      </div>
+                    </ul>
                   </div>
                   <div v-if="questionType === 'Раскрывающийся список'">
-                    <q-input v-model="text" placeholder="Вариант ответа"
-                      ><template v-slot:prepend> 1 </template></q-input
-                    >
-                    <q-input v-model="text" placeholder="Вариант ответа"
-                      ><template v-slot:prepend> 2 </template></q-input
-                    >
+                    <ul style="list-style-type:none">
+                      <li
+                        v-for="(input, index) in radioInputs"
+                        v-bind:key="index"
+                      >
+                        <q-input v-model="text" placeholder="Вариант ответа"
+                          ><template v-slot:prepend> 1 </template
+                          ><template v-slot:append>
+                            <q-btn
+                              round
+                              style="color: grey"
+                              icon="close"
+                              size="xs"
+                              @click="deleteRadioInput(index)"
+                            /> </template
+                        ></q-input>
+                      </li>
+                      <br />
+                      <div
+                        class="fit row wrap justify-end items-start content-start"
+                      >
+                        <q-btn
+                          round
+                          color="green"
+                          style="color: white"
+                          icon="add"
+                          size="xs"
+                          @click="addRadioInput"
+                        />
+                      </div>
+                    </ul>
                   </div>
                   <div v-if="questionType === 'Текст (строка)'">
+                    <br />
                     <q-input
                       filled
                       v-model="text"
@@ -151,6 +209,7 @@
                     />
                   </div>
                   <div v-if="questionType === 'Текст (абзац)'">
+                    <br />
                     <q-input
                       v-model="text"
                       filled
@@ -206,8 +265,8 @@ export default {
       });
     },
     deleteRadioInput(index) {
-        this.radioInputs.splice(index,1)
-      }
+      this.radioInputs.splice(index, 1);
+    }
   }
 };
 </script>
