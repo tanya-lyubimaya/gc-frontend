@@ -37,7 +37,7 @@
                     <q-card-section>
                       <q-input
                         filled
-                        v-model="formName"
+                        v-model="question.question"
                         label="Вопрос *"
                         lazy-rules
                         :rules="[
@@ -50,14 +50,14 @@
                         label="Тип вопроса"
                         color="pink"
                       />
-                      <div v-if="questionType === 'Один из списка'">
+                      <div v-if="question.questionType === 'Один из списка'">
                         <ul style="list-style-type:none; padding: 0">
                           <li
-                            v-for="(input, index) in radioInputs"
-                            v-bind:key="index"
+                            v-for="(input, i) in question.answers"
+                            v-bind:key="i"
                           >
                             <q-input
-                              v-model="input.one"
+                              v-model="input.value"
                               placeholder="Вариант ответа"
                               ><template v-slot:prepend>
                                 <q-icon
@@ -69,7 +69,7 @@
                                   style="color: grey"
                                   icon="close"
                                   size="xs"
-                                  @click="deleteRadioInputRow(index)"
+                                  @click="deleteInputRow(index, i)"
                                 /> </template
                             ></q-input>
                           </li>
@@ -83,18 +83,22 @@
                               style="color: white"
                               icon="add"
                               size="xs"
-                              @click="addRadioInputRow"
+                              @click="addInputRow(index)"
                             />
                           </div>
                         </ul>
                       </div>
-                      <div v-if="questionType === 'Несколько из списка'">
+                      <div
+                        v-if="question.questionType === 'Несколько из списка'"
+                      >
                         <ul style="list-style-type:none; padding: 0">
                           <li
-                            v-for="(input, index) in checkboxInputs"
-                            v-bind:key="index"
+                            v-for="(input, i) in question.answers"
+                            v-bind:key="i"
                           >
-                            <q-input v-model="text" placeholder="Вариант ответа"
+                            <q-input
+                              v-model="input.value"
+                              placeholder="Вариант ответа"
                               ><template v-slot:prepend>
                                 <q-icon
                                   name="check_box_outline_blank"
@@ -105,7 +109,7 @@
                                   style="color: grey"
                                   icon="close"
                                   size="xs"
-                                  @click="deleteCheckboxInputRow(index)"
+                                  @click="deleteInputRow(index, i)"
                                 /> </template
                             ></q-input>
                           </li>
@@ -119,18 +123,22 @@
                               style="color: white"
                               icon="add"
                               size="xs"
-                              @click="addCheckboxInputRow"
+                              @click="addInputRow(index)"
                             />
                           </div>
                         </ul>
                       </div>
-                      <div v-if="questionType === 'Раскрывающийся список'">
+                      <div
+                        v-if="question.questionType === 'Раскрывающийся список'"
+                      >
                         <ul style="list-style-type:none; padding: 0">
                           <li
-                            v-for="(input, index) in selectInputs"
-                            v-bind:key="index"
+                            v-for="(input, i) in question.answers"
+                            v-bind:key="i"
                           >
-                            <q-input v-model="text" placeholder="Вариант ответа"
+                            <q-input
+                              v-model="input.value"
+                              placeholder="Вариант ответа"
                               ><template v-slot:prepend> 1 </template
                               ><template v-slot:append>
                                 <q-btn
@@ -138,7 +146,7 @@
                                   style="color: grey"
                                   icon="close"
                                   size="xs"
-                                  @click="deleteSelectInputRow(index)"
+                                  @click="deleteInputRow(index, i)"
                                 /> </template
                             ></q-input>
                           </li>
@@ -152,12 +160,12 @@
                               style="color: white"
                               icon="add"
                               size="xs"
-                              @click="addSelectInputRow"
+                              @click="addInputRow(index)"
                             />
                           </div>
                         </ul>
                       </div>
-                      <div v-if="questionType === 'Текст (строка)'">
+                      <div v-if="question.questionType === 'Текст (строка)'">
                         <br />
                         <q-input
                           filled
@@ -166,10 +174,10 @@
                           readonly
                         />
                       </div>
-                      <div v-if="questionType === 'Текст (абзац)'">
+                      <div v-if="question.questionType === 'Текст (абзац)'">
                         <br />
                         <q-input
-                          v-model="text"
+                          v-model="textarea"
                           filled
                           type="textarea"
                           placeholder="Развёрнутый ответ"
@@ -221,10 +229,10 @@ export default {
       questions: [
         {
           questionType: "Один из списка",
-          answers: []
+          question: "",
+          answers: [{ value: "" }]
         }
       ],
-      questionType: "Один из списка",
       questionTypes: [
         "Один из списка",
         "Несколько из списка",
@@ -232,37 +240,17 @@ export default {
         "Текст (строка)",
         "Текст (абзац)"
       ],
-      radioInputs: [],
-      checkboxInputs: [],
-      selectInputs: [],
-      group: null,
-      options2: [
-        { label: "Battery too low", value: "bat" },
-        { label: "Friend request", value: "friend", color: "green" },
-        { label: "Picture uploaded", value: "upload", color: "red" }
-      ],
-      model: null,
-      text: ""
+      text: "",
+      textarea: ""
     };
   },
   methods: {
-    addRadioInputRow() {
-      this.radioInputs.push({
-        one: ""
-      });
+    addInputRow(index) {
+      console.log(index);
+      this.questions[index].answers.push({ value: "" });
     },
-    addCheckboxInputRow() {
-      this.checkboxInputs.push({
-        one: ""
-      });
-    },
-    addSelectInputRow() {
-      this.selectInputs.push({
-        one: ""
-      });
-    },
-    deleteRadioInputRow(index) {
-      this.radioInputs.splice(index, 1);
+    deleteInputRow(questionIndex, answerIndex) {
+      this.questions[questionIndex].answers.splice(answerIndex, 1);
     },
     deleteCheckboxInputRow(index) {
       this.checkboxInputs.splice(index, 1);
@@ -272,7 +260,9 @@ export default {
     },
     addQuestion() {
       this.questions.push({
-        questionType: "Один из списка"
+        questionType: "Один из списка",
+        question: "",
+        answers: [{ value: "" }]
       });
     },
     deleteQuestion(index) {
@@ -280,9 +270,7 @@ export default {
     },
     save() {
       console.log("Save");
-      console.log("Radio inputs", this.radioInputs);
-      console.log("Checkbox inputs", this.checkboxInputs);
-      console.log("Select inputs", this.selectInputs);
+      console.log("Questions", this.questions);
     }
   }
 };
