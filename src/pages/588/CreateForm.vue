@@ -139,7 +139,7 @@
                             <q-input
                               v-model="input.value"
                               placeholder="Вариант ответа"
-                              ><template v-slot:prepend> 1 </template
+                              ><template v-slot:prepend> {{ i + 1 }} </template
                               ><template v-slot:append>
                                 <q-btn
                                   round
