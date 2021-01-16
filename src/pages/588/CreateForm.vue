@@ -59,6 +59,7 @@
                             <q-input
                               v-model="input.value"
                               placeholder="Вариант ответа"
+                              @focus="focusOnListElement(question.answers, i, index)"
                               ><template v-slot:prepend>
                                 <q-icon
                                   name="radio_button_unchecked"
@@ -77,14 +78,6 @@
                           <div
                             class="fit row wrap justify-start items-start content-start"
                           >
-                            <q-btn
-                              round
-                              color="green"
-                              style="color: white"
-                              icon="add"
-                              size="xs"
-                              @click="addInputRow(index)"
-                            />
                           </div>
                         </ul>
                       </div>
@@ -99,6 +92,7 @@
                             <q-input
                               v-model="input.value"
                               placeholder="Вариант ответа"
+                              @focus="focusOnListElement(question.answers, i, index)"
                               ><template v-slot:prepend>
                                 <q-icon
                                   name="check_box_outline_blank"
@@ -117,14 +111,6 @@
                           <div
                             class="fit row wrap justify-start items-start content-start"
                           >
-                            <q-btn
-                              round
-                              color="green"
-                              style="color: white"
-                              icon="add"
-                              size="xs"
-                              @click="addInputRow(index)"
-                            />
                           </div>
                         </ul>
                       </div>
@@ -139,6 +125,7 @@
                             <q-input
                               v-model="input.value"
                               placeholder="Вариант ответа"
+                              @focus="focusOnListElement(question.answers, i, index)"
                               ><template v-slot:prepend> {{ i + 1 }} </template
                               ><template v-slot:append>
                                 <q-btn
@@ -154,14 +141,6 @@
                           <div
                             class="fit row wrap justify-start items-start content-start"
                           >
-                            <q-btn
-                              round
-                              color="green"
-                              style="color: white"
-                              icon="add"
-                              size="xs"
-                              @click="addInputRow(index)"
-                            />
                           </div>
                         </ul>
                       </div>
@@ -245,18 +224,13 @@ export default {
     };
   },
   methods: {
-    addInputRow(index) {
-      console.log(index);
-      this.questions[index].answers.push({ value: "" });
-    },
     deleteInputRow(questionIndex, answerIndex) {
       this.questions[questionIndex].answers.splice(answerIndex, 1);
     },
-    deleteCheckboxInputRow(index) {
-      this.checkboxInputs.splice(index, 1);
-    },
-    deleteSelectInputRow(index) {
-      this.selectInputs.splice(index, 1);
+    focusOnListElement(array, indexOfAnswer, indexOfQuestion) {
+      if (array.length - indexOfAnswer == 1) {
+        this.questions[indexOfQuestion].answers.push({ value: "" });
+      }
     },
     addQuestion() {
       this.questions.push({
