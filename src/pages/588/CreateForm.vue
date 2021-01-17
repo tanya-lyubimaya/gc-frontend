@@ -59,26 +59,38 @@
                             <q-input
                               v-model="input.value"
                               placeholder="Вариант ответа"
-                              @focus="focusOnListElement(question.answers, i, index)"
-                              ><template v-slot:prepend>
+                              @focus="
+                                focusOnListElement(question.answers, i, index)
+                              "
+                              ><template v-slot:before>
                                 <q-icon
                                   name="radio_button_unchecked"
                                 /> </template
                               ><template v-slot:after>
-                                <q-btn
-                                  round
-                                  style="color: grey"
-                                  icon="close"
-                                  size="xs"
-                                  @click="deleteInputRow(index, i)"
-                                /> </template
+                                <div v-if="question.answers.length == 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    disable
+                                  />
+                                </div>
+                                <div v-if="question.answers.length > 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    @click="deleteInputRow(index, i)"
+                                  />
+                                </div> </template
                             ></q-input>
                           </li>
                           <br />
                           <div
                             class="fit row wrap justify-start items-start content-start"
-                          >
-                          </div>
+                          ></div>
                         </ul>
                       </div>
                       <div
@@ -92,26 +104,38 @@
                             <q-input
                               v-model="input.value"
                               placeholder="Вариант ответа"
-                              @focus="focusOnListElement(question.answers, i, index)"
-                              ><template v-slot:prepend>
+                              @focus="
+                                focusOnListElement(question.answers, i, index)
+                              "
+                              ><template v-slot:before>
                                 <q-icon
                                   name="check_box_outline_blank"
                                 /> </template
-                              ><template v-slot:append>
-                                <q-btn
-                                  round
-                                  style="color: grey"
-                                  icon="close"
-                                  size="xs"
-                                  @click="deleteInputRow(index, i)"
-                                /> </template
+                              ><template v-slot:after>
+                                <div v-if="question.answers.length == 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    disable
+                                  />
+                                </div>
+                                <div v-if="question.answers.length > 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    @click="deleteInputRow(index, i)"
+                                  />
+                                </div> </template
                             ></q-input>
                           </li>
                           <br />
                           <div
                             class="fit row wrap justify-start items-start content-start"
-                          >
-                          </div>
+                          ></div>
                         </ul>
                       </div>
                       <div
@@ -125,23 +149,35 @@
                             <q-input
                               v-model="input.value"
                               placeholder="Вариант ответа"
-                              @focus="focusOnListElement(question.answers, i, index)"
-                              ><template v-slot:prepend> {{ i + 1 }} </template
-                              ><template v-slot:append>
-                                <q-btn
-                                  round
-                                  style="color: grey"
-                                  icon="close"
-                                  size="xs"
-                                  @click="deleteInputRow(index, i)"
-                                /> </template
+                              @focus="
+                                focusOnListElement(question.answers, i, index)
+                              "
+                              ><template v-slot:before> {{ i + 1 }} </template
+                              ><template v-slot:after>
+                                <div v-if="question.answers.length == 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    disable
+                                  />
+                                </div>
+                                <div v-if="question.answers.length > 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    @click="deleteInputRow(index, i)"
+                                  />
+                                </div> </template
                             ></q-input>
                           </li>
                           <br />
                           <div
                             class="fit row wrap justify-start items-start content-start"
-                          >
-                          </div>
+                          ></div>
                         </ul>
                       </div>
                       <div v-if="question.questionType === 'Текст (строка)'">
@@ -168,13 +204,24 @@
                       <div
                         class="fit row wrap justify-end items-start content-start"
                       >
-                        <q-btn
-                          round
-                          style="color: grey"
-                          icon="delete_forever"
-                          size="s"
-                          @click="deleteQuestion(index)"
-                        />
+                        <div v-if="questions.length == 1">
+                          <q-btn
+                            round
+                            style="color: grey"
+                            icon="delete_forever"
+                            size="s"
+                            disable
+                          />
+                        </div>
+                        <div v-if="questions.length > 1">
+                          <q-btn
+                            round
+                            style="color: grey"
+                            icon="delete_forever"
+                            size="s"
+                            @click="deleteQuestion(index)"
+                          />
+                        </div>
                       </div>
                     </q-card-section>
                   </q-card>
