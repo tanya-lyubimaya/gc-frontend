@@ -48,7 +48,6 @@
                         v-model="question.questionType"
                         :options="questionTypes"
                         label="Тип вопроса"
-                        color="pink"
                       />
                       <div v-if="question.questionType === 'Один из списка'">
                         <ul style="list-style-type:none; padding: 0">
