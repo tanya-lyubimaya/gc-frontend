@@ -64,7 +64,7 @@
                                 <q-icon
                                   name="radio_button_unchecked"
                                 /> </template
-                              ><template v-slot:append>
+                              ><template v-slot:after>
                                 <q-btn
                                   round
                                   style="color: grey"
