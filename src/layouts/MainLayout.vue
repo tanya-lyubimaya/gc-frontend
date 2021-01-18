@@ -128,14 +128,13 @@ const commonLinksData = [
     caption: "Формы и всякое такое",
     icon: "list",
     link: "form-create"
-  }
-
-  // {
-  //   title: 'CI/CD грейдеры',
-  //   caption: 'Проверка решений студентов',
-  //   icon: 'code',
-  //   link: 'https://chat.quasar.dev'
-  // },
+  },
+  {
+     title: 'CI/CD грейдеры',
+     caption: 'Проверка решений студентов',
+     icon: 'code',
+     link: 'ci-cd'
+   },
   // {
   //   title: 'Управление СКУД',
   //   caption: 'Доступ в помещения МИЭМ',
