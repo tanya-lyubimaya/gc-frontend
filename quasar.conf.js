@@ -47,6 +47,8 @@ module.exports = function (/* ctx */) {
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
+      publicPath: process.env.PUBLIC_PATH !== undefined ? process.env.PUBLIC_PATH : '/',
+
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
