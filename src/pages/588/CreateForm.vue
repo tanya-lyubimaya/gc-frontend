@@ -253,6 +253,7 @@ export default {
       desc: "",
       questions: [
         {
+          questionID: (new Date()).getTime(),
           questionType: "Один из списка",
           question: "",
           answers: [{ value: "" }]
@@ -269,6 +270,9 @@ export default {
       textarea: ""
     };
   },
+  mounted () {
+    this.id = this._uid
+  },
   methods: {
     deleteInputRow(questionIndex, answerIndex) {
       this.questions[questionIndex].answers.splice(answerIndex, 1);
@@ -280,10 +284,12 @@ export default {
     },
     addQuestion() {
       this.questions.push({
+        questionID: (new Date()).getTime(),
         questionType: "Один из списка",
         question: "",
         answers: [{ value: "" }]
       });
+      console.log(this.questions[this.questions.length-1].questionID)
     },
     deleteQuestion(index) {
       this.questions.splice(index, 1);
