@@ -6,7 +6,8 @@ const routes = [
     children: [
       {path: '', component: () => import('pages/Index.vue')},
       {path: 'online-platforms', component: () => import('pages/OnlinePlatforms.vue')},
-      {path: 'form-create', component: () => import('pages/588/CreateForm.vue')}
+      {path: 'form-create', component: () => import('pages/588/CreateForm.vue')},
+      {path: 'feedback', component: () => import('pages/588/Feedback.vue')}
     ]
   },
   {

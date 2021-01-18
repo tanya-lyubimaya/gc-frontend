@@ -87,20 +87,17 @@
           :key="link.title"
           v-bind="link"
         />
-
-        <!--      <q-separator/>-->
-        <!--      <q-list>-->
-        <!--        <q-item-label-->
-        <!--          header-->
-        <!--          class="text-grey-8"-->
-        <!--        >-->
-        <!--          Помощь-->
-        <!--        </q-item-label>-->
-        <!--        <EssentialLink-->
-        <!--          v-for="link in supportLinks"-->
-        <!--          :key="link.title"-->
-        <!--          v-bind="link"-->
-        <!--        />-->
+        <q-separator />
+        <q-list>
+          <q-item-label header class="text-grey-8">
+            Помощь
+          </q-item-label>
+          <EssentialLink
+            v-for="link in supportLinks"
+            :key="link.title"
+            v-bind="link"
+          />
+        </q-list>
       </q-list>
     </q-drawer>
 
@@ -148,18 +145,18 @@ const commonLinksData = [
 ];
 
 const supportLinksData = [
-  {
+  /*{
     title: "Справка",
     caption: "Как пользоваться сервисами",
     icon: "help_center",
     link: ""
-  },
+  }*/
   {
     title: "Поддержка",
     caption: "Задать вопрос",
     icon: "support",
-    link: ""
-  },
+    link: "feedback"
+  }/*,
   {
     title: "Обновления",
     caption: "Новый функционал",
@@ -171,7 +168,7 @@ const supportLinksData = [
     caption: "",
     icon: "info",
     link: ""
-  }
+  }*/
 ];
 
 const studentsLinksData = [];
