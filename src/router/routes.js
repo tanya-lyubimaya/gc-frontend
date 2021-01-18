@@ -8,7 +8,7 @@ const routes = [
       {path: 'online-platforms', component: () => import('pages/OnlinePlatforms.vue')},
       {path: 'form-create', component: () => import('pages/588/CreateForm.vue')},
       {path: 'feedback', component: () => import('pages/588/Feedback.vue')},
-      {path: 'diagrams-task/с/:c_id/t/:t_id', component: () => import('pages/misc/DiagramsRedirect')},
+      {path: 'diagrams-task/c/:c_id/t/:t_id', component: () => import('pages/misc/DiagramsRedirect')},
       {path: 'ci-cd', component: () => import('pages/589/Index.vue')}
     ]
   },
