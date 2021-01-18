@@ -19,6 +19,7 @@ export default boot(async ({app, router, Vue, redirect, urlPath}) => {
           SessionStorage.set('is_teacher', response.data['is_teacher']);
           SessionStorage.set('is_student', response.data['is_student']);
           SessionStorage.set('name_abbr', response.data['name']['first_name'][0] + response.data['name']['last_name'][0]);
+          SessionStorage.set('auth_token', response.data['auth_token']);
         } catch (e) {
           console.error(e);
         }
