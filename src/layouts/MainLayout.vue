@@ -206,7 +206,7 @@ export default {
     logout() {
       this.$axios
         .post(
-          "/auth/api/v1/auth/logout",
+          "/auth/logout",
           { logout: true },
           { withCredentials: true }
         )
