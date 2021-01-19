@@ -29,6 +29,7 @@
                       v-for="(question, index) in questions2"
                       v-bind:key="index"
                     >
+                    <div v-if="question.question === chosenQuestion">
                       <q-card style="margin-bottom: 30px">
                         <q-card-section>
                           <q-input
@@ -128,6 +129,7 @@
                           </div>
                         </q-card-section>
                       </q-card>
+                      </div>
                     </li>
                     <div
                       class="row wrap justify-center items-start content-start"
