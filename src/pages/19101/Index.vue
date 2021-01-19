@@ -9,6 +9,8 @@
             style="overflow: hidden;"
           >
             <div class="col-12" style="overflow: auto; padding: 30px">
+                <q-card>
+                    <q-card-section>
               <q-select
                 v-model="chosenTask"
                 :options="tasks"
@@ -20,6 +22,8 @@
                 :options="questions2"
                 label="Выберите дополнительный вопрос"
               />
+              </q-card-section>
+              <q-card-section>
               <ul style="list-style-type:none; padding: 0">
                 <li v-for="(question, index) in questions2" v-bind:key="index">
                   <q-card style="margin-bottom: 30px">
@@ -34,10 +38,12 @@
                           v-for="(answer, i) in question.answers"
                           v-bind:key="i"
                         >
+                        <br>
                           <q-input
                             v-model="answer.value"
                             label="Ответ"
                             stack-label
+                            filled
                           ></q-input>
                           <q-badge color="secondary">
                             Количество баллов
@@ -66,13 +72,17 @@
                     </q-card-section>
                   </q-card>
                 </li>
-                <q-btn
-                  color="primary"
-                  label="Добавить вопрос"
-                  @click="addQuestion()"
-                />
+                <div class="row wrap justify-center items-start content-start">
+                  <q-btn
+                    color="primary"
+                    label="Добавить вопрос"
+                    @click="addQuestion()"
+                  />
+                </div>
               </ul>
               <q-btn color="primary" label="Сохранить" @click="save()" />
+              </q-card-section>
+              </q-card>
             </div>
           </div>
         </div>
@@ -96,7 +106,7 @@ export default {
       chosenQuestion: ""
     };
   },
-  mounted() {
+  /*mounted() {
     this.$axios
       .get("http://194.67.113.251:5000/questions/")
       .then(res => {
@@ -111,7 +121,7 @@ export default {
           message: "Ошибка"
         });
       });
-  },
+  },*/
   methods: {
     addAnswer(questionIndex) {
       this.questions2[questionIndex].answers.push({
