@@ -130,11 +130,17 @@ const commonLinksData = [
     link: "form-create"
   },
   {
-     title: 'CI/CD грейдеры',
-     caption: 'Проверка решений студентов',
-     icon: 'code',
-     link: 'ci-cd'
-   },
+    title: "CI/CD грейдеры",
+    caption: "Проверка решений студентов",
+    icon: "code",
+    link: "ci-cd"
+  },
+  {
+    title: "Решебники",
+    caption: "Доп. вопросы по лабам",
+    icon: "question_answer",
+    link: "solvers"
+  }
   // {
   //   title: 'Управление СКУД',
   //   caption: 'Доступ в помещения МИЭМ',
@@ -155,7 +161,7 @@ const supportLinksData = [
     caption: "Задать вопрос",
     icon: "support",
     link: "feedback"
-  }/*,
+  } /*,
   {
     title: "Обновления",
     caption: "Новый функционал",
@@ -205,11 +211,7 @@ export default {
   methods: {
     logout() {
       this.$axios
-        .post(
-          "/auth/logout",
-          { logout: true },
-          { withCredentials: true }
-        )
+        .post("/auth/logout", { logout: true }, { withCredentials: true })
         .then(res => {
           this.$router.push({ name: "Login" });
         })
