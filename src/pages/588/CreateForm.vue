@@ -289,7 +289,6 @@ export default {
         question: "",
         answers: [{ value: "" }]
       });
-      console.log(this.questions[this.questions.length-1].questionID)
     },
     deleteQuestion(index) {
       this.questions.splice(index, 1);
