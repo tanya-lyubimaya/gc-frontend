@@ -219,11 +219,18 @@
                     <div
                       class="row wrap justify-center items-start content-start"
                     >
-                      <div v-if="!showAddQuestion">
+                      <div v-if="!showAddQuestion && chosenTask">
                         <q-btn
                           color="primary"
                           label="Добавить вопрос"
                           @click="addQuestion()"
+                        />
+                      </div>
+                      <div v-if="!showAddQuestion && !chosenTask">
+                        <q-btn
+                          color="primary"
+                          label="Добавить вопрос"
+                          disable
                         />
                       </div>
                       <div v-if="showAddQuestion">
@@ -319,8 +326,8 @@ export default {
         label: this.newQuestion.label,
         answers: this.newQuestion.answers.slice()
       });
-      this.newQuestion.label = "Новый вопрос",
-      this.newQuestion.answers = [{ value: "Ответ 1", grade: 0 }]
+      (this.newQuestion.label = "Новый вопрос"),
+        (this.newQuestion.answers = [{ value: "Ответ 1", grade: 0 }]);
       this.showAddQuestion = false;
     },
     save() {
