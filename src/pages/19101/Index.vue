@@ -9,90 +9,145 @@
             style="overflow: hidden;"
           >
             <div class="col-12" style="overflow: auto; padding: 30px">
-                <q-card>
-                    <q-card-section>
-              <q-select
-                v-model="chosenTask"
-                :options="tasks"
-                label="Выберите задание в Classroom"
-              />
-              <br />
-              <q-select
-                v-model="chosenQuestion"
-                :options="questions"
-                label="Выберите дополнительный вопрос"
-              />
-              </q-card-section>
-              <q-card-section>
-              <ul style="list-style-type:none; padding: 0">
-                <li v-for="(question, index) in questions2" v-bind:key="index">
-                  <q-card style="margin-bottom: 30px">
-                    <q-card-section>
-                      <q-input
-                        v-model="question.question"
-                        label="Вопрос"
-                        stack-label
-                      ></q-input>
-                      <ul style="list-style-type:none; padding: 0">
-                        <li
-                          v-for="(answer, i) in question.answers"
-                          v-bind:key="i"
-                        >
-                        <br>
-                        <div
-            class="fit row wrap justify-start items-start content-start"
-            style="overflow: hidden;"
-          >
-          <div class="col-4">
-                          <q-input
-                            v-model="answer.value"
-                            label="Ответ"
-                            stack-label
-                            filled
-                          ></q-input>
-                          </div>
-                           <div class="col-2 offset-1">
-                          <q-badge color="secondary">
-                            Количество баллов
-                          </q-badge>
-                          <q-slider
-                            v-model="answer.grade"
-                            :min="0"
-                            :max="10"
-                            :step="0.5"
-                            snap
-                            label
-                            color="primary"
-                          />
-                           </div>
-                        </div>
-                        </li>
-                        <br>
-                        <div
-                          class="row wrap justify-start items-start content-start"
-                        >
-                          <q-btn
-                            round
-                            style="background: #FF0080; color: white"
-                            icon="add"
-                            @click="addAnswer(index)"
-                          />
-                        </div>
-                      </ul>
-                    </q-card-section>
-                  </q-card>
-                </li>
-                <div class="row wrap justify-center items-start content-start">
-                  <q-btn
-                    color="primary"
-                    label="Добавить вопрос"
-                    @click="addQuestion()"
+              <q-card>
+                <q-card-section>
+                  <q-select
+                    v-model="chosenTask"
+                    :options="tasks"
+                    label="Выберите задание в Classroom"
                   />
-                </div>
-              </ul>
-              <q-btn color="primary" label="Сохранить" @click="save()" />
-              </q-card-section>
+                  <br />
+                  <q-select
+                    v-model="chosenQuestion"
+                    :options="questions"
+                    label="Выберите дополнительный вопрос"
+                  />
+                </q-card-section>
+                <q-card-section>
+                  <ul style="list-style-type:none; padding: 0">
+                    <li
+                      v-for="(question, index) in questions2"
+                      v-bind:key="index"
+                    >
+                      <q-card style="margin-bottom: 30px">
+                        <q-card-section>
+                          <q-input
+                            v-model="question.question"
+                            label="Вопрос"
+                            stack-label
+                          ></q-input>
+                          <ul style="list-style-type:none; padding: 0">
+                            <li
+                              v-for="(answer, i) in question.answers"
+                              v-bind:key="i"
+                            >
+                              <br />
+                              <div
+                                class="fit row wrap justify-start items-start content-start"
+                                style="overflow: hidden;"
+                              >
+                                <div class="col-4">
+                                  <q-input
+                                    v-model="answer.value"
+                                    label="Ответ"
+                                    stack-label
+                                    filled
+                                    ><template v-slot:before>
+                                      <div v-if="question.answers.length == 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          disable
+                                        />
+                                      </div>
+                                      <div v-if="question.answers.length > 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          @click="deleteAnswer(i, index)"
+                                        />
+                                      </div>
+                                    </template>
+                                  </q-input>
+                                </div>
+                                <div class="col-2 offset-1">
+                                  <q-badge color="secondary">
+                                    Количество баллов
+                                  </q-badge>
+                                  <q-slider
+                                    v-model="answer.grade"
+                                    :min="0"
+                                    :max="10"
+                                    :step="0.5"
+                                    snap
+                                    label
+                                    color="primary"
+                                  />
+                                </div>
+                              </div>
+                            </li>
+                            <br />
+                            <div
+                              class="row wrap justify-start items-start content-start"
+                            >
+                              <q-btn
+                                round
+                                style="background: #FF0080; color: white"
+                                icon="add"
+                                @click="addAnswer(index)"
+                              />
+                            </div>
+                          </ul>
+                        </q-card-section>
+                        <q-card-section>
+                          <div
+                            class="fit row wrap justify-end items-start content-start"
+                          >
+                            <div v-if="questions2.length == 1">
+                              <q-btn
+                                round
+                                style="color: grey"
+                                icon="delete_forever"
+                                size="s"
+                                disable
+                              />
+                            </div>
+                            <div v-if="questions2.length > 1">
+                              <q-btn
+                                round
+                                style="color: grey"
+                                icon="delete_forever"
+                                size="s"
+                                @click="deleteQuestion(index)"
+                              />
+                            </div>
+                          </div>
+                        </q-card-section>
+                      </q-card>
+                    </li>
+                    <div
+                      class="row wrap justify-center items-start content-start"
+                    >
+                      <q-btn
+                        color="primary"
+                        label="Добавить вопрос"
+                        @click="addQuestion()"
+                      />
+                    </div>
+                  </ul>
+                </q-card-section>
               </q-card>
+              <br />
+              <div
+                class="fit row wrap justify-end items-start content-start"
+                style="overflow: hidden;"
+              >
+                <q-btn color="primary" label="Сохранить" @click="save()" />
+              </div>
             </div>
           </div>
         </div>
@@ -144,6 +199,12 @@ export default {
         question: "",
         answers: [{ value: "Ответ 1", grade: 0 }]
       });
+    },
+    deleteAnswer(indexOfAnswer, indexOfQuestion) {
+      this.questions2[indexOfQuestion].answers.splice(indexOfAnswer, 1);
+    },
+    deleteQuestion(indexOfQuestion) {
+      this.questions2.splice(indexOfQuestion, 1);
     },
     save() {
       console.log("Save");
