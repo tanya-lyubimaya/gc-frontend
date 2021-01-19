@@ -21,19 +21,27 @@
                     v-model="chosenQuestion"
                     :options="questions"
                     label="Выберите дополнительный вопрос"
-                  />
+                  >
+                    <template v-slot:option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        <q-item-section>
+                          <q-item-label v-html="scope.opt.label" />
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
                 </q-card-section>
                 <q-card-section>
                   <ul style="list-style-type:none; padding: 0">
                     <li
-                      v-for="(question, index) in questions2"
+                      v-for="(question, index) in questions"
                       v-bind:key="index"
                     >
-                      <div v-if="question.question === chosenQuestion">
+                      <div v-if="question.label == chosenQuestion.label">
                         <q-card style="margin-bottom: 30px">
                           <q-card-section>
                             <q-input
-                              v-model="question.question"
+                              v-model="question.label"
                               label="Вопрос"
                               stack-label
                             ></q-input>
@@ -110,7 +118,7 @@
                             <div
                               class="fit row wrap justify-end items-start content-start"
                             >
-                              <div v-if="questions2.length == 1">
+                              <div v-if="questions.length == 1">
                                 <q-btn
                                   round
                                   style="color: grey"
@@ -119,7 +127,7 @@
                                   disable
                                 />
                               </div>
-                              <div v-if="questions2.length > 1">
+                              <div v-if="questions.length > 1">
                                 <q-btn
                                   round
                                   style="color: grey"
@@ -136,7 +144,7 @@
                     <div v-if="this.showAddQuestion">
                       <q-card-section>
                         <q-input
-                          v-model="newQuestion.question"
+                          v-model="newQuestion.label"
                           label="Вопрос"
                           stack-label
                         ></q-input>
@@ -249,17 +257,16 @@ export default {
     return {
       tasks: ["Задание 1", "Задание 2", "Задание 3"],
       chosenTask: "",
-      questions: ["Вопрос 1", "Вопрос 2", "Вопрос 3"],
-      questions2: [
+      questions: [
         {
-          question: "Вопрос 1",
+          label: "Вопрос 1",
           answers: [{ value: "Ответ 1", grade: 0 }]
         }
       ],
       chosenQuestion: "",
       showAddQuestion: false,
       newQuestion: {
-        question: "Новый вопрос",
+        label: "Новый вопрос",
         answers: [{ value: "Ответ 1", grade: 0 }]
       }
     };
@@ -282,7 +289,7 @@ export default {
   },*/
   methods: {
     addAnswer(questionIndex) {
-      this.questions2[questionIndex].answers.push({
+      this.questions[questionIndex].answers.push({
         value: "",
         grade: 0
       });
@@ -295,23 +302,25 @@ export default {
     },
     addQuestion() {
       this.showAddQuestion = true;
-      this.questions2.push({
-        question: "",
-        answers: [{ value: "Ответ 1", grade: 0 }]
-      });
+      console.log(this.chosenQuestion);
     },
     deleteAnswer(indexOfAnswer, indexOfQuestion) {
-      this.questions2[indexOfQuestion].answers.splice(indexOfAnswer, 1);
+      this.questions[indexOfQuestion].answers.splice(indexOfAnswer, 1);
     },
     deleteAnswerOfNewQuestion(indexOfAnswer) {
       this.newQuestion.answers.splice(indexOfAnswer, 1);
     },
     deleteQuestion(indexOfQuestion) {
-      this.questions2.splice(indexOfQuestion, 1);
+      this.questions.splice(indexOfQuestion, 1);
+      //this.questions.splice(indexOfQuestion, 1);
     },
     saveNewQuestion() {
-      this.questions2.push(this.newQuestion);
-      this.questions.push(this.newQuestion.question);
+      this.questions.push({
+        label: this.newQuestion.label,
+        answers: this.newQuestion.answers.slice()
+      });
+      this.newQuestion.label = "Новый вопрос",
+      this.newQuestion.answers = [{ value: "Ответ 1", grade: 0 }]
       this.showAddQuestion = false;
     },
     save() {
