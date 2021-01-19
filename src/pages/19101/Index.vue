@@ -19,7 +19,7 @@
               <br />
               <q-select
                 v-model="chosenQuestion"
-                :options="questions2"
+                :options="questions"
                 label="Выберите дополнительный вопрос"
               />
               </q-card-section>
@@ -39,12 +39,19 @@
                           v-bind:key="i"
                         >
                         <br>
+                        <div
+            class="fit row wrap justify-start items-start content-start"
+            style="overflow: hidden;"
+          >
+          <div class="col-4">
                           <q-input
                             v-model="answer.value"
                             label="Ответ"
                             stack-label
                             filled
                           ></q-input>
+                          </div>
+                           <div class="col-2 offset-1">
                           <q-badge color="secondary">
                             Количество баллов
                           </q-badge>
@@ -57,9 +64,12 @@
                             label
                             color="primary"
                           />
+                           </div>
+                        </div>
                         </li>
+                        <br>
                         <div
-                          class="row wrap justify-end items-start content-start"
+                          class="row wrap justify-start items-start content-start"
                         >
                           <q-btn
                             round
