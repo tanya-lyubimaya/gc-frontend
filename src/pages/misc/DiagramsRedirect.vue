@@ -45,7 +45,7 @@
 </template>
 
 <script>
-const REDIRECT_URL = 'http://draw.auditory.ru/tasks';
+const REDIRECT_URL = 'https://draw.miem.hse.ru/tasks';
 
 export default {
   // name: 'PageName',
