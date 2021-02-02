@@ -24,6 +24,7 @@
             <div class="row fit justify-center items-center content-center self-center q-pa-md">
               <form :action="redirectUrl" method="post">
                 <input type="hidden" name="user_info" :value="authJwtContents">
+                <input type="hidden" name="referrer" :value="referer">
                 <q-btn
                   type="submit"
                   :loading="redirecting"
@@ -60,11 +61,15 @@ export default {
     },
     redirectUrl() {
       return REDIRECT_URL + '?course=' + this.$route.params.c_id + '&task=' + this.$route.params.t_id;
+    },
+    referer() {
+      return location.href;
     }
   },
   methods: {
     redirectToDiagrams() {
       this.redirecting = true;
+      this.$q.loading.show({delay: 400, message: "Переадресация..."});
     }
   }
 }
