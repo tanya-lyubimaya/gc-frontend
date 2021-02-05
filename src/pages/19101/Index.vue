@@ -15,7 +15,19 @@
                     v-model="chosenTask"
                     :options="tasks"
                     label="Выберите задание в Classroom"
-                  />
+                    emit-value
+                  >
+                    <template v-slot:option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        <q-item-section>
+                          <q-item-label v-html="scope.opt.value" />
+                          <q-item-label caption>{{
+                            scope.opt.label
+                          }}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
                   <br />
                   <q-select
                     v-model="chosenQuestion"
@@ -262,8 +274,8 @@
 export default {
   data() {
     return {
-      tasks: ["Задание 1", "Задание 2", "Задание 3"],
-      chosenTask: "",
+      tasks: [],
+      chosenTask: null,
       questions: [
         {
           label: "Вопрос 1",
@@ -278,11 +290,27 @@ export default {
       }
     };
   },
-  /*mounted() {
+  mounted() {
     this.$axios
-      .get("http://194.67.113.251:5000/questions/")
+      .get("http://194.67.113.251:5000/tasks", { withCredentials: false })
       .then(res => {
-        console.log(res);
+        this.tasks = res.data.map(opt => ({
+          attempts: opt.attempts,
+          classroom_id: opt.classroom_id,
+          course: opt.course,
+          course_id: opt.course_id,
+          deadline: opt.deadline,
+          label: opt.description,
+          grader_id: opt.grader_id,
+          id: opt.id,
+          mode: opt.mode,
+          value: opt.name,
+          solution_filename: opt.solution_filename,
+          start: opt.start,
+          technology: opt.technology
+        }));
+        console.log(res.data);
+        console.log(this.tasks);
       })
       .catch(err => {
         this.$q.notify({
@@ -293,7 +321,7 @@ export default {
           message: "Ошибка"
         });
       });
-  },*/
+  },
   methods: {
     addAnswer(questionIndex) {
       this.questions[questionIndex].answers.push({
