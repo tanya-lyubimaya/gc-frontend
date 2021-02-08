@@ -27,7 +27,6 @@
                       </q-item>
                     </template>
                   </q-select>
-                  {{this.chosenTask}}
                   <br />
                   <q-select
                     v-model="chosenQuestion"
@@ -62,7 +61,7 @@
                             ></q-input>
                             <ul style="list-style-type:none; padding: 0">
                               <li
-                                v-for="(answer, i) in question.answers"
+                                v-for="(answer, i) in question.answer_txt"
                                 v-bind:key="i"
                               >
                                 <br />
@@ -78,7 +77,7 @@
                                       filled
                                       ><template v-slot:before>
                                         <div
-                                          v-if="question.answers.length == 1"
+                                          v-if="question.answer_txt.length == 1"
                                         >
                                           <q-btn
                                             round
@@ -88,7 +87,7 @@
                                             disable
                                           />
                                         </div>
-                                        <div v-if="question.answers.length > 1">
+                                        <div v-if="question.answer_txt.length > 1">
                                           <q-btn
                                             round
                                             style="color: grey"
