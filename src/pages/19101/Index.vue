@@ -33,11 +33,15 @@
                     v-model="chosenQuestion"
                     :options="questions"
                     label="Выберите дополнительный вопрос"
+                    emit-value
                   >
                     <template v-slot:option="scope">
                       <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                         <q-item-section>
-                          <q-item-label v-html="scope.opt.label" />
+                          <q-item-label v-html="scope.opt.value" />
+                          <q-item-label caption>{{
+                            scope.opt.label
+                          }}</q-item-label>
                         </q-item-section>
                       </q-item>
                     </template>
@@ -309,8 +313,6 @@ export default {
           start: opt.start,
           technology: opt.technology
         }));
-        console.log(res.data);
-        console.log(this.tasks);
       })
       .catch(err => {
         this.$q.notify({
@@ -318,7 +320,29 @@ export default {
           icon: "warning",
           type: "negative",
           multiLine: true,
-          message: "Ошибка"
+          message: "Возникла ошибка при получении заданий!"
+        });
+      });
+    this.$axios
+      .get("http://194.67.113.251:5000/questions", { withCredentials: false })
+      .then(res => {
+        this.questions = res.data.map(opt => ({
+          label: opt.answer_txt,
+          mark: opt.mark,
+          max_attempts: opt.max_attempts,
+          question_id: opt.question_id,
+          value: opt.question_txt
+        }));
+        console.log(res.data);
+        console.log(this.questions);
+      })
+      .catch(err => {
+        this.$q.notify({
+          position: this.notificationsPos,
+          icon: "warning",
+          type: "negative",
+          multiLine: true,
+          message: "Возникла ошибка при получении вопросов!"
         });
       });
   },
@@ -347,7 +371,6 @@ export default {
     },
     deleteQuestion(indexOfQuestion) {
       this.questions.splice(indexOfQuestion, 1);
-      //this.questions.splice(indexOfQuestion, 1);
     },
     saveNewQuestion() {
       this.questions.push({
