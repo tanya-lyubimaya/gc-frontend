@@ -15,32 +15,31 @@
                     v-model="chosenTask"
                     :options="tasks"
                     label="Выберите задание в Classroom"
-                    emit-value
                   >
                     <template v-slot:option="scope">
                       <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                         <q-item-section>
-                          <q-item-label v-html="scope.opt.value" />
+                          <q-item-label v-html="scope.opt.label" />
                           <q-item-label caption>{{
-                            scope.opt.label
+                            scope.opt.description
                           }}</q-item-label>
                         </q-item-section>
                       </q-item>
                     </template>
                   </q-select>
+                  {{this.chosenTask}}
                   <br />
                   <q-select
                     v-model="chosenQuestion"
                     :options="questions"
                     label="Выберите дополнительный вопрос"
-                    emit-value
                   >
                     <template v-slot:option="scope">
                       <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                         <q-item-section>
-                          <q-item-label v-html="scope.opt.value" />
+                          <q-item-label v-html="scope.opt.label" />
                           <q-item-label caption>{{
-                            scope.opt.label
+                            scope.opt.answer_txt
                           }}</q-item-label>
                         </q-item-section>
                       </q-item>
@@ -304,11 +303,11 @@ export default {
           course: opt.course,
           course_id: opt.course_id,
           deadline: opt.deadline,
-          label: opt.description,
+          description: opt.description,
           grader_id: opt.grader_id,
-          id: opt.id,
+          value: opt.id,
           mode: opt.mode,
-          value: opt.name,
+          label: opt.name,
           solution_filename: opt.solution_filename,
           start: opt.start,
           technology: opt.technology
@@ -327,11 +326,11 @@ export default {
       .get("http://194.67.113.251:5000/questions", { withCredentials: false })
       .then(res => {
         this.questions = res.data.map(opt => ({
-          label: opt.answer_txt,
+          answer_txt: opt.answer_txt,
           mark: opt.mark,
           max_attempts: opt.max_attempts,
-          question_id: opt.question_id,
-          value: opt.question_txt
+          value: opt.question_id,
+          label: opt.question_txt
         }));
         console.log(res.data);
         console.log(this.questions);
@@ -364,7 +363,7 @@ export default {
       console.log(this.chosenQuestion);
     },
     deleteAnswer(indexOfAnswer, indexOfQuestion) {
-      this.questions[indexOfQuestion].answers.splice(indexOfAnswer, 1);
+      this.questions[indexOfQuestion].answers.splice(indexOfAnswera, 1);
     },
     deleteAnswerOfNewQuestion(indexOfAnswer) {
       this.newQuestion.answers.splice(indexOfAnswer, 1);
@@ -383,6 +382,8 @@ export default {
     },
     save() {
       console.log("Save");
+      console.log(this.chosenTask);
+      console.log(this.chosenQuestion);
     }
   }
 };
