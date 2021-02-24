@@ -10,7 +10,7 @@ export default boot(async ({app, router, Vue, redirect, urlPath}) => {
       const response = await axiosInstance
         .get('/auth/api/v1/users/me', {withCredentials: true});
 
-      if (response.data && response.data['auth_status'] === 'OK') {
+      if (response.status === 200 && response.data) {
         loggedIn = true;
 
         try {
