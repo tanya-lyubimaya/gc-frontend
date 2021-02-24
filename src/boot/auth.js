@@ -29,7 +29,11 @@ export default boot(async ({app, router, Vue, redirect, urlPath}) => {
       loggedIn = false;
     }
     if (!loggedIn && to.name !== 'Login') {
-      next({name: 'Login'})
+      next({
+        name: 'Login',
+        // TODO: Redirect back?
+        // query: {'redirect_url': encodeURIComponent(location.origin + (router.baseURL ? ) + (router.mode === "hash" ? '#' : '') + to.fullPath)}
+      })
     } else if (loggedIn && to.name === 'Login') {
       next({name: 'Index'})
     } else {
