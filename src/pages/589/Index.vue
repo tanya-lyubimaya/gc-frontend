@@ -58,82 +58,77 @@
                   icon="question_answer"
                   :done="step > 2"
                 >
-                <div
+                  <div
                     class="fit row wrap justify-start items-start content-start"
                     style="overflow: hidden;"
                   >
-                  <div class="col-6">
-                    <ul style="list-style-type:none; padding: 0">
-                      <li
-                        v-for="(question, index) in questions"
-                        v-bind:key="index"
-                      >
-                        <q-card style="margin-bottom: 30px">
-                          <q-card-section>
-                            <q-input
-                              filled
-                              v-model="question.question"
-                              label="Вопрос *"
-                              lazy-rules
-                              :rules="[
-                                val =>
-                                  (val && val.length > 0) || 'Введите вопрос!'
-                              ]"
-                            ></q-input>
-                          </q-card-section>
-                          <q-card-section>
-                            <q-badge color="secondary">
-                              Коэффициент вопроса: (0.5 - 10)
-                            </q-badge>
-                            <q-slider
-                              v-model="question.coefficient"
-                              :min="0.5"
-                              :max="10"
-                              :step="0.5"
-                              snap
-                              label
-                              color="primary"
-                            />
-                          </q-card-section>
-                          <q-card-section>
-                            <div
-                              class="fit row wrap justify-end items-start content-start"
-                            >
-                              <div v-if="questions.length == 1">
-                                <q-btn
-                                  round
-                                  style="color: grey"
-                                  icon="delete_forever"
-                                  size="s"
-                                  disable
-                                />
+                    <div class="col-6">
+                      <ul style="list-style-type:none; padding: 0">
+                        <li
+                          v-for="(question, index) in chosenQuestions"
+                          v-bind:key="index"
+                        >
+                          <q-card style="margin-bottom: 30px">
+                            <q-card-section>
+                              <q-select
+                                v-model="question.label"
+                                :options="questions"
+                                label="Вопрос"
+                              />
+                            </q-card-section>
+                            <q-card-section>
+                              <q-badge color="secondary">
+                                Коэффициент вопроса: (0.5 - 10)
+                              </q-badge>
+                              <q-slider
+                                v-model="question.coefficient"
+                                :min="0.5"
+                                :max="10"
+                                :step="0.5"
+                                snap
+                                label
+                                color="primary"
+                              />
+                            </q-card-section>
+                            <q-card-section>
+                              <div
+                                class="fit row wrap justify-end items-start content-start"
+                              >
+                                <div v-if="questions.length == 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="delete_forever"
+                                    size="s"
+                                    disable
+                                  />
+                                </div>
+                                <div v-if="questions.length > 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="delete_forever"
+                                    size="s"
+                                    @click="deleteQuestion(index)"
+                                  />
+                                </div>
                               </div>
-                              <div v-if="questions.length > 1">
-                                <q-btn
-                                  round
-                                  style="color: grey"
-                                  icon="delete_forever"
-                                  size="s"
-                                  @click="deleteQuestion(index)"
-                                />
-                              </div>
-                            </div>
-                          </q-card-section>
-                        </q-card>
-                      </li>
-                      <div
-                        class="row wrap justify-end items-start content-start"
-                      >
-                        <q-btn
-                          round
-                          style="background: #FF0080; color: white"
-                          icon="add"
-                          @click="addQuestion"
-                        />
-                      </div>
-                    </ul>
+                            </q-card-section>
+                          </q-card>
+                        </li>
+                        <div
+                          class="row wrap justify-end items-start content-start"
+                        >
+                          <q-btn
+                            round
+                            style="background: #FF0080; color: white"
+                            icon="add"
+                            @click="addQuestion"
+                          />
+                        </div>
+                      </ul>
+                    </div>
                   </div>
-                </div>
                   <q-stepper-navigation>
                     <q-btn @click="step = 3" color="primary" label="Далее" />
                     <q-btn
@@ -152,39 +147,39 @@
                   icon="build"
                   :done="step > 3"
                 >
-                <div
+                  <div
                     class="fit row wrap justify-start items-start content-start"
                     style="overflow: hidden;"
                   >
-                  <div class="col-4">
-                  <q-select
-                    outlined
-                    v-model="chosenTechnology"
-                    :options="technologies"
-                    label="Технология"
-                  />
-                  <br />
-                  <q-select
-                    outlined
-                    v-model="chosenTemplate"
-                    :options="templates"
-                    label="Код шаблона"
-                  />
-                  <br />
-                  <q-badge color="secondary">
-                    Коэффициент: (0.5 - 10)
-                  </q-badge>
-                  <q-slider
-                    v-model="coefficient"
-                    :min="0.5"
-                    :max="10"
-                    :step="0.5"
-                    snap
-                    label
-                    color="primary"
-                  />
+                    <div class="col-4">
+                      <q-select
+                        outlined
+                        v-model="chosenTechnology"
+                        :options="technologies"
+                        label="Технология"
+                      />
+                      <br />
+                      <q-select
+                        outlined
+                        v-model="chosenTemplate"
+                        :options="templates"
+                        label="Код шаблона"
+                      />
+                      <br />
+                      <q-badge color="secondary">
+                        Коэффициент: (0.5 - 10)
+                      </q-badge>
+                      <q-slider
+                        v-model="coefficient"
+                        :min="0.5"
+                        :max="10"
+                        :step="0.5"
+                        snap
+                        label
+                        color="primary"
+                      />
+                    </div>
                   </div>
-                </div>
                   <q-stepper-navigation>
                     <q-btn @click="step = 4" color="primary" label="Далее" />
                     <q-btn
@@ -203,81 +198,81 @@
                   icon="attach_file"
                   :done="step > 4"
                 >
-                <div
+                  <div
                     class="fit row wrap justify-start items-start content-start"
                     style="overflow: hidden;"
                   >
-                  <div class="col-4">
-                  <div v-if="this.hasInputFiles">
-                    <q-file
-                      :value="inputFiles"
-                      @input="updateInputFiles"
-                      label="Выберите входные файлы"
-                      outlined
-                      multiple
-                      clearable
-                      style="max-width: 400px"
-                    >
-                      <template v-slot:file="{ index, file }">
-                        <q-chip class="full-width q-my-xs">
-                          <div class="ellipsis relative-position">
-                            {{ file.name }}
-                          </div>
-                          <q-tooltip>
-                            {{ file.name }}
-                          </q-tooltip>
-                        </q-chip>
-                      </template>
-                    </q-file>
+                    <div class="col-4">
+                      <div v-if="this.hasInputFiles">
+                        <q-file
+                          :value="inputFiles"
+                          @input="updateInputFiles"
+                          label="Выберите входные файлы"
+                          outlined
+                          multiple
+                          clearable
+                          style="max-width: 400px"
+                        >
+                          <template v-slot:file="{ index, file }">
+                            <q-chip class="full-width q-my-xs">
+                              <div class="ellipsis relative-position">
+                                {{ file.name }}
+                              </div>
+                              <q-tooltip>
+                                {{ file.name }}
+                              </q-tooltip>
+                            </q-chip>
+                          </template>
+                        </q-file>
+                      </div>
+                      <br />
+                      <div v-if="this.hasOutputFiles">
+                        <q-file
+                          :value="outputFiles"
+                          @input="updateOutputFiles"
+                          label="Выберите выходные файлы"
+                          outlined
+                          multiple
+                          clearable
+                          style="max-width: 400px"
+                        >
+                          <template v-slot:file="{ index, file }">
+                            <q-chip class="full-width q-my-xs">
+                              <div class="ellipsis relative-position">
+                                {{ file.name }}
+                              </div>
+                              <q-tooltip>
+                                {{ file.name }}
+                              </q-tooltip>
+                            </q-chip>
+                          </template>
+                        </q-file>
+                      </div>
+                      <br />
+                      <div v-if="this.hasAdditionalFiles">
+                        <q-file
+                          :value="additionalFiles"
+                          @input="updateAdditionalFiles"
+                          label="Выберите дополнительные файлы"
+                          outlined
+                          multiple
+                          clearable
+                          style="max-width: 400px"
+                        >
+                          <template v-slot:file="{ index, file }">
+                            <q-chip class="full-width q-my-xs">
+                              <div class="ellipsis relative-position">
+                                {{ file.name }}
+                              </div>
+                              <q-tooltip>
+                                {{ file.name }}
+                              </q-tooltip>
+                            </q-chip>
+                          </template>
+                        </q-file>
+                      </div>
+                    </div>
                   </div>
-                  <br />
-                  <div v-if="this.hasOutputFiles">
-                    <q-file
-                      :value="outputFiles"
-                      @input="updateOutputFiles"
-                      label="Выберите выходные файлы"
-                      outlined
-                      multiple
-                      clearable
-                      style="max-width: 400px"
-                    >
-                      <template v-slot:file="{ index, file }">
-                        <q-chip class="full-width q-my-xs">
-                          <div class="ellipsis relative-position">
-                            {{ file.name }}
-                          </div>
-                          <q-tooltip>
-                            {{ file.name }}
-                          </q-tooltip>
-                        </q-chip>
-                      </template>
-                    </q-file>
-                  </div>
-                  <br />
-                  <div v-if="this.hasAdditionalFiles">
-                    <q-file
-                      :value="additionalFiles"
-                      @input="updateAdditionalFiles"
-                      label="Выберите дополнительные файлы"
-                      outlined
-                      multiple
-                      clearable
-                      style="max-width: 400px"
-                    >
-                      <template v-slot:file="{ index, file }">
-                        <q-chip class="full-width q-my-xs">
-                          <div class="ellipsis relative-position">
-                            {{ file.name }}
-                          </div>
-                          <q-tooltip>
-                            {{ file.name }}
-                          </q-tooltip>
-                        </q-chip>
-                      </template>
-                    </q-file>
-                  </div>
-                  </div>
-                </div>
                   <q-stepper-navigation>
                     <q-btn color="primary" label="Готово" />
                     <q-btn
@@ -309,10 +304,18 @@ export default {
       questions: [
         {
           questionID: new Date().getTime(),
-          question: "",
-          coefficient: 0.5
+          label: "Вопрос 1"
+        },
+        {
+          questionID: new Date().getTime(),
+          label: "Вопрос 2"
+        },
+        {
+          questionID: new Date().getTime(),
+          label: "Вопрос 3"
         }
       ],
+      chosenQuestions: [],
       hasInputFiles: true,
       hasOutputFiles: true,
       hasAdditionalFiles: true,
@@ -325,6 +328,11 @@ export default {
       chosenTemplate: "side_by_side",
       coefficient: 5
     };
+  },
+  mounted() {
+    this.chosenQuestions.push({
+      label: this.questions[0].label,
+    });
   },
   computed: {
     isUploading() {
@@ -341,11 +349,8 @@ export default {
   },
   methods: {
     addQuestion() {
-      this.questions.push({
-        questionID: new Date().getTime(),
-        question: "",
-        coefficient: 0.5
-      });
+      this.chosenQuestions.push(this.questions[0]);
+      console.log(this.chosenQuestions);
     },
     deleteQuestion(index) {
       this.questions.splice(index, 1);

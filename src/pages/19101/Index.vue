@@ -15,7 +15,18 @@
                     v-model="chosenTask"
                     :options="tasks"
                     label="Выберите задание в Classroom"
-                  />
+                  >
+                    <template v-slot:option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        <q-item-section>
+                          <q-item-label v-html="scope.opt.label" />
+                          <q-item-label caption>{{
+                            scope.opt.description
+                          }}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
                   <br />
                   <q-select
                     v-model="chosenQuestion"
@@ -26,6 +37,9 @@
                       <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                         <q-item-section>
                           <q-item-label v-html="scope.opt.label" />
+                          <q-item-label caption>{{
+                            scope.opt.answer_txt
+                          }}</q-item-label>
                         </q-item-section>
                       </q-item>
                     </template>
@@ -47,7 +61,7 @@
                             ></q-input>
                             <ul style="list-style-type:none; padding: 0">
                               <li
-                                v-for="(answer, i) in question.answers"
+                                v-for="(answer, i) in question.answer_txt"
                                 v-bind:key="i"
                               >
                                 <br />
@@ -63,7 +77,7 @@
                                       filled
                                       ><template v-slot:before>
                                         <div
-                                          v-if="question.answers.length == 1"
+                                          v-if="question.answer_txt.length == 1"
                                         >
                                           <q-btn
                                             round
@@ -73,7 +87,7 @@
                                             disable
                                           />
                                         </div>
-                                        <div v-if="question.answers.length > 1">
+                                        <div v-if="question.answer_txt.length > 1">
                                           <q-btn
                                             round
                                             style="color: grey"
@@ -262,8 +276,8 @@
 export default {
   data() {
     return {
-      tasks: ["Задание 1", "Задание 2", "Задание 3"],
-      chosenTask: "",
+      tasks: [],
+      chosenTask: null,
       questions: [
         {
           label: "Вопрос 1",
@@ -278,11 +292,25 @@ export default {
       }
     };
   },
-  /*mounted() {
+  mounted() {
     this.$axios
-      .get("http://194.67.113.251:5000/questions/")
+      .get("http://194.67.113.251:5000/tasks", { withCredentials: false })
       .then(res => {
-        console.log(res);
+        this.tasks = res.data.map(opt => ({
+          attempts: opt.attempts,
+          classroom_id: opt.classroom_id,
+          course: opt.course,
+          course_id: opt.course_id,
+          deadline: opt.deadline,
+          description: opt.description,
+          grader_id: opt.grader_id,
+          value: opt.id,
+          mode: opt.mode,
+          label: opt.name,
+          solution_filename: opt.solution_filename,
+          start: opt.start,
+          technology: opt.technology
+        }));
       })
       .catch(err => {
         this.$q.notify({
@@ -290,10 +318,32 @@ export default {
           icon: "warning",
           type: "negative",
           multiLine: true,
-          message: "Ошибка"
+          message: "Возникла ошибка при получении заданий!"
         });
       });
-  },*/
+    this.$axios
+      .get("http://194.67.113.251:5000/questions", { withCredentials: false })
+      .then(res => {
+        this.questions = res.data.map(opt => ({
+          answer_txt: opt.answer_txt,
+          mark: opt.mark,
+          max_attempts: opt.max_attempts,
+          value: opt.question_id,
+          label: opt.question_txt
+        }));
+        console.log(res.data);
+        console.log(this.questions);
+      })
+      .catch(err => {
+        this.$q.notify({
+          position: this.notificationsPos,
+          icon: "warning",
+          type: "negative",
+          multiLine: true,
+          message: "Возникла ошибка при получении вопросов!"
+        });
+      });
+  },
   methods: {
     addAnswer(questionIndex) {
       this.questions[questionIndex].answers.push({
@@ -312,14 +362,13 @@ export default {
       console.log(this.chosenQuestion);
     },
     deleteAnswer(indexOfAnswer, indexOfQuestion) {
-      this.questions[indexOfQuestion].answers.splice(indexOfAnswer, 1);
+      this.questions[indexOfQuestion].answers.splice(indexOfAnswera, 1);
     },
     deleteAnswerOfNewQuestion(indexOfAnswer) {
       this.newQuestion.answers.splice(indexOfAnswer, 1);
     },
     deleteQuestion(indexOfQuestion) {
       this.questions.splice(indexOfQuestion, 1);
-      //this.questions.splice(indexOfQuestion, 1);
     },
     saveNewQuestion() {
       this.questions.push({
@@ -332,6 +381,8 @@ export default {
     },
     save() {
       console.log("Save");
+      console.log(this.chosenTask);
+      console.log(this.chosenQuestion);
     }
   }
 };
