@@ -79,4 +79,4 @@ export default {
     send(email, questionType, question, description) {}
   }
 };
-</script>
+</script>S
