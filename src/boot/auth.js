@@ -10,7 +10,7 @@ export default boot(async ({app, router, Vue, redirect, urlPath}) => {
       const response = await axiosInstance
         .get('/auth/api/v1/users/me', {withCredentials: true});
 
-      if (response.data && response.data['auth_status'] === 'OK') {
+      if (response.status === 200 && response.data) {
         loggedIn = true;
 
         try {
@@ -29,7 +29,11 @@ export default boot(async ({app, router, Vue, redirect, urlPath}) => {
       loggedIn = false;
     }
     if (!loggedIn && to.name !== 'Login') {
-      next({name: 'Login'})
+      next({
+        name: 'Login',
+        // TODO: Redirect back?
+        // query: {'redirect_url': encodeURIComponent(location.origin + (router.baseURL ? ) + (router.mode === "hash" ? '#' : '') + to.fullPath)}
+      })
     } else if (loggedIn && to.name === 'Login') {
       next({name: 'Index'})
     } else {
