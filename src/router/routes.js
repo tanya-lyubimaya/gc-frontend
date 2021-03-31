@@ -11,7 +11,9 @@ const routes = [
       {path: 'diagrams-task/c/:c_id/t/:t_id', component: () => import('pages/misc/DiagramsRedirect')},
       {path: 'ci-cd', component: () => import('pages/589/Index.vue')},
       {path: 'solvers', component: () => import('pages/19101/Index.vue')},
-      {path: 'network-tecnologies', component: () => import('pages/562/Index.vue')}
+      {path: 'network-technologies', component: () => import('src/pages/562/Index.vue')},
+      {path: 'booking', component: () => import('src/pages/562/Booking-form.vue')},
+      {path: 'review-request', component: () => import('src/pages/562/Review-request-form.vue')},
     ]
   },
   {

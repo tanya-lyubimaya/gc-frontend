@@ -5,47 +5,35 @@
         <div class="row" style="min-height: 100%; width: 80%; padding: 24px;">
           <div
             id="parent"
-            class="fit row wrap justify-center items-start content-start"
+            class="fit row wrap justify-center items-center content-start"
             style="overflow: hidden;"
           >
             <div class="col-10" style="overflow: auto; padding: 30px">
-              <q-card flat bordered style="margin-bottom: 30px">
-                <q-card-section class="bg-primary text-white">
-                  <div class="text-h6">
-                    Дистанционное выполнение лабораторных работ по сетевым
-                    технологиям
-                  </div>
-                  <div class="text-subtitle2">Доступ к онлайн-лаборатории</div>
-                </q-card-section>
-                <div style="padding: 3%">
-                  <q-card-section>
-                    <div style="overflow: auto; width: 40%">
-                      <q-input filled v-model="email" type="email">
-                        <template v-slot:before>
-                          <q-icon name="mail"
-                        /></template>
-                      </q-input>
-                    </div>
-                    <h6 class="text-h6">На сколько часов нужен доступ?</h6>
-                    <q-option-group
-                      v-model="hours"
-                      :options="hours_options"
-                      color="primary"
-                    />
-                  </q-card-section>
-                  <q-card-section>
-                    <div
-                      class="fit row wrap justify-center items-start content-start"
-                    >
-                      <q-btn
-                        label="Отправить"
-                        color="blue"
-                        @click="send(email, hours)"
-                      />
-                    </div>
-                  </q-card-section>
+              <q-table
+                title="Лабораторные работы"
+                :data="labs"
+                :columns="columns"
+                row-key="name"
+              />
+              <br />
+              <div
+                id="parent"
+                class="fit row wrap justify-center items-center content-start"
+                style="overflow: hidden;"
+              >
+                <q-btn
+                  label="Запросить проверку"
+                  color="blue"
+                  @click="openReviewRequestForm()"
+                />
+                <div class="offset-1">
+                  <q-btn
+                    label="Доступ к онлайн-лаборатории"
+                    color="blue"
+                    @click="openBookingForm()"
+                  />
                 </div>
-              </q-card>
+              </div>
             </div>
           </div>
         </div>
@@ -57,30 +45,51 @@
 export default {
   data() {
     return {
-      email: this.$q.sessionStorage.getItem("hse_email"),
-      hours: 1,
-      hours_options: [
+      email: 'defaultemail@edu.hse.ru',
+      labs: [],
+      columns: [
         {
-          label: '1',
-          value: '1'
-        },
-        {
-          label: '2',
-          value: '2'
-        },
-        {
-          label: '3',
-          value: '3'
-        },
-        {
-          label: '4',
-          value: '4'
+          name: 'Название работы',
+          required: true,
+          label: 'Название работы',
+          align: 'left',
+          field: row => row.name,
+          format: val => `${val}`,
+          sortable: true
         }
       ]
     };
   },
+  mounted() {
+    this.getLabs();
+  },
   methods: {
-    send(email, hours) {}
+    getLabs() {
+      this.$axios
+        .get('http://62.109.3.222:2222/labs', { withCredentials: false })
+        .then(res => {
+          const labs = res.data.labs;
+          for (let i of labs) {
+            this.labs.push({ name: i });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.$q.notify({
+            position: this.notificationsPos,
+            icon: 'warning',
+            type: 'negative',
+            multiLine: true,
+            message: 'Возникла ошибка при получении списка лабораторных работ!'
+          });
+        });
+    },
+    openReviewRequestForm() {
+       window.open('http://localhost:8080/#/review-request', "_self");
+    },
+    openBookingForm() {
+      window.open('http://localhost:8080/#/booking', "_self");
+    }
   }
 };
 </script>
