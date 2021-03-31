@@ -14,6 +14,7 @@ const routes = [
       {path: 'network-technologies', component: () => import('src/pages/562/Index.vue')},
       {path: 'booking', component: () => import('src/pages/562/Booking-form.vue')},
       {path: 'review-request', component: () => import('src/pages/562/Review-request-form.vue')},
+      {path: 'workbook-tasks', component: () => import('src/pages/590/Index.vue')},
     ]
   },
   {
@@ -21,6 +22,13 @@ const routes = [
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       {name: 'Login', path: '', component: () => import('pages/Login.vue')},
+    ]
+  },
+  {
+    path: '/global-error',
+    component: () => import('layouts/LoginLayout.vue'),
+    children: [
+      {name: 'GlobalError', path: '', component: () => import('pages/GlobalError.vue')},
     ]
   },
 

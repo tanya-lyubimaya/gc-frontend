@@ -140,6 +140,12 @@ const commonLinksData = [
     caption: "Доп. вопросы по лабам",
     icon: "question_answer",
     link: "solvers"
+  },
+  {
+    title: "Workbook",
+    caption: "Рабочие тетради по англ. языку",
+    icon: "menu_book",
+    link: "workbook-tasks"
   }
   // {
   //   title: 'Управление СКУД',
