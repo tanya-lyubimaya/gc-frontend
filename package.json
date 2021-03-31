@@ -10,13 +10,8 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
-=======
     "@quasar/extras": "^1.9.17",
-    "axios": "^0.18.1",
->>>>>>> 030f2f02310ff44bfa52ae391987c0b7e3c33030
     "core-js": "^3.6.5",
     "quasar": "^1.15.4"
   },
