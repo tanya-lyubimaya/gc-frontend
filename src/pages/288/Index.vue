@@ -144,8 +144,7 @@ export default {
     async init() {
       try {
         await this.getUserPreferences();
-      }
-      catch (e) {
+      } catch (e) {
         console.error(e);
         this.loading_error = true;
       }
@@ -153,7 +152,7 @@ export default {
     },
     async getUserPreferences() {
       const path =
-        "http://localhost:8000/api/v1/users/me/available-preferences";
+        `${process.env.EPI_API}/users/me/available-preferences`;
       const response = await this.$axios.get(path, {withCredentials: true});
       let preferences = response.data.preferences;
       let disciplines = {};
@@ -169,7 +168,7 @@ export default {
           this.disciplines_count++;
         }
         const kow_response = await this.$axios.get(
-          "http://localhost:8000/api/v1/users/me/preferences/discipline/" + d_oid + "/kow/" + kow_oid
+          `${process.env.EPI_API}/users/me/preferences/discipline/${d_oid}/kow/${kow_oid}`
         );
         disciplines[d_oid].kows.push({
           title: pref['ruz_kind_of_work'],
@@ -183,7 +182,7 @@ export default {
     },
     async updatePreference(d_oid, kow_oid, selected_platform, url) {
       const path =
-        "http://localhost:8000/api/v1/users/me/preferences/discipline/" + d_oid + "/kow/" + kow_oid
+        `${process.env.EPI_API}/api/v1/users/me/preferences/discipline/${d_oid}/kow/${kow_oid}`
       let preference = {
         platform: selected_platform,
         url: url,

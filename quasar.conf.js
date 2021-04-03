@@ -49,6 +49,13 @@ module.exports = function (/* ctx */) {
 
       publicPath: process.env.PUBLIC_PATH !== undefined ? process.env.PUBLIC_PATH : '/',
 
+      env: {
+        AUTH_API: process.env.AUTH_API ? process.env.AUTH_API : '/auth/api/v1',
+        EPI_API: process.env.EPI_API ? process.env.EPI_API : '/epi/api/v1',
+        WORKBOOK_API: process.env.WORKBOOK_API ? process.env.WORKBOOK_API : '/workbook',
+        GC_API: process.env.GC_API ? process.env.GC_API : '/gc/api/v1',
+      },
+
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)

@@ -14,7 +14,7 @@ export default boot(async ({app, router, Vue, redirect, urlPath}) => {
 
     try {
       const response = await axiosInstance
-        .get('/auth/api/v1/users/me', {withCredentials: true});
+        .get(`${process.env.AUTH_API}/users/me`, {withCredentials: true});
 
       if (response.status === 200 && response.data) {
         loggedIn = true;

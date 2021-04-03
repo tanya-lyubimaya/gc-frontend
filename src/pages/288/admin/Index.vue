@@ -138,7 +138,7 @@ export default {
         params['query'] = this.filter;
       }
 
-      const response = await this.$axios.get("/epi/api/v1/lecturers", {params: params})
+      const response = await this.$axios.get(`${process.env.EPI_API}/lecturers`, {params: params})
 
       const lecturers_list = response.data;
 
