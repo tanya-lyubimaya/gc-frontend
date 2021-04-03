@@ -1,5 +1,13 @@
 <template>
   <q-page padding>
+    <div class="q-pa-md q-gutter-md" v-if="tasks.length === 0">
+      <q-card class="q-pa-md text-center" flat bordered>
+        <q-card-section>
+          <div class="text-overline text-center"><q-icon name="info" class="text-grey" style="font-size: 4rem;" /></div>
+          <div class="text-h5 q-mt-sm q-mb-xs">Задания не найдены :(</div>
+        </q-card-section>
+      </q-card>
+    </div>
     <div class="q-pa-md row items-start q-gutter-md">
       <q-card class="my-card" v-for="task in tasks" :key="task.title">
         <q-card-section class="bg-primary text-white">

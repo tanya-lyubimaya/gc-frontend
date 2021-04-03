@@ -5,7 +5,11 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {path: '', component: () => import('pages/Index.vue')},
-      {path: 'online-platforms', component: () => import('pages/OnlinePlatforms.vue')},
+      {
+        path: 'online-platforms', component: () => import('pages/288/Index.vue')
+      },
+      {path: 'online-platforms/admin', component: () => import('pages/288/admin/Index.vue')},
+      {path: 'online-platforms/admin/lecturer/:email', component: () => import('pages/288/admin/Lecturer.vue')},
       {path: 'form-create', component: () => import('pages/588/CreateForm.vue')},
       {path: 'feedback', component: () => import('pages/588/Feedback.vue')},
       {path: 'diagrams-task/c/:c_id/t/:t_id', component: () => import('pages/misc/DiagramsRedirect')},
