@@ -90,7 +90,7 @@ export default {
           time_for: this.hours
         });
         this.$axios
-          .post('http://172.18.208.84:2222/requests/access', res, {
+          .post('172.18.208.84:2222/requests/access', res, {
             headers: {
               'Content-Type': 'application/json'
             }
