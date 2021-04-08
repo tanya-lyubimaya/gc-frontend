@@ -37,9 +37,9 @@ module.exports = function (/* ctx */) {
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
-      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
+      'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
 
@@ -48,6 +48,13 @@ module.exports = function (/* ctx */) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       publicPath: process.env.PUBLIC_PATH !== undefined ? process.env.PUBLIC_PATH : '/',
+
+      env: {
+        AUTH_API: process.env.AUTH_API ? process.env.AUTH_API : '/auth/api/v1',
+        EPI_API: process.env.EPI_API ? process.env.EPI_API : '/epi/api/v1',
+        WORKBOOK_API: process.env.WORKBOOK_API ? process.env.WORKBOOK_API : '/workbook',
+        GC_API: process.env.GC_API ? process.env.GC_API : '/gc/api/v1',
+      },
 
       // transpile: false,
 

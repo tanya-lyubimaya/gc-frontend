@@ -137,9 +137,21 @@ const commonLinksData = [
   },
   {
     title: "Решебники",
-    caption: "Доп. вопросы по лабам",
+    caption: "Доп. вопросы по лабораторным работам",
     icon: "question_answer",
     link: "solvers"
+  },
+  {
+    title: "Лабораторные работы по сетевым технологиям",
+    caption: "Мультивендорный эмуляторный комплекс для дистанционного выполнения лабораторных работ по сетевым технологиям",
+    icon: "today",
+    link: "network-technologies"
+  },
+  {
+    title: "Workbook",
+    caption: "Рабочие тетради по англ. языку",
+    icon: "menu_book",
+    link: "workbook-tasks"
   }
   // {
   //   title: 'Управление СКУД',

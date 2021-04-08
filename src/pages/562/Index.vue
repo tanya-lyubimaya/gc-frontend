@@ -45,7 +45,7 @@
 export default {
   data() {
     return {
-      email: 'defaultemail@edu.hse.ru',
+      email: this.$q.sessionStorage.getItem("hse_email"),
       labs: [],
       columns: [
         {
