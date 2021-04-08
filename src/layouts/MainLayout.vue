@@ -146,6 +146,12 @@ const commonLinksData = [
     caption: "Мультивендорный эмуляторный комплекс для дистанционного выполнения лабораторных работ по сетевым технологиям",
     icon: "today",
     link: "network-technologies"
+  },
+  {
+    title: "Workbook",
+    caption: "Рабочие тетради по англ. языку",
+    icon: "menu_book",
+    link: "workbook-tasks"
   }
   // {
   //   title: 'Управление СКУД',
