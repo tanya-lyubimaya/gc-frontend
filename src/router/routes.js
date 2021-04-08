@@ -18,7 +18,7 @@ const routes = [
       {path: 'network-technologies', component: () => import('src/pages/562/Index.vue')},
       {path: 'booking', component: () => import('src/pages/562/Booking-form.vue')},
       {path: 'review-request', component: () => import('src/pages/562/Review-request-form.vue')},
-      {path: 'workbook-tasks', component: () => import('src/pages/590/Index.vue')},
+      {path: 'workbook-tasks', component: () => import('src/pages/590/Index.vue')}
     ]
   },
   {
