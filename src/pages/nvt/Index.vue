@@ -218,7 +218,7 @@ export default {
   },
   computed: {
     taigaScoreTitle() {
-      if (!this.taiga_stats || !this.taiga_stats.score)
+      if (!this.taiga_stats || this.taiga_stats.score === undefined)
         return '';
 
       return this.getTitle(this.taiga_stats.score, ["баллов", "балл", "баллов"])
