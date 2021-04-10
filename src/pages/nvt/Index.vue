@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <div class="row justify-center" v-if="!loading && !loading_error">
-      <div class="col-md-6">
+      <div class="col col-md-6">
         <q-card>
           <q-img
             src="~assets/nvt-header-parallax.jpg"
