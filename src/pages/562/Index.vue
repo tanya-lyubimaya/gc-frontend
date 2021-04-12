@@ -85,10 +85,10 @@ export default {
         });
     },
     openReviewRequestForm() {
-       window.open('http://172.18.208.84:2222/#/review-request', "_self");
+       this.$router.push('/review-request', "_self");
     },
     openBookingForm() {
-      window.open('http://172.18.208.84:2222/#/booking', "_self");
+      this.$router.push('/booking', "_self");
     }
   }
 };
