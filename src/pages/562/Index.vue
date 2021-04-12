@@ -66,7 +66,7 @@ export default {
   methods: {
     getLabs() {
       this.$axios
-        .get('172.18.208.84:2222/labs', { withCredentials: false })
+        .get('http://172.18.208.84:2222/labs', { withCredentials: false })
         .then(res => {
           const labs = res.data.labs;
           for (let i of labs) {
@@ -85,10 +85,10 @@ export default {
         });
     },
     openReviewRequestForm() {
-       window.open('172.18.208.84:2222/#/review-request', "_self");
+       window.open('http://172.18.208.84:2222/#/review-request', "_self");
     },
     openBookingForm() {
-      window.open('172.18.208.84:2222/#/booking', "_self");
+      window.open('http://172.18.208.84:2222/#/booking', "_self");
     }
   }
 };

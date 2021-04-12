@@ -61,7 +61,8 @@ export default {
     return {
       email: this.$q.sessionStorage.getItem("hse_email"),
       hours: null,
-      jwt: this.$q.sessionStorage.getItem('auth_token'),
+      jwt:
+        'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoX2VtYWlsIjoidmtAdmsudmsiLCJuYW1lIjoiSm9obiBEb2UiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTE2MjM5MDIyfQ.jeVYC8Fe9LaFlc9DkMaLAtnh5pJ7Tkh-4AF46_TkTUZ_4HpMygLX7NYRHYl0muQLqEjGrUIHKvLIqul7Aikd3GojLA4uAyfvZUUwdD2m2qQlcVhRyUxmX7msHQnaK27qPW8M8IR4OBlJ8L44vqRO1rP70KxdayTXS61y6G4P_dinw105ZaJF3aNW5uz8PYBJoXKZDJt07ucZCtsqZGwpv6XNjnwHS-icQOysAbkyxg-gFXRlnDRBzpOrVfEWOHNjsNQeoD8IUFEGzf-0jeKXzOES3VuFXVqScYXj5W2_ZFTVG9slvfpWOFxJWiFUqdneh8RO-3p9fvpU5ubSPJ3Buw',
       hours_options: [
         {
           label: '1',
@@ -90,7 +91,7 @@ export default {
           time_for: this.hours
         });
         this.$axios
-          .post('172.18.208.84:2222/requests/access', res, {
+          .post('http://172.18.208.84:2222/requests/access', res, {
             headers: {
               'Content-Type': 'application/json'
             }
