@@ -51,7 +51,7 @@
               <q-expansion-item>
                 <template v-slot:header>
                   <q-item-section avatar>
-                    <q-avatar icon="videocam" color="grey" text-color="white"/>
+                    <q-avatar icon="videocam" color="primary" text-color="white"/>
                   </q-item-section>
 
                   <q-item-section>
@@ -61,11 +61,11 @@
                     </q-item-label>
                   </q-item-section>
 
-                  <q-item-section side>
-                    <q-chip square>
-                      <span class="text-subtitle">ожидается</span>
-                    </q-chip>
-                  </q-item-section>
+<!--                  <q-item-section side>-->
+<!--                    <q-chip square>-->
+<!--                      <span class="text-subtitle">ожидается</span>-->
+<!--                    </q-chip>-->
+<!--                  </q-item-section>-->
                 </template>
 
                 <q-card>
