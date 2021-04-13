@@ -71,12 +71,14 @@
                 <q-card>
                   <q-card-section>
                     <task-item
-                      title="ONVIF-1"
-                      description="Непрерывное и абсолютное движение, фокус"
-                      color="grey"
-                      custom_chip="ожидается"
-                      custom_icon="videocam"
-                    />
+                      v-for="c_id in ['322642694476', '322651639271']"
+                      :title="classroom_stats[c_id].title"
+                      :description="classroom_stats[c_id].description"
+                      :mark="classroom_stats[c_id].mark"
+                      :max_mark="classroom_stats[c_id].max_mark"
+                      :passed="classroom_stats[c_id].passed"
+                      type="classroom"
+                      :key="c_id"/>
                     <task-item
                       title="ONVIF-2"
                       description="Настройки изображения (Imaging)"
@@ -221,8 +223,13 @@ export default {
       if (!this.taiga_stats || this.taiga_stats.score === undefined)
         return '';
 
-      return this.getTitle(this.taiga_stats.score, ["баллов", "балл", "баллов"])
+      return this.getTitle(this.taiga_stats.score, ["балл", "балла", "баллов"])
     }
+  },
+  async beforeMount() {
+    // if (!["БИВ181", "БИВ182"].includes(this.$store.getters["auth/ruzGroup"])) {
+    //   // TODO: Redirect aliens to some error page or
+    // }
   },
   async mounted() {
     await this.init();
@@ -267,9 +274,13 @@ export default {
             title: "FFMPEG-4",
             description: "Синхронизация потоков с камеры и кодера",
           },
-          "297686484826": {
-            title: "Аппаратные интерфейсы",
-            description: "Бонусный тест по материалам лекции",
+          "322642694476": {
+            title: "ONVIF-1-1",
+            description: "PTZ — AbsoluteMove",
+          },
+          "322651639271": {
+            title: "ONVIF-1-2",
+            description: "PTZ — ContinuousMove",
           }
         }
         this.stats.classroom_tasks.forEach((task) => {
