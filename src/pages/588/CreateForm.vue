@@ -1,232 +1,301 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-header elevated>
-      <q-toolbar class="q-gutter-xs">
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
-
-        <q-toolbar-title>
-          Учебные сервисы МИЭМ
-        </q-toolbar-title>
-
-        <q-btn flat round dense icon="apps" class="q-mr-sm">
-          <q-menu :offset="[0, 20]" anchor="bottom middle" self="top middle">
-            <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup>
-                <q-item-section>New tab</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>New incognito tab</q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item clickable v-close-popup>
-                <q-item-section>Recent tabs</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>History</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>Downloads</q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item clickable v-close-popup>
-                <q-item-section>Settings</q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item clickable v-close-popup>
-                <q-item-section>Help &amp; Feedback</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-
-        <q-btn flat round dense icon="notifications" class="q-mr-xs" />
-
-        <div class="gt-sm m">
-          <q-chip>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-            </q-avatar>
-            Иван Иванов
-          </q-chip>
+  <q-page padding>
+    <div id="q-app">
+      <div class="flex flex-center column">
+        <div
+          class="row bg-grey-2"
+          style="min-height: 100%; width: 80%; padding: 24px;"
+        >
+          <div
+            id="parent"
+            class="fit row wrap justify-center items-start content-start"
+            style="overflow: hidden;"
+          >
+            <div class="col-6 bg-grey-2" style="overflow: auto; padding: 30px">
+              <q-card style="margin-bottom: 30px">
+                <q-card-section>
+                  <q-input
+                    filled
+                    v-model="formName"
+                    label="Новая форма *"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Введите название формы!'
+                    ]"
+                  ></q-input>
+                  <q-input
+                    v-model="desc"
+                    label="Описание"
+                    stack-label
+                  ></q-input>
+                </q-card-section>
+              </q-card>
+              <ul style="list-style-type:none; padding: 0">
+                <li v-for="(question, index) in questions" v-bind:key="index">
+                  <q-card style="margin-bottom: 30px">
+                    <q-card-section>
+                      <q-input
+                        filled
+                        v-model="question.question"
+                        label="Вопрос *"
+                        lazy-rules
+                        :rules="[
+                          val => (val && val.length > 0) || 'Введите вопрос!'
+                        ]"
+                      ></q-input>
+                      <q-select
+                        v-model="question.questionType"
+                        :options="questionTypes"
+                        label="Тип вопроса"
+                      />
+                      <div v-if="question.questionType === 'Один из списка'">
+                        <ul style="list-style-type:none; padding: 0">
+                          <li
+                            v-for="(input, i) in question.answers"
+                            v-bind:key="i"
+                          >
+                            <q-input
+                              v-model="input.value"
+                              placeholder="Вариант ответа"
+                              @focus="
+                                focusOnListElement(question.answers, i, index)
+                              "
+                              ><template v-slot:before>
+                                <q-icon
+                                  name="radio_button_unchecked"
+                                /> </template
+                              ><template v-slot:after>
+                                <div v-if="question.answers.length == 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    disable
+                                  />
+                                </div>
+                                <div v-if="question.answers.length > 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    @click="deleteInputRow(index, i)"
+                                  />
+                                </div> </template
+                            ></q-input>
+                          </li>
+                          <br />
+                          <div
+                            class="fit row wrap justify-start items-start content-start"
+                          ></div>
+                        </ul>
+                      </div>
+                      <div
+                        v-if="question.questionType === 'Несколько из списка'"
+                      >
+                        <ul style="list-style-type:none; padding: 0">
+                          <li
+                            v-for="(input, i) in question.answers"
+                            v-bind:key="i"
+                          >
+                            <q-input
+                              v-model="input.value"
+                              placeholder="Вариант ответа"
+                              @focus="
+                                focusOnListElement(question.answers, i, index)
+                              "
+                              ><template v-slot:before>
+                                <q-icon
+                                  name="check_box_outline_blank"
+                                /> </template
+                              ><template v-slot:after>
+                                <div v-if="question.answers.length == 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    disable
+                                  />
+                                </div>
+                                <div v-if="question.answers.length > 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    @click="deleteInputRow(index, i)"
+                                  />
+                                </div> </template
+                            ></q-input>
+                          </li>
+                          <br />
+                          <div
+                            class="fit row wrap justify-start items-start content-start"
+                          ></div>
+                        </ul>
+                      </div>
+                      <div
+                        v-if="question.questionType === 'Раскрывающийся список'"
+                      >
+                        <ul style="list-style-type:none; padding: 0">
+                          <li
+                            v-for="(input, i) in question.answers"
+                            v-bind:key="i"
+                          >
+                            <q-input
+                              v-model="input.value"
+                              placeholder="Вариант ответа"
+                              @focus="
+                                focusOnListElement(question.answers, i, index)
+                              "
+                              ><template v-slot:before> {{ i + 1 }} </template
+                              ><template v-slot:after>
+                                <div v-if="question.answers.length == 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    disable
+                                  />
+                                </div>
+                                <div v-if="question.answers.length > 1">
+                                  <q-btn
+                                    round
+                                    style="color: grey"
+                                    icon="close"
+                                    size="xs"
+                                    @click="deleteInputRow(index, i)"
+                                  />
+                                </div> </template
+                            ></q-input>
+                          </li>
+                          <br />
+                          <div
+                            class="fit row wrap justify-start items-start content-start"
+                          ></div>
+                        </ul>
+                      </div>
+                      <div v-if="question.questionType === 'Текст (строка)'">
+                        <br />
+                        <q-input
+                          filled
+                          v-model="text"
+                          placeholder="Краткий ответ"
+                          readonly
+                        />
+                      </div>
+                      <div v-if="question.questionType === 'Текст (абзац)'">
+                        <br />
+                        <q-input
+                          v-model="textarea"
+                          filled
+                          type="textarea"
+                          placeholder="Развёрнутый ответ"
+                          readonly
+                        />
+                      </div>
+                    </q-card-section>
+                    <q-card-section>
+                      <div
+                        class="fit row wrap justify-end items-start content-start"
+                      >
+                        <div v-if="questions.length == 1">
+                          <q-btn
+                            round
+                            style="color: grey"
+                            icon="delete_forever"
+                            size="s"
+                            disable
+                          />
+                        </div>
+                        <div v-if="questions.length > 1">
+                          <q-btn
+                            round
+                            style="color: grey"
+                            icon="delete_forever"
+                            size="s"
+                            @click="deleteQuestion(index)"
+                          />
+                        </div>
+                      </div>
+                    </q-card-section>
+                  </q-card>
+                </li>
+                <div class="row wrap justify-end items-start content-start">
+                  <q-btn
+                    round
+                    style="background: #FF0080; color: white"
+                    icon="add"
+                    @click="addQuestion"
+                  />
+                </div>
+              </ul>
+            </div>
+          </div>
+          <div class="fit row wrap justify-center items-start content-start">
+            <q-btn label="Сохранить" color="blue" @click="save" />
+          </div>
         </div>
-        <div class="lt-sm">
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-          </q-avatar>
-        </div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label header class="text-grey-8">
-          Сервисы
-        </q-item-label>
-        <EssentialLink
-          v-for="link in commonLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-      <q-separator />
-      <q-list>
-        <q-item-label header class="text-grey-8">
-          Помощь
-        </q-item-label>
-        <EssentialLink
-          v-for="link in supportLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-    <q-page-container>
-      <q-table
-        style="height: 400px"
-        title="Курсы"
-        :data="courses"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-      <q-table
-        style="height: 400px"
-        title="КИмы"
-        :data="cmms"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-      <q-table
-        style="height: 400px"
-        title="Тесты"
-        :data="tests"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-      <q-table
-        style="height: 400px"
-        title="Грейдеры"
-        :data="graders"
-        :columns="columns"
-        row-key="index"
-        virtual-scroll
-        :pagination.sync="pagination"
-        :rows-per-page-options="[0]"
-      />
-    </q-page-container>
-  </q-layout>
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink.vue";
-import axios from "axios";
-
-const commonLinksData = [
-  {
-    title: "Тесты",
-    caption: "Формы и всякое такое",
-    icon: "list",
-    link: "https://quasar.dev"
-  },
-  {
-    title: "Онлайн-занятия",
-    caption: "Выбор платформы для занятий",
-    icon: "today",
-    link: "https://github.com/quasarframework"
-  },
-  {
-    title: "CI/CD грейдеры",
-    caption: "Проверка решений студентов",
-    icon: "code",
-    link: "https://chat.quasar.dev"
-  },
-  {
-    title: "Управление СКУД",
-    caption: "Доступ в помещения МИЭМ",
-    icon: "room_preferences",
-    link: "https://forum.quasar.dev"
-  }
-];
-
-const supportLinksData = [
-  {
-    title: "Справка",
-    caption: "Как пользоваться сервисами",
-    icon: "help_center",
-    link: "https://awesome.quasar.dev"
-  },
-  {
-    title: "Поддержка",
-    caption: "Как пользоваться сервисами",
-    icon: "support",
-    link: "https://awesome.quasar.dev"
-  },
-  {
-    title: "Обновления",
-    caption: "Как пользоваться сервисами",
-    icon: "update",
-    link: "https://awesome.quasar.dev"
-  },
-  {
-    title: "О сервисе",
-    caption: "Как пользоваться сервисами",
-    icon: "info",
-    link: "https://awesome.quasar.dev"
-  }
-];
-
-const studentsLinksData = [];
-
 export default {
-  name: "MainLayout",
-  components: { EssentialLink },
   data() {
     return {
-      leftDrawerOpen: false,
-      commonLinks: commonLinksData,
-      supportLinks: supportLinksData,
-      studentsLinks: studentsLinksData,
-      courses: [],
-      cmms: [],
-      tests: [],
-      graders: []
+      formName: "",
+      desc: "",
+      questions: [
+        {
+          questionID: (new Date()).getTime(),
+          questionType: "Один из списка",
+          question: "",
+          answers: [{ value: "" }]
+        }
+      ],
+      questionTypes: [
+        "Один из списка",
+        "Несколько из списка",
+        "Раскрывающийся список",
+        "Текст (строка)",
+        "Текст (абзац)"
+      ],
+      text: "",
+      textarea: ""
     };
   },
-  beforeMount() {
-    this.getCourses();
+  mounted () {
+    this.id = this._uid
   },
   methods: {
-    getCourses() {
-      const path = "https://nvr.miem.hse.ru/lessons";
-      axios.get(path).then(
-        res => {
-          console.log(res);
-          //this.courses = res.data.courses;
-        },
-        error => {
-          console.error(error);
-        }
-      );
+    deleteInputRow(questionIndex, answerIndex) {
+      this.questions[questionIndex].answers.splice(answerIndex, 1);
+    },
+    focusOnListElement(array, indexOfAnswer, indexOfQuestion) {
+      if (array.length - indexOfAnswer == 1) {
+        this.questions[indexOfQuestion].answers.push({ value: "" });
+      }
+    },
+    addQuestion() {
+      this.questions.push({
+        questionID: (new Date()).getTime(),
+        questionType: "Один из списка",
+        question: "",
+        answers: [{ value: "" }]
+      });
+    },
+    deleteQuestion(index) {
+      this.questions.splice(index, 1);
+    },
+    save() {
+      console.log("Save");
+      console.log("Questions", this.questions);
     }
   }
 };

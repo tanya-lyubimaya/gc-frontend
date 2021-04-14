@@ -1,8 +1,11 @@
 <template>
-  <q-page class="flex flex-center">
-    <div class="text-h3">
-      Добро пожаловать!
+  <q-page class="row items-center">
+    <div class="col text-center">
+      <div class="text-h3">
+        Добро пожаловать!
+      </div>
     </div>
+
   </q-page>
 </template>
 

@@ -1,42 +1,73 @@
 import {boot} from 'quasar/wrappers'
-import {axiosInstance} from "boot/axios";
-import {SessionStorage} from "quasar";
+import {hasAuthToken, removeAuthToken} from "src/utils/auth";
 
-export default boot(async ({app, router, Vue, redirect, urlPath}) => {
+
+export default boot(async ({app, router, Vue, redirect, urlPath, store}) => {
   router.beforeEach(async (to, from, next) => {
-    let loggedIn = false;
 
-    try {
-      const response = await axiosInstance
-        .get('/auth/api/v1/users/me', {withCredentials: true});
+      if (to.meta.ignoreAuth) {
+        next();
+        return;
+      }
 
-      if (response.status === 200 && response.data) {
-        loggedIn = true;
+      if (hasAuthToken() && !store.state.user.loggedIn) {
 
+        console.debug("Not logged in but the token is present, trying to get info...")
+
+        // If the user is not logged in but has auth token
         try {
-          SessionStorage.set('full_name', response.data['name']['full_name']);
-          SessionStorage.set('hse_email', response.data['hse_email']);
-          SessionStorage.set('is_teacher', response.data['is_teacher']);
-          SessionStorage.set('is_student', response.data['is_student']);
-          SessionStorage.set('name_abbr', response.data['name']['first_name'][0] + response.data['name']['last_name'][0]);
+          // then we try to get his info
+          await store.dispatch('user/handleLogin');
         } catch (e) {
           console.error(e);
+          if (e.response) {
+            if (e.response.status >= 400 && e.response.status < 500) {
+              // removeAuthToken();
+              next({
+                name: 'Login'
+              });
+              return;
+            }
+            if (e.response.status >= 500) {
+              next({
+                name: 'GlobalError'
+              });
+              return;
+            }
+          }
+        }
+      }
+
+      if (store.state.user.loggedIn) {
+        if (to.meta.anonymousOnly) {
+          next('/');
+          return;
         }
 
+        if (to.meta && to.meta.roles) {
+          const hasRole = store.getters['user/dynamicRoles'].some(role => to.meta.roles.includes(role));
+          if ((hasRole ^ (to.meta.excludeRoles ? 1 : 0)) || to.meta.allowForUsers?.includes(store.state.user.data.id)) {
+            next();
+            return;
+          } else {
+            next(false);
+            return;
+          }
+        } else {
+          next();
+        }
+      } else {
+        console.debug("Not logged in")
+        if (!to.meta.anonymousOnly) {
+          // if (hasAuthToken())
+          //   removeAuthToken();
+          console.log('Redirecting to login');
+          next({name: 'Login'});
+          return;
+        }
+        console.debug("Anonymous page, ok...")
+        next();
       }
-    } catch (error) {
-      loggedIn = false;
     }
-    if (!loggedIn && to.name !== 'Login') {
-      next({
-        name: 'Login',
-        // TODO: Redirect back?
-        // query: {'redirect_url': encodeURIComponent(location.origin + (router.baseURL ? ) + (router.mode === "hash" ? '#' : '') + to.fullPath)}
-      })
-    } else if (loggedIn && to.name === 'Login') {
-      next({name: 'Index'})
-    } else {
-      next()
-    }
-  })
+  )
 })
