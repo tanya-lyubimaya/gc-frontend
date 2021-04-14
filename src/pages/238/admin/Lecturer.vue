@@ -140,21 +140,26 @@ export default {
       email: null,
       platforms: [
         {
-          label: 'Zoom',
-          value: 'ZOOM',
-        },
-        {
           label: 'Jitsi',
           value: 'JITSI',
+        },
+        {
+          label: 'Microsoft Teams',
+          value: 'MS_TEAMS',
+        },
+        {
+          label: 'Google Meet',
+          value: 'GOOGLE_MEET',
+        },
+        {
+          label: 'Zoom',
+          value: 'ZOOM',
         },
         /*        {
                   label: 'Своя ссылка',
                   value: 'CUSTOM',
                 },*/
-        {
-          label: 'Microsoft Teams',
-          value: 'MS_TEAMS',
-        },
+
       ]
     };
   },
