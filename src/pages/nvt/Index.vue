@@ -15,157 +15,155 @@
             <p/>
             К сожалению, пока что страница работает только для студентов.<br>Но скоро тут будет ссылка на общую таблицу!
           </q-card-section>
-          <q-card-section v-if="!lecturerView">
-            <q-list bordered class="rounded-borders fit">
-              <q-item-label header>Оценки за разделы курса</q-item-label>
-              <q-expansion-item>
-                <template v-slot:header>
-                  <q-item-section avatar>
-                    <q-avatar icon="movie_creation" color="primary" text-color="white"/>
-                  </q-item-section>
+          <q-list bordered class="rounded-borders fit" v-if="!lecturerView">
+            <q-item-label header>Оценки за разделы курса</q-item-label>
+            <q-expansion-item>
+              <template v-slot:header>
+                <q-item-section avatar>
+                  <q-avatar icon="movie_creation" color="primary" text-color="white"/>
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label lines="1">FFMPEG</q-item-label>
-                    <q-item-label caption lines="1">
-                      4 лабораторные работы по FFMPEG
-                    </q-item-label>
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label lines="1">FFMPEG</q-item-label>
+                  <q-item-label caption lines="1">
+                    4 лабораторные работы по FFMPEG
+                  </q-item-label>
+                </q-item-section>
 
-                  <!--                  <q-item-section side>
-                                      <q-chip square>
-                                        <q-avatar rounded color="orange" text-color="white">1</q-avatar>
-                                        балл
-                                      </q-chip>
-                                    </q-item-section>-->
-                </template>
+                <!--                  <q-item-section side>
+                                    <q-chip square>
+                                      <q-avatar rounded color="orange" text-color="white">1</q-avatar>
+                                      балл
+                                    </q-chip>
+                                  </q-item-section>-->
+              </template>
 
-                <q-card>
-                  <q-card-section>
-                    <task-item
-                      v-for="c_id in ['197226351637', '247095020119', '247096586404', '253730218145', '285725197154']"
-                      :title="classroom_stats[c_id].title"
-                      :description="classroom_stats[c_id].description"
-                      :mark="classroom_stats[c_id].mark"
-                      :max_mark="classroom_stats[c_id].max_mark"
-                      :passed="classroom_stats[c_id].passed"
-                      type="classroom"
-                      :key="c_id"/>
-                  </q-card-section>
-                </q-card>
-              </q-expansion-item>
-              <q-expansion-item>
-                <template v-slot:header>
-                  <q-item-section avatar>
-                    <q-avatar icon="videocam" color="primary" text-color="white"/>
-                  </q-item-section>
+              <q-card>
+                <q-card-section>
+                  <task-item
+                    v-for="c_id in ['197226351637', '247095020119', '247096586404', '253730218145', '285725197154']"
+                    :title="classroom_stats[c_id].title"
+                    :description="classroom_stats[c_id].description"
+                    :mark="classroom_stats[c_id].mark"
+                    :max_mark="classroom_stats[c_id].max_mark"
+                    :passed="classroom_stats[c_id].passed"
+                    type="classroom"
+                    :key="c_id"/>
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+            <q-expansion-item>
+              <template v-slot:header>
+                <q-item-section avatar>
+                  <q-avatar icon="videocam" color="primary" text-color="white"/>
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label lines="1">ONVIF</q-item-label>
-                    <q-item-label caption lines="1">
-                      3 лабораторные работы по ONVIF
-                    </q-item-label>
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label lines="1">ONVIF</q-item-label>
+                  <q-item-label caption lines="1">
+                    3 лабораторные работы по ONVIF
+                  </q-item-label>
+                </q-item-section>
 
-                  <!--                  <q-item-section side>-->
-                  <!--                    <q-chip square>-->
-                  <!--                      <span class="text-subtitle">ожидается</span>-->
-                  <!--                    </q-chip>-->
-                  <!--                  </q-item-section>-->
-                </template>
+                <!--                  <q-item-section side>-->
+                <!--                    <q-chip square>-->
+                <!--                      <span class="text-subtitle">ожидается</span>-->
+                <!--                    </q-chip>-->
+                <!--                  </q-item-section>-->
+              </template>
 
-                <q-card>
-                  <q-card-section>
-                    <task-item
-                      v-for="c_id in ['322642694476', '322651639271']"
-                      :title="classroom_stats[c_id].title"
-                      :description="classroom_stats[c_id].description"
-                      :mark="classroom_stats[c_id].mark"
-                      :max_mark="classroom_stats[c_id].max_mark"
-                      :passed="classroom_stats[c_id].passed"
-                      type="classroom"
-                      :key="c_id"/>
-                    <task-item
-                      title="ONVIF-2"
-                      description="Настройки изображения (Imaging)"
-                      color="grey"
-                      custom_chip="ожидается"
-                      custom_icon="videocam"
-                    />
-                    <task-item
-                      title="ONVIF-3"
-                      description="Вход/выход сигнализации и веселье"
-                      color="grey"
-                      custom_chip="ожидается"
-                      custom_icon="videocam"
-                    />
-                  </q-card-section>
-                </q-card>
-              </q-expansion-item>
-              <q-expansion-item>
-                <template v-slot:header>
-                  <q-item-section avatar>
-                    <q-avatar icon="work" color="orange" text-color="white"/>
-                  </q-item-section>
+              <q-card>
+                <q-card-section>
+                  <task-item
+                    v-for="c_id in ['322642694476', '322651639271']"
+                    :title="classroom_stats[c_id].title"
+                    :description="classroom_stats[c_id].description"
+                    :mark="classroom_stats[c_id].mark"
+                    :max_mark="classroom_stats[c_id].max_mark"
+                    :passed="classroom_stats[c_id].passed"
+                    type="classroom"
+                    :key="c_id"/>
+                  <task-item
+                    title="ONVIF-2"
+                    description="Настройки изображения (Imaging)"
+                    color="grey"
+                    custom_chip="ожидается"
+                    custom_icon="videocam"
+                  />
+                  <task-item
+                    title="ONVIF-3"
+                    description="Вход/выход сигнализации и веселье"
+                    color="grey"
+                    custom_chip="ожидается"
+                    custom_icon="videocam"
+                  />
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+            <q-expansion-item>
+              <template v-slot:header>
+                <q-item-section avatar>
+                  <q-avatar icon="work" color="orange" text-color="white"/>
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label lines="1">Треки</q-item-label>
-                    <q-item-label caption lines="1">
-                      Задания из треков
-                    </q-item-label>
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label lines="1">Треки</q-item-label>
+                  <q-item-label caption lines="1">
+                    Задания из треков
+                  </q-item-label>
+                </q-item-section>
 
-                  <q-item-section side>
-                    <q-chip square>
-                      <span class="text-subtitle">{{ taiga_stats.score }} {{ taigaScoreTitle }}</span>
-                    </q-chip>
-                  </q-item-section>
-                </template>
+                <q-item-section side>
+                  <q-chip square>
+                    <span class="text-subtitle">{{ taiga_stats.score }} {{ taigaScoreTitle }}</span>
+                  </q-chip>
+                </q-item-section>
+              </template>
 
-                <q-card>
-                  <q-card-section>
-                    <task-item
-                      title="Академический трек"
-                      description="Углубленные задания"
-                      type="taiga"
-                      :mark="taiga_stats.academic_score"
-                      custom_icon="assignment"
-                    />
-                    <task-item
-                      title="Прикладной трек"
-                      description="Актуальные профильные задачи"
-                      type="taiga"
-                      :mark="taiga_stats.application_score"
-                      custom_icon="construction"
-                    />
-                    <task-item
-                      title="Исследовательский трек"
-                      description="Научно-исследовательская работа"
-                      type="taiga"
-                      :mark="taiga_stats.research_score"
-                      custom_icon="library_books"
-                    />
-                    <task-item
-                      title="Эксплуатационный трек"
-                      description="Работа в медиацентре"
-                      type="taiga"
-                      :mark="taiga_stats.operational_score"
-                      custom_icon="camera_indoor"
-                    />
-                  </q-card-section>
-                </q-card>
-              </q-expansion-item>
-              <task-item
-                title="Итоговое задание"
-                description="Итоговое задание по курсу"
-                type="final_task"
-                color="grey"
-                custom_chip="ожидается"
-                custom_icon="assignment_ind"
-              />
-              <!--              <q-separator/>-->
+              <q-card>
+                <q-card-section>
+                  <task-item
+                    title="Академический трек"
+                    description="Углубленные задания"
+                    type="taiga"
+                    :mark="taiga_stats.academic_score"
+                    custom_icon="assignment"
+                  />
+                  <task-item
+                    title="Прикладной трек"
+                    description="Актуальные профильные задачи"
+                    type="taiga"
+                    :mark="taiga_stats.application_score"
+                    custom_icon="construction"
+                  />
+                  <task-item
+                    title="Исследовательский трек"
+                    description="Научно-исследовательская работа"
+                    type="taiga"
+                    :mark="taiga_stats.research_score"
+                    custom_icon="library_books"
+                  />
+                  <task-item
+                    title="Эксплуатационный трек"
+                    description="Работа в медиацентре"
+                    type="taiga"
+                    :mark="taiga_stats.operational_score"
+                    custom_icon="camera_indoor"
+                  />
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+            <task-item
+              title="Итоговое задание"
+              description="Итоговое задание по курсу"
+              type="final_task"
+              color="grey"
+              custom_chip="ожидается"
+              custom_icon="assignment_ind"
+            />
+            <!--              <q-separator/>-->
 
-            </q-list>
-          </q-card-section>
+          </q-list>
         </q-card>
       </div>
     </div>

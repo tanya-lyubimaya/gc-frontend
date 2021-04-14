@@ -7,7 +7,7 @@
 
     <q-item-section>
       <q-item-label lines="1">{{ title }}</q-item-label>
-      <q-item-label caption lines="1">
+      <q-item-label caption lines="2">
         {{ description }}
       </q-item-label>
     </q-item-section>
@@ -16,7 +16,7 @@
       <q-chip square>
         <span class="text-subtitle" v-if="(type === 'classroom') && passed && !custom_chip">{{ mark }}/{{ max_mark }}</span>
         <span class="text-subtitle" v-if="(type === 'classroom') && !passed && !custom_chip">не сдано</span>
-        <span class="text-subtitle" v-if="(type === 'taiga') && !custom_chip">{{ mark }} {{ markTitle }}</span>
+        <span class="text-subtitle" v-if="(type === 'taiga') && !custom_chip">{{ mark }} <span class="gt-sm">{{ markTitle }}</span></span>
         <span class="text-subtitle" v-if="custom_chip">{{ custom_chip }}</span>
       </q-chip>
     </q-item-section>

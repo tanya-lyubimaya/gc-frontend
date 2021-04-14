@@ -94,6 +94,7 @@ const routes = [
         component: () => import('src/pages/nvt/Index.vue'),
         meta: {
           roles: ["COURSE_NVT", "DEVELOPER", "SUPER_ADMIN"],
+          allowForRuzGroups: ["БИВ181", "БИВ182"],
           allowForUsers: ["60759b050928a277deb73715"]
         }
       },

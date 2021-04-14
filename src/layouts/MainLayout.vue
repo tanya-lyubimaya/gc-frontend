@@ -178,6 +178,7 @@ const commonLinksData = [
     caption: "Оценки за дисциплину",
     icon: "grade",
     link: "/nvt",
+    allowForRuzGroups: ["БИВ181", "БИВ182"],
     roles: ["DEVELOPER", "SUPER_ADMIN"],
     allowForUsers: ["60759b050928a277deb73715"]
   }
@@ -265,6 +266,9 @@ export default {
     checkHasLinkRole(link) {
       if (link.roles) {
         if (link.allowForUsers?.includes(this.$store.state.user?.data?.id)) {
+          return true;
+        }
+        if (link.allowForRuzGroups?.includes(this.$store.getters["user/ruzGroup"])) {
           return true;
         }
         return checkHasRole(this.$store.getters["user/dynamicRoles"], link.roles, link.excludeRoles);
