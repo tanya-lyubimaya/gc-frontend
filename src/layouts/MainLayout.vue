@@ -179,8 +179,7 @@ const commonLinksData = [
     icon: "grade",
     link: "/nvt",
     allowForRuzGroups: ["БИВ181", "БИВ182"],
-    roles: ["DEVELOPER", "SUPER_ADMIN"],
-    allowForUsers: ["60759b050928a277deb73715"]
+    roles: ["DEVELOPER", "SUPER_ADMIN", "COURSE_NVT"]
   }
   // {
   //   title: 'Управление СКУД',
