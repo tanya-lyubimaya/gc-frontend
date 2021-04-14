@@ -50,10 +50,13 @@ module.exports = function (/* ctx */) {
       publicPath: process.env.PUBLIC_PATH !== undefined ? process.env.PUBLIC_PATH : '/',
 
       env: {
+        API_BASE: process.env.AUTH_API ? process.env.API_BASE : '',
+        PROXY_API: process.env.PROXY_API ? process.env.PROXY_API : false,
         AUTH_API: process.env.AUTH_API ? process.env.AUTH_API : '/auth/api/v1',
         EPI_API: process.env.EPI_API ? process.env.EPI_API : '/epi/api/v1',
         WORKBOOK_API: process.env.WORKBOOK_API ? process.env.WORKBOOK_API : '/workbook',
         GC_API: process.env.GC_API ? process.env.GC_API : '/gc/api/v1',
+        NVT_STATS_API: process.env.NVT_STATS_API ? process.env.NVT_STATS_API : '/nvt-stats-api',
       },
 
       // transpile: false,
@@ -87,7 +90,26 @@ module.exports = function (/* ctx */) {
     devServer: {
       https: false,
       port: 8080,
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically
+      proxy: process.env.PROXY_API ? {
+        // proxy all requests starting with /api to jsonplaceholder
+        '/auth': {
+          target: process.env.API_BASE ? process.env.API_BASE : '',
+          changeOrigin: true,
+        },
+        '/epi': {
+          target: process.env.API_BASE ? process.env.API_BASE : '',
+          changeOrigin: true,
+        },
+        '/nvt-stats-api': {
+          target: process.env.API_BASE ? process.env.API_BASE : '',
+          changeOrigin: true,
+        },
+        '/workbook': {
+          target: process.env.API_BASE ? process.env.API_BASE : '',
+          changeOrigin: true,
+        },
+      } : undefined
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -113,7 +135,7 @@ module.exports = function (/* ctx */) {
         'Cookies',
         'Notify',
         'Loading',
-        'SessionStorage'
+        'LocalStorage'
       ]
     },
 

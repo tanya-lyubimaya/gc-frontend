@@ -3,7 +3,9 @@
     <div class="q-pa-md q-gutter-md" v-if="tasks.length === 0">
       <q-card class="q-pa-md text-center" flat bordered>
         <q-card-section>
-          <div class="text-overline text-center"><q-icon name="info" class="text-grey" style="font-size: 4rem;" /></div>
+          <div class="text-overline text-center">
+            <q-icon name="info" class="text-grey" style="font-size: 4rem;"/>
+          </div>
           <div class="text-h5 q-mt-sm q-mb-xs">Задания не найдены :(</div>
         </q-card-section>
       </q-card>
@@ -42,7 +44,7 @@ export default {
   methods: {
     getUserTasks() {
       const path =
-        "/workbook/user/" + this.$q.sessionStorage.getItem('google_email') + "/tasks";
+        "/workbook/user/" + this.$store.getters["user/userGoogleEmail"] + "/tasks";
       this.$axios.get(path, {withCredentials: true}).then(
         (res) => {
           this.tasks = res.data;

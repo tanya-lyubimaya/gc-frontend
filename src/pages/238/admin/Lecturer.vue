@@ -69,17 +69,18 @@
               <div class="text-h5 q-mt-sm q-mb-xs">Онлайн-занятия не найдены</div>
               <p/>
               <div v-if="disciplines_count > 0">
-              Для того, чтобы онлайн-занятие распозналось сервисом, необходимо поставить для него
-              ссылку вида
-              <pre>https://online.miem.hse.ru/123</pre>
-              <br>
-              Изменения, внесенные в РУЗ, будут получены сервисом в течение часа.<br>
+                Для того, чтобы онлайн-занятие распозналось сервисом, необходимо поставить для него
+                ссылку вида
+                <pre>https://online.miem.hse.ru/123</pre>
+                <br>
+                Изменения, внесенные в РУЗ, будут получены сервисом в течение часа.<br>
               </div>
             </q-card-section>
           </q-card>
         </div>
       </div>
     </div>
+    <q-separator v-if="disciplines_count > 0 && !loading && !loading_error"/>
     <div class="q-pa-md row items-start q-gutter-md" v-if="disciplines_count > 0 && !loading && !loading_error">
       <q-card class="my-card" v-for="discipline in disciplines" :key="discipline.oid">
         <q-card-section class="bg-primary text-white">
@@ -169,16 +170,17 @@ export default {
     async init() {
       try {
         await this.getUserPreferences();
-      }
-      catch (e) {
+      } catch (e) {
         console.error(e);
-        this.loading_error = true;
+        if (!(e.response && e.response.status === 404)) {
+          this.loading_error = true;
+        }
       }
       this.loading = false;
     },
     async getUserPreferences() {
       const path =
-        `${process.env.EPI_API}/users/${this.email}/available-preferences`;
+        `${process.env.EPI_API}/preferences/users/${this.email}/available-preferences`;
       const response = await this.$axios.get(path, {withCredentials: true});
       let preferences = response.data.preferences;
       let disciplines = {};
@@ -194,7 +196,7 @@ export default {
           this.disciplines_count++;
         }
         const kow_response = await this.$axios.get(
-          `${process.env.EPI_API}/users/${this.email}/preferences/discipline/${d_oid}/kow/${kow_oid}`
+          `${process.env.EPI_API}/preferences/users/${this.email}/preferences/discipline/${d_oid}/kow/${kow_oid}`
         );
         disciplines[d_oid].kows.push({
           title: pref['ruz_kind_of_work'],
@@ -208,7 +210,7 @@ export default {
     },
     async updatePreference(d_oid, kow_oid, selected_platform, url) {
       const path =
-        `${process.env.EPI_API}/users/me/preferences/discipline/${d_oid}/kow/${kow_oid}`
+        `${process.env.EPI_API}/preferences/users/me/preferences/discipline/${d_oid}/kow/${kow_oid}`
       let preference = {
         platform: selected_platform,
         url: url,

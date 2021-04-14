@@ -1,14 +1,14 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated>
-      <q-toolbar class="q-gutter-xs">
+      <q-toolbar>
         <q-btn
           flat
           dense
           round
           icon="menu"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="leftDrawerOpened = !leftDrawerOpened"
         />
 
         <q-toolbar-title class="gt-sm">
@@ -16,50 +16,37 @@
           <q-badge align="top">&beta;</q-badge>
         </q-toolbar-title>
 
-        <q-space />
+        <q-space/>
 
-        <!--
-        <q-btn flat round dense icon="apps" class="q-mr-sm">
-          <q-menu
-            :offset="[0, 20]"
-            anchor="bottom middle"
-            self="top middle"
-          >
-            <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup>
-                <q-item-section>New tab</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>New incognito tab</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-close-popup>
-                <q-item-section>Recent tabs</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>History</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>Downloads</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-close-popup>
-                <q-item-section>Settings</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-close-popup>
-                <q-item-section>Help &amp; Feedback</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
--->
-        <q-btn flat round dense icon="notifications" class="q-mr-xs" />
+        <q-btn flat round dense icon="notifications" class="q-mr-xs"/>
 
-        <div>
-          <q-avatar color="pink" text-color="white">{{ name_abbr }}</q-avatar>
+        <div v-if="false" class="gt-sm">
+          <q-btn round flat>
+            <q-avatar v-if="!thumbnailPhotoUrl" color="pink" text-color="white">{{ nameAbbr }}</q-avatar>
+            <q-avatar v-else><img alt="Аватарка" :src="thumbnailPhotoUrl"/></q-avatar>
+            <q-menu>
+              <div style="min-width: 300px" class="q-pa-xs">
+                <div class="row items-center q-pa-md">
+                  <q-img src="~assets/material.png" style="height: 150px">
+                    <div class="absolute-bottom bg-transparent">
+                      <q-avatar size="56px" class="q-mb-sm">
+                        <img src="https://ssl.gstatic.com/s2/profiles/images/silhouette200.png">
+                      </q-avatar>
+                      <div class="text-weight-bold">{{ fullName }}</div>
+                      <div>{{ isLecturer ? ruzDepartment : ruzGroup }}</div>
+                    </div>
+                  </q-img>
+                  <q-btn
+                    color="primary"
+                    label="Выйти"
+                    size="sm"
+                    v-close-popup
+                  />
+                </div>
+              </div>
+            </q-menu>
+          </q-btn>
         </div>
-
         <q-btn
           flat
           round
@@ -69,25 +56,41 @@
           v-if="$router.currentRoute.name !== 'Login'"
           class="q-ml-sm"
         />
+
       </q-toolbar>
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      v-model="leftDrawerOpened"
       show-if-above
       bordered
       content-class="bg-grey-1"
     >
-      <q-list>
+      <q-img src="~assets/material.png" style="height: 150px">
+        <div class="absolute-bottom bg-transparent">
+          <q-avatar size="56px" class="q-mb-sm">
+            <img src="https://ssl.gstatic.com/s2/profiles/images/silhouette200.png">
+          </q-avatar>
+          <div class="text-weight-bold">{{ fullName }}</div>
+          <div>{{ isLecturer ? ruzDepartment : ruzGroup }}</div>
+        </div>
+      </q-img>
+      <q-list padding>
         <q-item-label header class="text-grey-8">
           Сервисы
         </q-item-label>
+        <EssentialLink
+          title="Главная"
+          icon="home"
+          link="/"
+          exact
+        />
         <EssentialLink
           v-for="link in commonLinks"
           :key="link.title"
           v-bind="link"
         />
-        <q-separator />
+        <q-separator/>
         <q-list>
           <q-item-label header class="text-grey-8">
             Помощь
@@ -99,59 +102,84 @@
           />
         </q-list>
       </q-list>
+
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import EssentialLink from "components/EssentialLink.vue";
+import {checkHasRole} from "src/utils/roles";
 
 const commonLinksData = [
+  // {
+  //   title: "Главная",
+  //   icon: "home",
+  //   link: "/",
+  //   exact: true
+  // },
   {
-    title: "Главная",
-    icon: "home",
-    link: "/",
-    exact: true
-  },
-  {
-    title: "Онлайн-занятия",
+    title: "Онлайн-пары",
     caption: "Выбор платформы для занятий",
     icon: "today",
-    link: "online-platforms"
+    link: "/online-platforms",
+    exact: true,
+    roles: ["LECTURER", "OFFICE", "SUPER_ADMIN", "DEVELOPER"],
+  }, {
+    title: "Управление онлайн-парами",
+    caption: "Сервис для учебного офиса",
+    icon: "event_note",
+    link: "/online-platforms/admin",
+    roles: ["OFFICE", "SUPER_ADMIN", "DEVELOPER"],
+    allowForUsers: ["60759b050928a277deb73715"]
   },
   {
     title: "Тесты",
     caption: "Формы и всякое такое",
     icon: "list",
-    link: "form-create"
+    link: "/form-create",
+    roles: ["DEVELOPER", "SUPER_ADMIN"],
   },
   {
     title: "CI/CD грейдеры",
     caption: "Проверка решений студентов",
     icon: "code",
-    link: "ci-cd"
+    link: "/ci-cd",
+    roles: ["DEVELOPER", "SUPER_ADMIN"],
   },
   {
     title: "Решебники",
     caption: "Доп. вопросы по лабораторным работам",
     icon: "question_answer",
-    link: "solvers"
+    link: "/solvers",
+    roles: ["DEVELOPER", "SUPER_ADMIN"],
   },
   {
     title: "Лабораторные работы по сетевым технологиям",
     caption: "Мультивендорный эмуляторный комплекс для дистанционного выполнения лабораторных работ по сетевым технологиям",
     icon: "today",
-    link: "network-technologies"
+    link: "/network-technologies",
+    roles: ["DEVELOPER", "SUPER_ADMIN"],
   },
   {
     title: "Workbook",
     caption: "Рабочие тетради по англ. языку",
     icon: "menu_book",
-    link: "workbook-tasks"
+    link: "/workbook-tasks",
+    roles: ["DEVELOPER", "SUPER_ADMIN"],
+    allowForUsers: ["60759b050928a277deb73715"]
+  },
+  {
+    title: "Сетевые видеотехнологии",
+    caption: "Оценки за дисциплину",
+    icon: "grade",
+    link: "/nvt",
+    roles: ["DEVELOPER", "SUPER_ADMIN"],
+    allowForUsers: ["60759b050928a277deb73715"]
   }
   // {
   //   title: 'Управление СКУД',
@@ -192,40 +220,66 @@ const studentsLinksData = [];
 
 export default {
   name: "MainLayout",
-  components: { EssentialLink },
+  components: {EssentialLink},
   data() {
     return {
-      leftDrawerOpen: false,
-      commonLinks: commonLinksData,
-      supportLinks: supportLinksData,
+      leftDrawerOpened: false,
       studentsLinks: studentsLinksData
     };
   },
   mounted() {
-    if (this.$q.sessionStorage.getItem("is_teacher")) {
+    if (this.$store.getters["user/isLecturer"]) {
       this.commonLinks[1].visible = true;
     }
   },
   computed: {
-    name_abbr() {
-      return this.$q.sessionStorage.getItem("name_abbr");
+    commonLinks() {
+      return commonLinksData.filter(this.checkHasLinkRole, this);
     },
-    full_name() {
-      return this.$q.sessionStorage.getItem("full_name");
+    supportLinks() {
+      return supportLinksData.filter(this.checkHasLinkRole, this);
     },
-    is_student() {
-      return this.$q.sessionStorage.getItem("is_student");
+    nameAbbr() {
+      return this.$store.getters["user/userNameAbbr"];
     },
-    is_teacher() {
-      return this.$q.sessionStorage.getItem("is_teacher");
+    fullName() {
+      return this.$store.getters["user/userFullName"];
+    },
+    isStudent() {
+      return this.$store.getters["user/isStudent"];
+    },
+    isLecturer() {
+      return this.$store.getters["user/isLecturer"];
+    },
+    thumbnailPhotoUrl() {
+      return this.$store.getters["user/thumbnailPhotoUrl"];
+    },
+    ruzDepartment() {
+      return this.$store.getters["user/ruzDepartment"];
+    },
+    ruzGroup() {
+      return this.$store.getters["user/ruzGroup"];
     }
   },
   methods: {
+    checkHasLinkRole(link) {
+      if (link.roles) {
+        if (link.allowForUsers?.includes(this.$store.state.user?.data?.id)) {
+          return true;
+        }
+        return checkHasRole(this.$store.getters["user/dynamicRoles"], link.roles, link.excludeRoles);
+      }
+      return true;
+    },
+    // toggleLeftDrawer() {
+    //   this.leftDrawerOpened = !this.leftDrawerOpened;
+    //   this.$q.localStorage.set('left_drawer_opened', this.leftDrawerOpened);
+    // },
     logout() {
       this.$axios
-        .post("/auth/logout", { logout: true }, { withCredentials: true })
+        .post("/auth/logout", {logout: true}, {withCredentials: true})
         .then(res => {
-          this.$router.push({ name: "Login" });
+          this.$router.push({name: "Login"});
         })
         .catch(err => {
           this.$q.notify({

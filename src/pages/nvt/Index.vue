@@ -10,7 +10,12 @@
               Сетевые видеотехнологии
             </div>
           </q-img>
-          <q-card-section>
+          <q-card-section v-if="lecturerView" class="text-center">
+            <q-icon name="sentiment_very_dissatisfied" size="4em" color="grey"/>
+            <p/>
+            К сожалению, пока что страница работает только для студентов.<br>Но скоро тут будет ссылка на общую таблицу!
+          </q-card-section>
+          <q-card-section v-if="!lecturerView">
             <q-list bordered class="rounded-borders fit">
               <q-item-label header>Оценки за разделы курса</q-item-label>
               <q-expansion-item>
@@ -61,11 +66,11 @@
                     </q-item-label>
                   </q-item-section>
 
-<!--                  <q-item-section side>-->
-<!--                    <q-chip square>-->
-<!--                      <span class="text-subtitle">ожидается</span>-->
-<!--                    </q-chip>-->
-<!--                  </q-item-section>-->
+                  <!--                  <q-item-section side>-->
+                  <!--                    <q-chip square>-->
+                  <!--                      <span class="text-subtitle">ожидается</span>-->
+                  <!--                    </q-chip>-->
+                  <!--                  </q-item-section>-->
                 </template>
 
                 <q-card>
@@ -157,7 +162,7 @@
                 custom_chip="ожидается"
                 custom_icon="assignment_ind"
               />
-<!--              <q-separator/>-->
+              <!--              <q-separator/>-->
 
             </q-list>
           </q-card-section>
@@ -224,6 +229,9 @@ export default {
         return '';
 
       return this.getTitle(this.taiga_stats.score, ["балл", "балла", "баллов"])
+    },
+    lecturerView() {
+      return this.$store.getters["user/isLecturer"];
     }
   },
   async beforeMount() {
@@ -236,19 +244,18 @@ export default {
   },
   methods: {
     async init() {
-      await this.getStats();
-      setTimeout(() => {
-        this.loading = false;
-      }, 2000)
+      if (!this.lecturerView)
+        await this.getStats();
+      this.loading = false;
     },
     getTitle(number, titles) {
       const cases = [2, 0, 1, 1, 1, 2];
       return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
     },
     async getStats() {
-      const endpoint = "https://constructor.auditory.ru/nvt-stats-api/user";
+      const endpoint = `${process.env.NVT_STATS_API}/user`;
       const params = {
-        email: this.$q.sessionStorage.getItem('google_email')
+        email: this.$store.getters["user/userGoogleEmail"]
       }
       try {
         let res = await this.$axios.get(endpoint, {params: params});
