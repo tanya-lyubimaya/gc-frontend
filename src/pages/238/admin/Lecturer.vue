@@ -210,7 +210,7 @@ export default {
     },
     async updatePreference(d_oid, kow_oid, selected_platform, url) {
       const path =
-        `${process.env.EPI_API}/preferences/users/me/preferences/discipline/${d_oid}/kow/${kow_oid}`
+        `${process.env.EPI_API}/preferences/users/${this.email}/preferences/discipline/${d_oid}/kow/${kow_oid}`
       let preference = {
         platform: selected_platform,
         url: url,
