@@ -70,7 +70,7 @@ export default {
         rejectUnauthorized: false
       });
       this.$axios
-        .get("http://172.18.208.84:2222/labs", {
+        .get("https://172.18.208.84:2222/labs", {
           withCredentials: false,
           httpsAgent: agent
         })
