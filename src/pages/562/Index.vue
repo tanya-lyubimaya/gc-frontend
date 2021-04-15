@@ -42,6 +42,7 @@
   </q-page>
 </template>
 <script>
+import https from "https";
 export default {
   data() {
     return {
@@ -65,7 +66,6 @@ export default {
   },
   methods: {
     getLabs() {
-      import https from "https";
       const agent = new https.Agent({
         rejectUnauthorized: false
       });
