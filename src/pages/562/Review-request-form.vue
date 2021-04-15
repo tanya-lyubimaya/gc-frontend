@@ -62,7 +62,7 @@ import https from "https";
 export default {
   data() {
     return {
-      email: this.$q.sessionStorage.getItem("hse_email"),
+      email: this.$store.getters["user/userHSEEmail"],
       lab: null,
       labs: [],
       jwt:
@@ -78,7 +78,7 @@ export default {
         rejectUnauthorized: false
       });
       this.$axios
-        .get("https://172.18.208.84:2222/labs", { httpsAgent: agent })
+        .get("https://172.18.208.84:22222/labs", { httpsAgent: agent })
         .then(res => {
           this.labs = res.data.labs;
         })
@@ -102,7 +102,7 @@ export default {
         task_name: this.lab
       });
       this.$axios
-        .post("https://172.18.208.84:2222/requests/grade", res, {
+        .post("https://172.18.208.84:22222/requests/grade", res, {
           headers: {
             "Content-Type": "application/json"
           },

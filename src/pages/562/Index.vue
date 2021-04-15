@@ -46,7 +46,7 @@ import https from "https";
 export default {
   data() {
     return {
-      email: this.$q.sessionStorage.getItem("hse_email"),
+      email: this.$store.getters["user/userHSEEmail"],
       labs: [],
       columns: [
         {
@@ -70,7 +70,7 @@ export default {
         rejectUnauthorized: false
       });
       this.$axios
-        .get("https://172.18.208.84:2222/labs", {
+        .get("https://172.18.208.84:22222/labs", {
           withCredentials: false,
           httpsAgent: agent
         })
