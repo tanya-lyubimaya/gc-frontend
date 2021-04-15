@@ -1,5 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
+import https from "https";
 
 const axiosInstance = axios.create({
   withCredentials: true,
