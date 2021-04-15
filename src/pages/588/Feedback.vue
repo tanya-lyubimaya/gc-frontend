@@ -14,7 +14,8 @@
                   <div class="text-h6">Обратная связь</div>
                   <div class="text-subtitle2">Оставьте нам сообщение</div>
                 </q-card-section>
-                <div style="overflow: auto; width: 40%">
+                <div style="padding: 3%">
+                <div style="overflow: auto">
                   <q-card-section>
                     <q-input filled v-model="email" type="email">
                       <template v-slot:before> <q-icon name="mail"/></template>
@@ -56,6 +57,7 @@
                     <q-btn label="Отправить" color="blue" @click="send(email, chosenQuestionType, question, desc)" />
                   </div>
                 </q-card-section>
+                </div>
               </q-card>
             </div>
           </div>

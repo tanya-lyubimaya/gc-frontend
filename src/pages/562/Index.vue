@@ -49,10 +49,10 @@ export default {
       labs: [],
       columns: [
         {
-          name: 'Название работы',
+          name: "Название работы",
           required: true,
-          label: 'Название работы',
-          align: 'left',
+          label: "Название работы",
+          align: "left",
           field: row => row.name,
           format: val => `${val}`,
           sortable: true
@@ -65,8 +65,14 @@ export default {
   },
   methods: {
     getLabs() {
+      const agent = new https.Agent({
+        rejectUnauthorized: false
+      });
       this.$axios
-        .get('http://172.18.208.84:2222/labs', { withCredentials: false })
+        .get("http://172.18.208.84:2222/labs", {
+          withCredentials: false,
+          httpsAgent: agent
+        })
         .then(res => {
           const labs = res.data.labs;
           for (let i of labs) {
@@ -77,18 +83,18 @@ export default {
           console.log(err);
           this.$q.notify({
             position: this.notificationsPos,
-            icon: 'warning',
-            type: 'negative',
+            icon: "warning",
+            type: "negative",
             multiLine: true,
-            message: 'Возникла ошибка при получении списка лабораторных работ!'
+            message: "Возникла ошибка при получении списка лабораторных работ!"
           });
         });
     },
     openReviewRequestForm() {
-       this.$router.push('/review-request', "_self");
+      this.$router.push("/review-request", "_self");
     },
     openBookingForm() {
-      this.$router.push('/booking', "_self");
+      this.$router.push("/booking", "_self");
     }
   }
 };

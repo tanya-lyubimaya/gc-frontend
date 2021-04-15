@@ -62,39 +62,43 @@ export default {
       email: this.$q.sessionStorage.getItem("hse_email"),
       hours: null,
       jwt:
-        'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoX2VtYWlsIjoidmtAdmsudmsiLCJuYW1lIjoiSm9obiBEb2UiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTE2MjM5MDIyfQ.jeVYC8Fe9LaFlc9DkMaLAtnh5pJ7Tkh-4AF46_TkTUZ_4HpMygLX7NYRHYl0muQLqEjGrUIHKvLIqul7Aikd3GojLA4uAyfvZUUwdD2m2qQlcVhRyUxmX7msHQnaK27qPW8M8IR4OBlJ8L44vqRO1rP70KxdayTXS61y6G4P_dinw105ZaJF3aNW5uz8PYBJoXKZDJt07ucZCtsqZGwpv6XNjnwHS-icQOysAbkyxg-gFXRlnDRBzpOrVfEWOHNjsNQeoD8IUFEGzf-0jeKXzOES3VuFXVqScYXj5W2_ZFTVG9slvfpWOFxJWiFUqdneh8RO-3p9fvpU5ubSPJ3Buw',
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoX2VtYWlsIjoidmtAdmsudmsiLCJuYW1lIjoiSm9obiBEb2UiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTE2MjM5MDIyfQ.jeVYC8Fe9LaFlc9DkMaLAtnh5pJ7Tkh-4AF46_TkTUZ_4HpMygLX7NYRHYl0muQLqEjGrUIHKvLIqul7Aikd3GojLA4uAyfvZUUwdD2m2qQlcVhRyUxmX7msHQnaK27qPW8M8IR4OBlJ8L44vqRO1rP70KxdayTXS61y6G4P_dinw105ZaJF3aNW5uz8PYBJoXKZDJt07ucZCtsqZGwpv6XNjnwHS-icQOysAbkyxg-gFXRlnDRBzpOrVfEWOHNjsNQeoD8IUFEGzf-0jeKXzOES3VuFXVqScYXj5W2_ZFTVG9slvfpWOFxJWiFUqdneh8RO-3p9fvpU5ubSPJ3Buw",
       hours_options: [
         {
-          label: '1',
-          value: '1'
+          label: "1",
+          value: "1"
         },
         {
-          label: '2',
-          value: '2'
+          label: "2",
+          value: "2"
         },
         {
-          label: '3',
-          value: '3'
+          label: "3",
+          value: "3"
         },
         {
-          label: '4',
-          value: '4'
+          label: "4",
+          value: "4"
         }
       ]
     };
   },
   methods: {
     send() {
+      const agent = new https.Agent({
+        rejectUnauthorized: false
+      });
       if (1 <= this.hours <= 4) {
         const res = JSON.stringify({
           user_info: this.jwt,
           time_for: this.hours
         });
         this.$axios
-          .post('http://172.18.208.84:2222/requests/access', res, {
+          .post("http://172.18.208.84:2222/requests/access", res, {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json"
+            },
+            httpsAgent: agent
           })
           .then(res => {
             console.log(res);
@@ -102,19 +106,19 @@ export default {
           .catch(err => {
             this.$q.notify({
               position: this.notificationsPos,
-              icon: 'warning',
-              type: 'negative',
+              icon: "warning",
+              type: "negative",
               multiLine: true,
-              message: 'Возникла ошибка!'
+              message: "Возникла ошибка!"
             });
           });
       } else {
         this.$q.notify({
           position: this.notificationsPos,
-          icon: 'warning',
-          type: 'negative',
+          icon: "warning",
+          type: "negative",
           multiLine: true,
-          message: 'Возникла ошибка!'
+          message: "Возникла ошибка!"
         });
       }
     }
