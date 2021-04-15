@@ -45,7 +45,7 @@
 export default {
   data() {
     return {
-      email: this.$q.sessionStorage.getItem("hse_email"),
+      email: this.$store.getters["user/userHSEEmail"],
       labs: [],
       columns: [
         {
@@ -66,7 +66,7 @@ export default {
   methods: {
     getLabs() {
       this.$axios
-        .get('http://172.18.208.84:2222/labs', { withCredentials: false })
+        .get('https://172.18.208.84:22222/labs', { withCredentials: false })
         .then(res => {
           const labs = res.data.labs;
           for (let i of labs) {

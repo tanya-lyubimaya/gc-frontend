@@ -72,7 +72,7 @@ export default {
   methods: {
     getLabs() {
       this.$axios
-        .get('http://172.18.208.84:2222/labs',)
+        .get('https://172.18.208.84:22222/labs',)
         .then(res => {
           this.labs = res.data.labs;
         })
@@ -93,7 +93,7 @@ export default {
           task_name: this.lab
         });
         this.$axios
-          .post('http://172.18.208.84:2222/requests/grade', res, {
+          .post('https://172.18.208.84:22222/requests/grade', res, {
             headers: {
               'Content-Type': 'application/json'
             }
