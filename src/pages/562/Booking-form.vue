@@ -23,7 +23,8 @@
                       <q-input filled v-model="email" type="email">
                         <template v-slot:before>
                           <q-icon name="mail"
-                        /></template>
+                          />
+                        </template>
                       </q-input>
                     </div>
                     <h6 class="text-h6">На сколько часов нужен доступ?</h6>
@@ -94,7 +95,8 @@ export default {
           .post('https://172.18.208.84:22222/requests/access', res, {
             headers: {
               'Content-Type': 'application/json'
-            }
+            },
+            withCredentials: false
           })
           .then(res => {
             console.log(res);

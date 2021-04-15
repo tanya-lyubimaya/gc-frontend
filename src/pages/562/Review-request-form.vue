@@ -23,7 +23,8 @@
                       <q-input filled v-model="email" type="email">
                         <template v-slot:before>
                           <q-icon name="mail"
-                        /></template>
+                          />
+                        </template>
                       </q-input>
                     </div>
                     <h6 class="text-h6">Для какой лабораторной работы запросить проверку?</h6>
@@ -59,7 +60,7 @@
 export default {
   data() {
     return {
-      email: this.$q.sessionStorage.getItem("hse_email"),
+      email: this.$store.getters["user/userHSEEmail"],
       lab: null,
       labs: [],
       jwt:
@@ -72,7 +73,7 @@ export default {
   methods: {
     getLabs() {
       this.$axios
-        .get('https://172.18.208.84:22222/labs',)
+        .get('https://172.18.208.84:22222/labs', {withCredentials: false})
         .then(res => {
           this.labs = res.data.labs;
         })
@@ -89,27 +90,28 @@ export default {
     },
     send() {
       const res = JSON.stringify({
-          user_info: this.jwt,
-          task_name: this.lab
-        });
-        this.$axios
-          .post('https://172.18.208.84:22222/requests/grade', res, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            this.$q.notify({
-              position: this.notificationsPos,
-              icon: 'warning',
-              type: 'negative',
-              multiLine: true,
-              message: 'Возникла ошибка!'
-            });
+        user_info: this.jwt,
+        task_name: this.lab
+      });
+      this.$axios
+        .post('https://172.18.208.84:22222/requests/grade', res, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: false
+        })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          this.$q.notify({
+            position: this.notificationsPos,
+            icon: 'warning',
+            type: 'negative',
+            multiLine: true,
+            message: 'Возникла ошибка!'
           });
+        });
     }
   }
 };
