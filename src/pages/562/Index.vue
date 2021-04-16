@@ -66,7 +66,7 @@ export default {
   methods: {
     getLabs() {
       this.$axios
-        .get('https://172.18.208.84:22222/labs', { withCredentials: false })
+        .get(`${process.env.NETWORK_TECHNOLOGIES_API}/labs`, { withCredentials: false })
         .then(res => {
           const labs = res.data.labs;
           for (let i of labs) {

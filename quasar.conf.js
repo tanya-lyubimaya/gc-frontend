@@ -57,6 +57,7 @@ module.exports = function (/* ctx */) {
         WORKBOOK_API: process.env.WORKBOOK_API ? process.env.WORKBOOK_API : '/workbook',
         GC_API: process.env.GC_API ? process.env.GC_API : '/gc/api/v1',
         NVT_STATS_API: process.env.NVT_STATS_API ? process.env.NVT_STATS_API : '/nvt-stats-api',
+        NETWORK_TECHNOLOGIES_API: process.env.NETWORK_TECHNOLOGIES_API ? process.env.NETWORK_TECHNOLOGIES_API : '/network-technologies-api',
       },
 
       // transpile: false,

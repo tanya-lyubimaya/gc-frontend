@@ -92,7 +92,7 @@ export default {
           time_for: this.hours
         });
         this.$axios
-          .post('https://172.18.208.84:22222/requests/access', res, {
+          .post(`${process.env.NETWORK_TECHNOLOGIES_API}/requests/access`, res, {
             headers: {
               'Content-Type': 'application/json'
             },

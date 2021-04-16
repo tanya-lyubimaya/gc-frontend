@@ -73,7 +73,7 @@ export default {
   methods: {
     getLabs() {
       this.$axios
-        .get('https://172.18.208.84:22222/labs', {withCredentials: false})
+        .get(`${process.env.NETWORK_TECHNOLOGIES_API}/labs`, {withCredentials: false})
         .then(res => {
           this.labs = res.data.labs;
         })
@@ -94,7 +94,7 @@ export default {
         task_name: this.lab
       });
       this.$axios
-        .post('https://172.18.208.84:22222/requests/grade', res, {
+        .post(`${process.env.NETWORK_TECHNOLOGIES_API}/requests/grade`, res, {
           headers: {
             'Content-Type': 'application/json'
           },
