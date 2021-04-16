@@ -45,7 +45,6 @@
 export default {
   data() {
     return {
-      email: this.$store.getters["user/userHSEEmail"],
       labs: [],
       columns: [
         {
@@ -59,6 +58,11 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    email() {
+      return this.$store.getters["user/userHSEEmail"];
+    }
   },
   mounted() {
     this.getLabs();

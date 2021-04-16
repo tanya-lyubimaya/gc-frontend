@@ -1,11 +1,14 @@
 import {axiosInstance} from "boot/axios";
 
 export async function handleLogin({commit}) {
-  const user_response = await axiosInstance
+  const useResponse = await axiosInstance
     .get(`${process.env.AUTH_API}/users/me`, {withCredentials: true});
-  commit('updateUserData', user_response.data);
-  const roles_response = await axiosInstance
+  commit('updateUserData', useResponse.data);
+  const rolesResponse = await axiosInstance
     .get(`${process.env.AUTH_API}/users/me/dynamic-roles`, {withCredentials: true});
-  commit('updateUserDynamicRoles', roles_response.data)
+  commit('updateUserDynamicRoles', rolesResponse.data)
+  const sharedInfoTokenResponse = await axiosInstance
+    .get(`${process.env.AUTH_API}/users/me/shared-info-token`, {withCredentials: true});
+  commit('updateSharedInfoToken', sharedInfoTokenResponse.data)
   commit('setLoggedIn', true)
 }
