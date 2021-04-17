@@ -14,8 +14,8 @@
 
     <q-item-section side>
       <q-chip square>
-        <span class="text-subtitle" v-if="(type === 'classroom') && passed && !custom_chip">{{ mark }}/{{ max_mark }}</span>
-        <span class="text-subtitle" v-if="(type === 'classroom') && !passed && !custom_chip">не сдано</span>
+        <span class="text-subtitle" v-if="['classroom', 'bonus'].includes(type) && passed && !custom_chip">{{ mark }}/{{ max_mark }}</span>
+        <span class="text-subtitle" v-if="['classroom', 'bonus'].includes(type) && !passed && !custom_chip">не сдано</span>
         <span class="text-subtitle" v-if="(type === 'taiga') && !custom_chip">{{ mark }} <span class="gt-sm">{{ markTitle }}</span></span>
         <span class="text-subtitle" v-if="custom_chip">{{ custom_chip }}</span>
       </q-chip>
@@ -36,6 +36,8 @@ export default {
           return this.passed ? 'green' : 'red';
         case "taiga":
           return (this.mark > 0) ? 'green' : 'orange';
+        case "bonus":
+          return this.passed ? 'green' : 'grey';
         default:
           return 'grey';
       }

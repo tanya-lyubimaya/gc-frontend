@@ -65,6 +65,7 @@ const routes = [
         component: () => import('src/pages/562/Index.vue'),
         meta: {
           roles: ["DEVELOPER", "SUPER_ADMIN"],
+          allowForUsers: ["60739ae61c79983c32b78b17"]
         }
       },
       {
@@ -72,6 +73,7 @@ const routes = [
         component: () => import('src/pages/562/Booking-form.vue'),
         meta: {
           roles: ["DEVELOPER", "SUPER_ADMIN"],
+          allowForUsers: ["60739ae61c79983c32b78b17"]
         }
       },
       {
@@ -79,8 +81,10 @@ const routes = [
         component: () => import('src/pages/562/Review-request-form.vue'),
         meta: {
           roles: ["DEVELOPER", "SUPER_ADMIN"],
+          allowForUsers: ["60739ae61c79983c32b78b17"]
         }
       },
+
       {
         path: 'workbook-tasks',
         component: () => import('src/pages/590/Index.vue'),

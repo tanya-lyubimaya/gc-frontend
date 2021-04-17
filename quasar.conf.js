@@ -110,6 +110,10 @@ module.exports = function (/* ctx */) {
           target: process.env.API_BASE ? process.env.API_BASE : '',
           changeOrigin: true,
         },
+        '/network-technologies-api': {
+          target: process.env.API_BASE ? process.env.API_BASE : '',
+          changeOrigin: true,
+        },
       } : undefined
     },
 
