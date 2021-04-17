@@ -164,6 +164,7 @@ const commonLinksData = [
     icon: "today",
     link: "/network-technologies",
     roles: ["DEVELOPER", "SUPER_ADMIN"],
+    allowForUsers: ["60739ae61c79983c32b78b17"]
   },
   {
     title: "Workbook",
