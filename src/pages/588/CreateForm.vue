@@ -3,15 +3,15 @@
     <div id="q-app">
       <div class="flex flex-center column">
         <div
-          class="row bg-grey-2"
-          style="min-height: 100%; width: 80%; padding: 24px;"
+        class="col-6 bg-grey-2"
+          style="min-height: 100%; width: 100%; padding: 1%;"
         >
           <div
             id="parent"
             class="fit row wrap justify-center items-start content-start"
             style="overflow: hidden;"
           >
-            <div class="col-6 bg-grey-2" style="overflow: auto; padding: 30px">
+            <div class="col-6" style="overflow: auto; min-width: 442px">
               <q-card style="margin-bottom: 30px">
                 <q-card-section>
                   <q-input
