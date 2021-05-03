@@ -3,7 +3,7 @@
     <div id="q-app">
       <div class="flex flex-center column">
         <div
-        class="col-6 bg-grey-2"
+          class="col-6 bg-grey-2"
           style="min-height: 100%; width: 100%; padding: 1%;"
         >
           <div
@@ -83,7 +83,11 @@
                                     size="xs"
                                     @click="deleteInputRow(index, i)"
                                   />
-                                </div> </template
+                                </div>
+                                <q-checkbox
+                                  v-if="showRightAnswers"
+                                  v-model="input.right"
+                                  color="green"/></template
                             ></q-input>
                           </li>
                           <br />
@@ -128,7 +132,11 @@
                                     size="xs"
                                     @click="deleteInputRow(index, i)"
                                   />
-                                </div> </template
+                                </div>
+                                <q-checkbox
+                                  v-if="showRightAnswers"
+                                  v-model="input.right"
+                                  color="green"/></template
                             ></q-input>
                           </li>
                           <br />
@@ -170,7 +178,11 @@
                                     size="xs"
                                     @click="deleteInputRow(index, i)"
                                   />
-                                </div> </template
+                                </div>
+                                <q-checkbox
+                                  v-if="showRightAnswers"
+                                  v-model="input.right"
+                                  color="green"/></template
                             ></q-input>
                           </li>
                           <br />
@@ -225,6 +237,10 @@
                     </q-card-section>
                   </q-card>
                 </li>
+                <q-toggle
+                  v-model="showRightAnswers"
+                  label="Отображать правильные ответы"
+                />
                 <div class="row wrap justify-end items-start content-start">
                   <q-btn
                     round
@@ -249,29 +265,30 @@
 export default {
   data() {
     return {
-      formName: "",
-      desc: "",
+      formName: '',
+      desc: '',
+      showRightAnswers: false,
       questions: [
         {
-          questionID: (new Date()).getTime(),
-          questionType: "Один из списка",
-          question: "",
-          answers: [{ value: "" }]
+          questionID: new Date().getTime(),
+          questionType: 'Один из списка',
+          question: '',
+          answers: [{ value: '', right: false }]
         }
       ],
       questionTypes: [
-        "Один из списка",
-        "Несколько из списка",
-        "Раскрывающийся список",
-        "Текст (строка)",
-        "Текст (абзац)"
+        'Один из списка',
+        'Несколько из списка',
+        'Раскрывающийся список',
+        'Текст (строка)',
+        'Текст (абзац)'
       ],
-      text: "",
-      textarea: ""
+      text: '',
+      textarea: ''
     };
   },
-  mounted () {
-    this.id = this._uid
+  mounted() {
+    this.id = this._uid;
   },
   methods: {
     deleteInputRow(questionIndex, answerIndex) {
@@ -279,23 +296,26 @@ export default {
     },
     focusOnListElement(array, indexOfAnswer, indexOfQuestion) {
       if (array.length - indexOfAnswer == 1) {
-        this.questions[indexOfQuestion].answers.push({ value: "" });
+        this.questions[indexOfQuestion].answers.push({
+          value: '',
+          right: false
+        });
       }
     },
     addQuestion() {
       this.questions.push({
-        questionID: (new Date()).getTime(),
-        questionType: "Один из списка",
-        question: "",
-        answers: [{ value: "" }]
+        questionID: new Date().getTime(),
+        questionType: 'Один из списка',
+        question: '',
+        answers: [{ value: '', right: false }]
       });
     },
     deleteQuestion(index) {
       this.questions.splice(index, 1);
     },
     save() {
-      console.log("Save");
-      console.log("Questions", this.questions);
+      console.log('Save');
+      console.log('Questions', this.questions);
     }
   }
 };
