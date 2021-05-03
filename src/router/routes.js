@@ -84,13 +84,19 @@ const routes = [
           allowForUsers: ["60739ae61c79983c32b78b17"]
         }
       },
-
       {
         path: 'workbook-tasks',
         component: () => import('src/pages/590/Index.vue'),
         meta: {
           roles: ["DEVELOPER", "SUPER_ADMIN"],
           allowForUsers: ["60759b050928a277deb73715"]
+        }
+      },
+      {
+        path: 'workbook-task-create',
+        component: () => import('src/pages/590/CreateTask.vue'),
+        meta: {
+          roles: ["DEVELOPER", "SUPER_ADMIN"],
         }
       },
       {
