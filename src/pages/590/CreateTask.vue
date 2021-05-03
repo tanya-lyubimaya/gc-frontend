@@ -32,16 +32,16 @@
                 </q-card-section>
               </q-card>
               <ul style="list-style-type:none; padding: 0">
-                <li v-for="(question, index) in questions" v-bind:key="index">
+                <li v-for="(task, index) in tasks" v-bind:key="index">
                   <q-card style="margin-bottom: 30px">
                     <q-card-section>
                       <q-select
-                        v-model="question.questionType"
-                        :options="questionTypes"
+                        v-model="task.taskType"
+                        :options="taskTypes"
                         label="Тип задания"
                       />
-                      <div v-if="question.questionType === 'Теория'">
-                          <br>
+                      <div v-if="task.taskType === 'Теория'">
+                        <br />
                         <q-input
                           v-model="textarea"
                           filled
@@ -49,66 +49,71 @@
                           placeholder="Теория"
                         />
                       </div>
-                      <div v-if="question.questionType === 'Практика'">
-                        <q-select
-                          v-model="question.checkType"
-                          :options="checkTypes"
-                          label="Тип проверки"
-                        />
-                        <br>
+                      <div v-if="task.taskType !== 'Теория'">
+                        <br />
                         <q-input
                           filled
-                          v-model="question.question"
+                          v-model="task.task"
                           label="Вопрос *"
                           lazy-rules
                           :rules="[
                             val => (val && val.length > 0) || 'Введите вопрос!'
                           ]"
                         ></q-input>
-                      <div v-if="question.checkType === 'Тип проверки 1'">
-                        <ul style="list-style-type:none; padding: 0">
-                          <li
-                            v-for="(input, i) in question.answers"
-                            v-bind:key="i"
-                          >
-                            <q-input
-                              v-model="input.value"
-                              placeholder="Вариант ответа"
-                              @focus="
-                                focusOnListElement(question.answers, i, index)
-                              "
-                              ><template v-slot:before>
-                                <q-icon
-                                  name="radio_button_unchecked"
-                                /> </template
-                              ><template v-slot:after>
-                                <div v-if="question.answers.length == 1">
-                                  <q-btn
-                                    round
-                                    style="color: grey"
-                                    icon="close"
-                                    size="xs"
-                                    disable
-                                  />
+                        <div v-if="task.taskType === '2 столбца'">
+                          <ul style="list-style-type:none; padding: 0">
+                            <li
+                              v-for="(input, i) in task.answers"
+                              v-bind:key="i"
+                            >
+                              <div
+                                class="fit row wrap justify-center items-start content-start"
+                              >
+                                <div class="col" style="overflow: auto">
+                                  <q-input
+                                    v-model="input.col1"
+                                    placeholder="Вариант ответа"
+                                    ><template v-slot:before>
+                                      {{ i + 1 }}
+                                    </template></q-input
+                                  >
                                 </div>
-                                <div v-if="question.answers.length > 1">
-                                  <q-btn
-                                    round
-                                    style="color: grey"
-                                    icon="close"
-                                    size="xs"
-                                    @click="deleteInputRow(index, i)"
-                                  />
-                                </div> </template
-                            ></q-input>
-                          </li>
-                          <br />
-                          <div
-                            class="fit row wrap justify-start items-start content-start"
-                          ></div>
-                        </ul>
-                      </div>
-                      <div
+                                <div
+                                  class="col offset-1"
+                                  style="overflow: auto"
+                                >
+                                  <q-input
+                                    v-model="input.col2"
+                                    placeholder="Вариант ответа"
+                                    @input="
+                                      changeListElement(task.answers, i, index)
+                                    "
+                                    ><template v-slot:after>
+                                      <div v-if="task.answers.length == 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          disable
+                                        />
+                                      </div>
+                                      <div v-if="task.answers.length > 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          @click="deleteInputRow(index, i)"
+                                        />
+                                      </div> </template
+                                  ></q-input>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <!--div
                         v-if="question.checkType === 'Тип проверки 2'"
                       >
                         <ul style="list-style-type:none; padding: 0">
@@ -152,14 +157,14 @@
                             class="fit row wrap justify-start items-start content-start"
                           ></div>
                         </ul>
-                      </div>
+                      </div-->
                       </div>
                     </q-card-section>
                     <q-card-section>
                       <div
                         class="fit row wrap justify-end items-start content-start"
                       >
-                        <div v-if="questions.length == 1">
+                        <div v-if="tasks.length == 1">
                           <q-btn
                             round
                             style="color: grey"
@@ -168,13 +173,13 @@
                             disable
                           />
                         </div>
-                        <div v-if="questions.length > 1">
+                        <div v-if="tasks.length > 1">
                           <q-btn
                             round
                             style="color: grey"
                             icon="delete_forever"
                             size="s"
-                            @click="deleteQuestion(index)"
+                            @click="deleteTask(index)"
                           />
                         </div>
                       </div>
@@ -186,7 +191,7 @@
                     round
                     style="background: #FF0080; color: white"
                     icon="add"
-                    @click="addQuestion"
+                    @click="addTask"
                   />
                 </div>
               </ul>
@@ -207,18 +212,15 @@ export default {
     return {
       formName: '',
       desc: '',
-      questions: [
+      tasks: [
         {
-          questionID: new Date().getTime(),
-          questionType: 'Теория',
-          question: '',
-          checkType: '',
-          answers: [{ value: '' }]
+          taskID: new Date().getTime(),
+          taskType: '2 столбца',
+          task: '',
+          answers: [{ col1: '', col2: '' }]
         }
       ],
-      questionTypes: ['Теория', 'Практика'],
-      checkTypes: ['Тип проверки 1', 'Тип проверки 2'],
-      text: '',
+      taskTypes: ['Теория', '2 столбца', '3 столбца', 'Текстовое поле'],
       textarea: ''
     };
   },
@@ -226,28 +228,30 @@ export default {
     this.id = this._uid;
   },
   methods: {
-    deleteInputRow(questionIndex, answerIndex) {
-      this.questions[questionIndex].answers.splice(answerIndex, 1);
+    deleteInputRow(taskIndex, answerIndex) {
+      this.tasks[taskIndex].answers.splice(answerIndex, 1);
     },
-    focusOnListElement(array, indexOfAnswer, indexOfQuestion) {
+    changeListElement(array, indexOfAnswer, indexOfTask) {
+      console.log(array.length - indexOfAnswer);
+      console.log(this.answers);
       if (array.length - indexOfAnswer == 1) {
-        this.questions[indexOfQuestion].answers.push({ value: '' });
+        this.tasks[indexOfTask].answers.push({ col1: '', col2: '' });
       }
     },
-    addQuestion() {
-      this.questions.push({
-        questionID: new Date().getTime(),
-        questionType: 'Практика',
-        question: '',
-        answers: [{ value: '' }]
+    addTask() {
+      this.tasks.push({
+        taskID: new Date().getTime(),
+        taskType: '2 столбца',
+        task: '',
+        answers: [{ col1: '', col2: '' }]
       });
     },
-    deleteQuestion(index) {
-      this.questions.splice(index, 1);
+    deleteTask(index) {
+      this.tasks.splice(index, 1);
     },
     save() {
       console.log('Save');
-      console.log('Questions', this.questions);
+      console.log('Tasks', this.tasks);
     }
   }
 };
