@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     authJwtContents() {
-      return this.$q.sessionStorage.getItem('auth_token');
+      return this.$store.state["user/sharedInfoToken"];
     },
     redirectUrl() {
       return REDIRECT_URL + '?course=' + this.$route.params.c_id + '&task=' + this.$route.params.t_id;
