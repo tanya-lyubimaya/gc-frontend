@@ -43,7 +43,7 @@
                       <div v-if="task.taskType === 'Теория'">
                         <br />
                         <q-input
-                          v-model="textarea"
+                          v-model="textarea2"
                           filled
                           type="textarea"
                           placeholder="Теория"
@@ -113,51 +113,78 @@
                             </li>
                           </ul>
                         </div>
-                        <!--div
-                        v-if="question.checkType === 'Тип проверки 2'"
-                      >
-                        <ul style="list-style-type:none; padding: 0">
-                          <li
-                            v-for="(input, i) in question.answers"
-                            v-bind:key="i"
-                          >
-                            <q-input
-                              v-model="input.value"
-                              placeholder="Вариант ответа"
-                              @focus="
-                                focusOnListElement(question.answers, i, index)
-                              "
-                              ><template v-slot:before>
-                                <q-icon
-                                  name="check_box_outline_blank"
-                                /> </template
-                              ><template v-slot:after>
-                                <div v-if="question.answers.length == 1">
-                                  <q-btn
-                                    round
-                                    style="color: grey"
-                                    icon="close"
-                                    size="xs"
-                                    disable
-                                  />
+                        <div v-if="task.taskType === '3 столбца'">
+                          <ul style="list-style-type:none; padding: 0">
+                            <li
+                              v-for="(input, i) in task.answers"
+                              v-bind:key="i"
+                            >
+                              <div
+                                class="fit row wrap justify-center items-start content-start"
+                              >
+                                <div class="col" style="overflow: auto">
+                                  <q-input
+                                    v-model="input.col1"
+                                    placeholder="Вариант ответа"
+                                    ><template v-slot:before>
+                                      {{ i + 1 }}
+                                    </template></q-input
+                                  >
                                 </div>
-                                <div v-if="question.answers.length > 1">
-                                  <q-btn
-                                    round
-                                    style="color: grey"
-                                    icon="close"
-                                    size="xs"
-                                    @click="deleteInputRow(index, i)"
-                                  />
-                                </div> </template
-                            ></q-input>
-                          </li>
+                                <div
+                                  class="col offset-1"
+                                  style="overflow: auto"
+                                >
+                                  <q-input
+                                    v-model="input.col2"
+                                    placeholder="Вариант ответа"
+                                  ></q-input>
+                                </div>
+                                <div
+                                  class="col offset-1"
+                                  style="overflow: auto"
+                                >
+                                  <q-input
+                                    v-model="input.col3"
+                                    placeholder="Вариант ответа"
+                                    @input="
+                                      changeListElement(task.answers, i, index)
+                                    "
+                                    ><template v-slot:after>
+                                      <div v-if="task.answers.length == 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          disable
+                                        />
+                                      </div>
+                                      <div v-if="task.answers.length > 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          @click="deleteInputRow(index, i)"
+                                        />
+                                      </div> </template
+                                  ></q-input>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div v-if="task.taskType === 'Текстовое поле'">
                           <br />
-                          <div
-                            class="fit row wrap justify-start items-start content-start"
-                          ></div>
-                        </ul>
-                      </div-->
+                          <q-input
+                            v-model="textarea"
+                            filled
+                            type="textarea"
+                            placeholder="Развёрнутый ответ"
+                            readonly
+                          />
+                        </div>
                       </div>
                     </q-card-section>
                     <q-card-section>
@@ -217,11 +244,12 @@ export default {
           taskID: new Date().getTime(),
           taskType: '2 столбца',
           task: '',
-          answers: [{ col1: '', col2: '' }]
+          answers: [{ col1: '', col2: '', col3: '' }]
         }
       ],
       taskTypes: ['Теория', '2 столбца', '3 столбца', 'Текстовое поле'],
-      textarea: ''
+      textarea: 'Ответ ученика...',
+      textarea2: ''
     };
   },
   mounted() {
@@ -232,10 +260,8 @@ export default {
       this.tasks[taskIndex].answers.splice(answerIndex, 1);
     },
     changeListElement(array, indexOfAnswer, indexOfTask) {
-      console.log(array.length - indexOfAnswer);
-      console.log(this.answers);
       if (array.length - indexOfAnswer == 1) {
-        this.tasks[indexOfTask].answers.push({ col1: '', col2: '' });
+        this.tasks[indexOfTask].answers.push({ col1: '', col2: '', col3: '' });
       }
     },
     addTask() {
