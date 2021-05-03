@@ -269,7 +269,7 @@ export default {
         taskID: new Date().getTime(),
         taskType: '2 столбца',
         task: '',
-        answers: [{ col1: '', col2: '' }]
+        answers: [{ col1: '', col2: '', col3: '' }]
       });
     },
     deleteTask(index) {
