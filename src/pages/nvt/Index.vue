@@ -75,7 +75,7 @@
               <q-card>
                 <q-card-section>
                   <task-item
-                    v-for="c_id in ['322642694476', '322651639271']"
+                    v-for="c_id in ['322642694476', '322651639271', '331613995413']"
                     :title="classroom_stats[c_id].title"
                     :description="classroom_stats[c_id].description"
                     :mark="classroom_stats[c_id].mark"
@@ -84,15 +84,8 @@
                     type="classroom"
                     :key="c_id"/>
                   <task-item
-                    title="ONVIF-2"
-                    description="Настройки изображения (Imaging)"
-                    color="grey"
-                    custom_chip="ожидается"
-                    custom_icon="videocam"
-                  />
-                  <task-item
                     title="ONVIF-3"
-                    description="Вход/выход сигнализации и веселье"
+                    description="Лампочка, вход/выход сигнализации и веселье"
                     color="grey"
                     custom_chip="ожидается"
                     custom_icon="videocam"
@@ -286,6 +279,10 @@ export default {
           "322651639271": {
             title: "ONVIF-1-2",
             description: "PTZ — ContinuousMove",
+          },
+          "331613995413": {
+            title: "ONVIF-2",
+            description: "Настройки изображения (Imaging)"
           }
         }
         this.stats.classroom_tasks.forEach((task) => {

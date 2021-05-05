@@ -44,7 +44,7 @@ const routes = [
       },
       {
         path: 'diagrams-task/c/:c_id/t/:t_id',
-        component: () => import('pages/misc/DiagramsRedirect')
+        component: () => import('pages/553/DiagramsRedirect')
       },
       {
         path: 'ci-cd',
