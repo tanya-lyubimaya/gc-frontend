@@ -61,6 +61,14 @@
                           ]"
                         ></q-input>
                         <div v-if="task.taskType === '2 столбца'">
+                          <div
+                            class="fit row wrap justify-center items-start content-start"
+                          >
+                            <div class="col" style="overflow: auto">
+                            </div>
+                            <div class="col offset-1" style="overflow: auto">
+                            </div>
+                          </div>
                           <ul style="list-style-type:none; padding: 0">
                             <li
                               v-for="(input, i) in task.answers"
@@ -72,7 +80,7 @@
                                 <div class="col" style="overflow: auto">
                                   <q-input
                                     v-model="input.col1"
-                                    placeholder="Вариант ответа"
+                                    placeholder="Слово"
                                     ><template v-slot:before>
                                       {{ i + 1 }}
                                     </template></q-input
@@ -84,7 +92,7 @@
                                 >
                                   <q-input
                                     v-model="input.col2"
-                                    placeholder="Вариант ответа"
+                                    placeholder="Окончание"
                                     @input="
                                       changeListElement(task.answers, i, index)
                                     "
@@ -113,7 +121,7 @@
                             </li>
                           </ul>
                         </div>
-                        <div v-if="task.taskType === '3 столбца'">
+                        <div v-if="task.taskType === 'Падежи'">
                           <ul style="list-style-type:none; padding: 0">
                             <li
                               v-for="(input, i) in task.answers"
@@ -125,7 +133,7 @@
                                 <div class="col" style="overflow: auto">
                                   <q-input
                                     v-model="input.col1"
-                                    placeholder="Вариант ответа"
+                                    placeholder="Задание"
                                     ><template v-slot:before>
                                       {{ i + 1 }}
                                     </template></q-input
@@ -137,7 +145,7 @@
                                 >
                                   <q-input
                                     v-model="input.col2"
-                                    placeholder="Вариант ответа"
+                                    placeholder="Ответ"
                                   ></q-input>
                                 </div>
                                 <div
@@ -247,7 +255,7 @@ export default {
           answers: [{ col1: '', col2: '', col3: '' }]
         }
       ],
-      taskTypes: ['Теория', '2 столбца', '3 столбца', 'Текстовое поле'],
+      taskTypes: ['Теория', '2 столбца', 'Падежи', 'Текстовое поле'],
       textarea: 'Ответ ученика...',
       textarea2: ''
     };
@@ -269,7 +277,7 @@ export default {
         taskID: new Date().getTime(),
         taskType: '2 столбца',
         task: '',
-        answers: [{ col1: '', col2: '', col3: '' }]
+        answers: [{ col1: '', col2: '' }]
       });
     },
     deleteTask(index) {

@@ -94,10 +94,7 @@ const routes = [
       },
       {
         path: 'workbook-task-create',
-        component: () => import('src/pages/590/CreateTask.vue'),
-        meta: {
-          roles: ["DEVELOPER", "SUPER_ADMIN"],
-        }
+        component: () => import('src/pages/590/CreateTask.vue')
       },
       {
         path: 'nvt',
