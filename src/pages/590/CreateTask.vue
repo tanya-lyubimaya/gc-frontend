@@ -43,7 +43,7 @@
                       <div v-if="task.taskType === 'Теория'">
                         <br />
                         <q-input
-                          v-model="textarea2"
+                          v-model="task.theory"
                           filled
                           type="textarea"
                           placeholder="Теория"
@@ -64,10 +64,11 @@
                           <div
                             class="fit row wrap justify-center items-start content-start"
                           >
-                            <div class="col" style="overflow: auto">
-                            </div>
-                            <div class="col offset-1" style="overflow: auto">
-                            </div>
+                            <div class="col" style="overflow: auto"></div>
+                            <div
+                              class="col offset-1"
+                              style="overflow: auto"
+                            ></div>
                           </div>
                           <ul style="list-style-type:none; padding: 0">
                             <li
@@ -122,6 +123,28 @@
                           </ul>
                         </div>
                         <div v-if="task.taskType === 'Падежи'">
+                          <div
+                            class="fit row wrap justify-center items-start content-start"
+                          >
+                            <div class="col" style="overflow: auto">
+                              <q-input
+                                v-model="case1"
+                                placeholder="Падеж"
+                              ></q-input>
+                            </div>
+                            <div class="col offset-1" style="overflow: auto">
+                              <q-input
+                                v-model="case2"
+                                placeholder="Падеж"
+                              ></q-input>
+                            </div>
+                            <div class="col offset-1" style="overflow: auto">
+                              <q-input
+                                v-model="case3"
+                                placeholder="Падеж"
+                              ></q-input>
+                            </div>
+                          </div>
                           <ul style="list-style-type:none; padding: 0">
                             <li
                               v-for="(input, i) in task.answers"
@@ -133,7 +156,7 @@
                                 <div class="col" style="overflow: auto">
                                   <q-input
                                     v-model="input.col1"
-                                    placeholder="Задание"
+                                    placeholder="Слово"
                                     ><template v-slot:before>
                                       {{ i + 1 }}
                                     </template></q-input
@@ -154,7 +177,7 @@
                                 >
                                   <q-input
                                     v-model="input.col3"
-                                    placeholder="Вариант ответа"
+                                    placeholder="Ответ"
                                     @input="
                                       changeListElement(task.answers, i, index)
                                     "
@@ -183,14 +206,13 @@
                             </li>
                           </ul>
                         </div>
-                        <div v-if="task.taskType === 'Текстовое поле'">
+                        <div v-if="task.taskType === 'Абзац'">
                           <br />
                           <q-input
-                            v-model="textarea"
+                            v-model="task.paragraph"
                             filled
                             type="textarea"
-                            placeholder="Развёрнутый ответ"
-                            readonly
+                            placeholder="Текст"
                           />
                         </div>
                       </div>
@@ -252,12 +274,15 @@ export default {
           taskID: new Date().getTime(),
           taskType: '2 столбца',
           task: '',
-          answers: [{ col1: '', col2: '', col3: '' }]
+          answers: [{ col1: '', col2: '', col3: '', col4: '' }],
+          theory: '',
+          paragraph: ''
         }
       ],
-      taskTypes: ['Теория', '2 столбца', 'Падежи', 'Текстовое поле'],
-      textarea: 'Ответ ученика...',
-      textarea2: ''
+      case1: 'Именительный падеж',
+      case2: 'Родительный падеж',
+      case3: 'Творительный падеж',
+      taskTypes: ['Теория', '2 столбца', 'Падежи', 'Абзац']
     };
   },
   mounted() {
@@ -269,7 +294,12 @@ export default {
     },
     changeListElement(array, indexOfAnswer, indexOfTask) {
       if (array.length - indexOfAnswer == 1) {
-        this.tasks[indexOfTask].answers.push({ col1: '', col2: '', col3: '' });
+        this.tasks[indexOfTask].answers.push({
+          col1: '',
+          col2: '',
+          col3: '',
+          col4: ''
+        });
       }
     },
     addTask() {
@@ -277,7 +307,9 @@ export default {
         taskID: new Date().getTime(),
         taskType: '2 столбца',
         task: '',
-        answers: [{ col1: '', col2: '' }]
+        answers: [{ col1: '', col2: '', col3: '', col4: '' }],
+        theory: '',
+        paragraph: ''
       });
     },
     deleteTask(index) {
