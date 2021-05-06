@@ -68,7 +68,6 @@
                               'Поле должно быть заполнено!'
                           ]"
                         />
-                        <br />
                         <q-file
                           style="max-width: 300px"
                           v-model="task.imageFile"
@@ -225,7 +224,89 @@
                                 </div>
                               </div>
                             </li>
-                            <br />
+                          </ul>
+                        </div>
+                        <div v-if="task.taskType === 'Таблица'">
+                          <div
+                            class="fit row wrap justify-center items-start content-start"
+                          >
+                            <div class="col" style="overflow: auto"></div>
+                            <div
+                              class="col offset-1"
+                              style="overflow: auto"
+                            ></div>
+                          </div>
+                          <ul style="list-style-type:none; padding: 0">
+                            <li
+                              v-for="(input, i) in task.answers"
+                              v-bind:key="i"
+                            >
+                              <div
+                                class="fit row wrap justify-center items-start content-start"
+                              >
+                                <div class="col" style="overflow: auto">
+                                  <q-input
+                                    v-model="input.col1"
+                                    placeholder="Задание"
+                                    lazy-rules
+                                    :rules="[
+                                      val =>
+                                        (val && val.length > 0) ||
+                                        'Поле должно быть заполнено!'
+                                    ]"
+                                    ><template v-slot:before>
+                                      {{ i + 1 }}
+                                    </template></q-input
+                                  >
+                                </div>
+                                <div
+                                  class="col offset-1"
+                                  style="overflow: auto"
+                                >
+                                  <q-input
+                                    v-model="input.col2"
+                                    placeholder="Ответ"
+                                    lazy-rules
+                                    :rules="[
+                                      val =>
+                                        (val && val.length > 0) ||
+                                        'Поле должно быть заполнено!'
+                                    ]"
+                                    @input="
+                                      changeListElement(task.answers, i, index)
+                                    "
+                                  ></q-input>
+                                </div>
+                                <div
+                                  class="col offset-1"
+                                  style="overflow: auto"
+                                >
+                                  <q-input
+                                    v-model="input.col3"
+                                    placeholder="Реакция на неверный ответ"
+                                    ><template v-slot:after>
+                                      <div v-if="task.answers.length == 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          disable
+                                        />
+                                      </div>
+                                      <div v-if="task.answers.length > 1">
+                                        <q-btn
+                                          round
+                                          style="color: grey"
+                                          icon="close"
+                                          size="xs"
+                                          @click="deleteInputRow(index, i)"
+                                        />
+                                      </div> </template
+                                  ></q-input>
+                                </div>
+                              </div>
+                            </li>
                             <q-file
                               style="max-width: 300px"
                               v-model="task.imageFile"
@@ -359,19 +440,6 @@
                                 </div>
                               </div>
                             </li>
-                            <q-file
-                              style="max-width: 300px"
-                              v-model="task.imageFile"
-                              outlined
-                              label="Картинки"
-                              multiple
-                              use-chips
-                              max-files="10"
-                              accept=".jpg, image/*"
-                              @rejected="onRejected"
-                              ><template v-slot:prepend>
-                                <q-icon name="attach_file" /> </template
-                            ></q-file>
                           </ul>
                         </div>
                         <div v-if="task.taskType === 'Абзац'">
@@ -387,19 +455,6 @@
                                 'Поле должно быть заполнено!'
                             ]"
                           />
-                          <q-file
-                            style="max-width: 300px"
-                            v-model="task.imageFile"
-                            outlined
-                            label="Картинки"
-                            multiple
-                            use-chips
-                            max-files="10"
-                            accept=".jpg, image/*"
-                            @rejected="onRejected"
-                            ><template v-slot:prepend>
-                              <q-icon name="attach_file" /> </template
-                          ></q-file>
                         </div>
                       </div>
                     </q-card-section>
@@ -487,7 +542,7 @@ export default {
       case1: 'Именительный падеж',
       case2: 'Родительный падеж',
       case3: 'Творительный падеж',
-      taskTypes: ['Теория', 'Разбивка', 'Падежи', 'Абзац']
+      taskTypes: ['Теория', 'Разбивка', 'Падежи', 'Абзац', 'Таблица']
     };
   },
   mounted() {
