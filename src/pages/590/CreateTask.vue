@@ -130,7 +130,7 @@
                         >
                           <q-card>
                             <q-card-section>
-                              ААААААААААААААААААААААААААААААААААААААААААААААААААААААА
+                              Здесь будет инструкция
                             </q-card-section>
                           </q-card>
                         </q-expansion-item>
@@ -165,7 +165,7 @@
                                 <div class="col" style="overflow: auto">
                                   <q-input
                                     v-model="input.col1"
-                                    placeholder="Слово"
+                                    placeholder="Задание"
                                     lazy-rules
                                     :rules="[
                                       val =>
@@ -183,7 +183,7 @@
                                 >
                                   <q-input
                                     v-model="input.col2"
-                                    placeholder="Окончание"
+                                    placeholder="Ответ"
                                     lazy-rules
                                     :rules="[
                                       val =>
