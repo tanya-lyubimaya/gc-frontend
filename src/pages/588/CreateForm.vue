@@ -452,7 +452,7 @@ export default {
           {
             src:
               'http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/tears_of_steel_720p.mov',
-            type: 'text/json'//'video/mp4'
+            type: 'video/mp4'
           }
         ]
       },
