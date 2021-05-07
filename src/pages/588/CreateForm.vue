@@ -234,17 +234,23 @@
                                   (val && val.length > 0) || 'Введите ссылку!'
                               ]"
                             ></q-input>
-
+                            <q-file
+                              style="max-width: 300px"
+                              v-model="videoFile"
+                              outlined
+                              label="Видео файл"
+                              accept=".mp4, video/*"
+                              ><template v-slot:prepend>
+                                <q-icon name="attach_file" /> </template
+                            ></q-file>
                             <q-stepper-navigation>
                               <q-btn
                                 @click="videoLinkChosen()"
                                 color="primary"
                                 label="Continue"
-                                :disable="videoLink === ''"
                               />
                             </q-stepper-navigation>
                           </q-step>
-
                           <q-step
                             :name="2"
                             title="Создайте вопросы"
@@ -258,6 +264,7 @@
                               :autoplay="true"
                               :show-big-play-button="true"
                               :sources="video.sources"
+                              cross-origin="anonymous"
                             >
                             </q-media-player>
                             <br />
@@ -458,7 +465,8 @@ export default {
       },
       muted: true,
       step: 1,
-      videoLink: ''
+      videoLink: '',
+      videoFile: null
     };
   },
   mounted() {
@@ -490,6 +498,7 @@ export default {
     videoLinkChosen() {
       this.step = 2;
       this.video.sources[0].src = this.videoLink;
+      //this.video.sources[0].src = this.videoFile;
     },
     getTimecode(index, i) {
       console.log(this.$refs.myPlayer[0].currentTime());
