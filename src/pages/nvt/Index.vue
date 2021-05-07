@@ -21,6 +21,7 @@
           <q-select
             class="fit q-pa-md"
             filled
+            v-if="lecturerView"
             v-model="selectedStudent"
             clearable
             use-input
