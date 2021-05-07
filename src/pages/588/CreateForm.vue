@@ -11,7 +11,7 @@
             class="fit row wrap justify-center items-start content-start"
             style="overflow: hidden;"
           >
-            <div class="col-6" style="overflow: auto; min-width: 442px">
+            <div class="col-8" style="overflow: auto; min-width: 442px">
               <q-card style="margin-bottom: 30px">
                 <q-card-section>
                   <q-input
@@ -210,6 +210,103 @@
                           readonly
                         />
                       </div>
+                      <div v-if="question.questionType === 'Видео'">
+                        <br />
+                        <q-media-player
+                          ref="myPlayer"
+                          type="video"
+                          :muted="muted"
+                          :autoplay="true"
+                          :show-big-play-button="true"
+                          :sources="video.sources"
+                        >
+                        </q-media-player>
+                        <br />
+                        <ul style="list-style-type:none; padding: 0">
+                          <li
+                            v-for="(input, i) in question.answers"
+                            v-bind:key="i"
+                          >
+                            <div
+                              class="fit row wrap justify-center items-start content-start"
+                            >
+                              <div class="col" style="overflow: auto">
+                                <q-input
+                                  v-model="input.value"
+                                  placeholder="Вопрос"
+                                  @focus="
+                                    focusOnListElement(
+                                      question.answers,
+                                      i,
+                                      index
+                                    )
+                                  "
+                                  ><template v-slot:before>
+                                    {{ i + 1 }}
+                                  </template></q-input
+                                >
+                              </div>
+                              <div class="col offset-1" style="overflow: auto">
+                                <q-input
+                                  v-model="input.value"
+                                  placeholder="Ответ"
+                                  @focus="
+                                    focusOnListElement(
+                                      question.answers,
+                                      i,
+                                      index
+                                    )
+                                  "
+                                ></q-input>
+                              </div>
+                              <div class="col offset-1" style="overflow: auto">
+                                <q-input
+                                  v-model="input.value"
+                                  placeholder="Таймкод"
+                                  @focus="
+                                    focusOnListElement(
+                                      question.answers,
+                                      i,
+                                      index
+                                    )
+                                  "
+                                  ><template v-slot:before>
+                                    <q-btn
+                                      round
+                                      size="sm"
+                                      icon="schedule"
+                                      style="color: green"
+                                      @click="getTimecode(index, i)"
+                                      ><q-tooltip>
+                                        Использовать текущее время на видео
+                                      </q-tooltip></q-btn
+                                    ></template
+                                  ><template v-slot:after>
+                                    <div v-if="question.answers.length == 1">
+                                      <q-btn
+                                        round
+                                        style="color: grey"
+                                        icon="close"
+                                        size="xs"
+                                        disable
+                                      />
+                                    </div>
+                                    <div v-if="question.answers.length > 1">
+                                      <q-btn
+                                        round
+                                        style="color: grey"
+                                        icon="close"
+                                        size="xs"
+                                        @click="deleteInputRow(index, i)"
+                                      />
+                                    </div> </template
+                                ></q-input>
+                              </div>
+                            </div>
+                          </li>
+                          <br />
+                        </ul>
+                      </div>
                     </q-card-section>
                     <q-card-section>
                       <div
@@ -281,10 +378,22 @@ export default {
         'Несколько из списка',
         'Раскрывающийся список',
         'Текст (строка)',
-        'Текст (абзац)'
+        'Текст (абзац)',
+        'Видео'
       ],
       text: '',
-      textarea: ''
+      textarea: '',
+      video: {
+        label: 'Tears of Steel',
+        sources: [
+          {
+            src:
+              'http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/tears_of_steel_720p.mov',
+            type: 'video/mp4'
+          }
+        ]
+      },
+      muted: true
     };
   },
   mounted() {
@@ -312,6 +421,9 @@ export default {
     },
     deleteQuestion(index) {
       this.questions.splice(index, 1);
+    },
+    getTimecode(index, i) {
+      console.log(this.$refs.myPlayer[0].currentTime());
     },
     save() {
       console.log('Save');
