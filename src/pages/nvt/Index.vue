@@ -311,7 +311,7 @@ export default {
       return this.getTitle(this.taiga_stats.score, ["балл", "балла", "баллов"])
     },
     lecturerView() {
-      return this.$store.getters["user/isLecturer"] || true;
+      return this.$store.getters["user/isLecturer"];
     },
     loading() {
       return this.loadingStats || this.loadingStudents;
