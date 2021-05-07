@@ -224,25 +224,10 @@
                             icon="done"
                             :done="step > 1"
                           >
-                            <q-input
-                              filled
-                              v-model="videoLink"
-                              label="Ссылка на видео"
-                              lazy-rules
-                              :rules="[
-                                val =>
-                                  (val && val.length > 0) || 'Введите ссылку!'
-                              ]"
-                            ></q-input>
-                            <q-file
+                            <q-uploader
+                              url="http://localhost:4444/upload"
                               style="max-width: 300px"
-                              v-model="videoFile"
-                              outlined
-                              label="Видео файл"
-                              accept=".mp4, video/*"
-                              ><template v-slot:prepend>
-                                <q-icon name="attach_file" /> </template
-                            ></q-file>
+                            />
                             <q-stepper-navigation>
                               <q-btn
                                 @click="videoLinkChosen()"
@@ -264,7 +249,6 @@
                               :autoplay="true"
                               :show-big-play-button="true"
                               :sources="video.sources"
-                              cross-origin="anonymous"
                             >
                             </q-media-player>
                             <br />
@@ -297,7 +281,7 @@
                                     style="overflow: auto"
                                   >
                                     <q-input
-                                      v-model="input.value"
+                                      v-model="input.value2"
                                       placeholder="Ответ"
                                       @focus="
                                         focusOnListElement(
@@ -313,7 +297,7 @@
                                     style="overflow: auto"
                                   >
                                     <q-input
-                                      v-model="input.value"
+                                      v-model="input.value3"
                                       placeholder="Таймкод"
                                       @focus="
                                         focusOnListElement(
@@ -440,7 +424,7 @@ export default {
           questionID: new Date().getTime(),
           questionType: 'Один из списка',
           question: '',
-          answers: [{ value: '', right: false }]
+          answers: [{ value: '', right: false, value2: '', value3: '' }]
         }
       ],
       questionTypes: [
@@ -465,7 +449,6 @@ export default {
       },
       muted: true,
       step: 1,
-      videoLink: '',
       videoFile: null
     };
   },
@@ -480,7 +463,9 @@ export default {
       if (array.length - indexOfAnswer == 1) {
         this.questions[indexOfQuestion].answers.push({
           value: '',
-          right: false
+          right: false,
+          value2: '',
+          value3: ''
         });
       }
     },
@@ -489,7 +474,7 @@ export default {
         questionID: new Date().getTime(),
         questionType: 'Один из списка',
         question: '',
-        answers: [{ value: '', right: false }]
+        answers: [{ value: '', right: false, value2: '', value3: '' }]
       });
     },
     deleteQuestion(index) {
@@ -497,11 +482,15 @@ export default {
     },
     videoLinkChosen() {
       this.step = 2;
-      this.video.sources[0].src = this.videoLink;
-      //this.video.sources[0].src = this.videoFile;
+      /*this.video.sources[0].src = 'http://localhost:4444/upload';
+      //console.log(this.videoFile)
+      //this.video.sources[0].src = this.videoFile;*/
     },
-    getTimecode(index, i) {
-      console.log(this.$refs.myPlayer[0].currentTime());
+    getTimecode(indexOfQuestion, indexOfAnswer) {
+      var myDate = new Date(this.$refs.myPlayer[0].currentTime() * 1000)
+        .toISOString()
+        .substr(11, 8);
+      this.questions[indexOfQuestion].answers[indexOfAnswer].value3 = myDate;
     },
     save() {
       console.log('Save');
