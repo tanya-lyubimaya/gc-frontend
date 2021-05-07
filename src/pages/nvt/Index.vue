@@ -41,7 +41,8 @@
               </q-item>
             </template>
           </q-select>
-          <q-list bordered class="rounded-borders fit" v-if="!lecturerView && !loadingStats || (lecturerView && selectedStudent)">
+          <q-list bordered class="rounded-borders fit"
+                  v-if="!lecturerView && !loadingStats || (lecturerView && selectedStudent)">
             <q-item-label v-if="false" header>Оценки за разделы курса — {{ this.userFullName }}
             </q-item-label>
             <q-item v-if="!lecturerView">
@@ -136,24 +137,17 @@
               <q-card>
                 <q-card-section>
                   <task-item
-                    v-for="c_id in ['322642694476', '322651639271']"
-                    :title="getClassroomTask(c_id).title"
-                    :description="getClassroomTask(c_id).description"
-                    :mark="getClassroomTask(c_id).mark"
-                    :max_mark="getClassroomTask(c_id).max_mark"
-                    :passed="getClassroomTask(c_id).passed"
+                    v-for="c_id in ['322642694476', '322651639271', '331613995413']"
+                    :title="classroom_stats[c_id].title"
+                    :description="classroom_stats[c_id].description"
+                    :mark="classroom_stats[c_id].mark"
+                    :max_mark="classroom_stats[c_id].max_mark"
+                    :passed="classroom_stats[c_id].passed"
                     type="classroom"
                     :key="c_id"/>
                   <task-item
-                    title="ONVIF-2"
-                    description="Настройки изображения (Imaging)"
-                    color="grey"
-                    custom_chip="ожидается"
-                    custom_icon="videocam"
-                  />
-                  <task-item
                     title="ONVIF-3"
-                    description="Вход/выход сигнализации и веселье"
+                    description="Лампочка, вход/выход сигнализации и веселье"
                     color="grey"
                     custom_chip="ожидается"
                     custom_icon="videocam"
@@ -333,8 +327,7 @@ export default {
         this.userEmail = this.$store.getters["user/userGoogleEmail"];
         this.userFullName = this.getFullNameByEmail(this.userEmail);
         await this.getStats(this.userEmail);
-      }
-      else {
+      } else {
         this.searchMode = true;
       }
     },
@@ -399,6 +392,10 @@ export default {
           "322651639271": {
             title: "ONVIF-1-2",
             description: "PTZ — ContinuousMove",
+          },
+          "331613995413": {
+            title: "ONVIF-2",
+            description: "Настройки изображения (Imaging)"
           },
           "297686484826": {
             title: "Аппаратные интерфейсы",
