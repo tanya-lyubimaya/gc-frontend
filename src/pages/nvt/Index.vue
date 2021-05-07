@@ -10,18 +10,40 @@
               Сетевые видеотехнологии
             </div>
           </q-img>
-          <q-card-section v-if="lecturerView" class="text-center">
-            <q-icon name="sentiment_very_dissatisfied" size="4em" color="grey"/>
+          <q-card-section v-if="lecturerView && !selectedStudent" class="text-center text-body1">
+            <q-icon name="leaderboard" size="4em" color="grey"/>
             <p/>
-            К сожалению, пока что страница работает только для студентов.<br>Но скоро тут будет ссылка на общую таблицу!
+            Для просмотра успеваемости, выберите нужного студента ниже или перейдите по ссылке на общую таблицу.
           </q-card-section>
           <q-inner-loading :showing="loading">
             <q-spinner-gears size="50px" color="primary"/>
           </q-inner-loading>
-          <q-list bordered class="rounded-borders fit" v-if="!lecturerView && !loadingStats">
+          <q-select
+            class="fit q-pa-md"
+            filled
+            v-model="selectedStudent"
+            clearable
+            use-input
+            hide-selected
+            fill-input
+            input-debounce="0"
+            label="Поиск по студентам"
+            :options="options"
+            @input="selectStudent"
+            @filter="filterFn"
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  Нет результатов
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+          <q-list bordered class="rounded-borders fit" v-if="!lecturerView && !loadingStats || (lecturerView && selectedStudent)">
             <q-item-label v-if="false" header>Оценки за разделы курса — {{ this.userFullName }}
             </q-item-label>
-            <q-item>
+            <q-item v-if="!lecturerView">
               <q-item-section v-if="!searchMode">
                 <q-item-label>Оценки за разделы курса</q-item-label>
               </q-item-section>
@@ -289,7 +311,7 @@ export default {
       return this.getTitle(this.taiga_stats.score, ["балл", "балла", "баллов"])
     },
     lecturerView() {
-      return this.$store.getters["user/isLecturer"];
+      return this.$store.getters["user/isLecturer"] || true;
     },
     loading() {
       return this.loadingStats || this.loadingStudents;
@@ -310,6 +332,9 @@ export default {
         this.userEmail = this.$store.getters["user/userGoogleEmail"];
         this.userFullName = this.getFullNameByEmail(this.userEmail);
         await this.getStats(this.userEmail);
+      }
+      else {
+        this.searchMode = true;
       }
     },
     getTitle(number, titles) {
