@@ -212,100 +212,163 @@
                       </div>
                       <div v-if="question.questionType === 'Видео'">
                         <br />
-                        <q-media-player
-                          ref="myPlayer"
-                          type="video"
-                          :muted="muted"
-                          :autoplay="true"
-                          :show-big-play-button="true"
-                          :sources="video.sources"
+                        <q-stepper
+                          v-model="step"
+                          vertical
+                          color="primary"
+                          animated
                         >
-                        </q-media-player>
-                        <br />
-                        <ul style="list-style-type:none; padding: 0">
-                          <li
-                            v-for="(input, i) in question.answers"
-                            v-bind:key="i"
+                          <q-step
+                            :name="1"
+                            title="Выберите видео"
+                            icon="done"
+                            :done="step > 1"
                           >
-                            <div
-                              class="fit row wrap justify-center items-start content-start"
+                            <q-input
+                              filled
+                              v-model="videoLink"
+                              label="Ссылка на видео"
+                              lazy-rules
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) || 'Введите ссылку!'
+                              ]"
+                            ></q-input>
+
+                            <q-stepper-navigation>
+                              <q-btn
+                                @click="videoLinkChosen()"
+                                color="primary"
+                                label="Continue"
+                                :disable="videoLink === ''"
+                              />
+                            </q-stepper-navigation>
+                          </q-step>
+
+                          <q-step
+                            :name="2"
+                            title="Создайте вопросы"
+                            icon="settings"
+                            :done="step > 2"
+                          >
+                            <q-media-player
+                              ref="myPlayer"
+                              type="video"
+                              :muted="muted"
+                              :autoplay="true"
+                              :show-big-play-button="true"
+                              :sources="video.sources"
                             >
-                              <div class="col" style="overflow: auto">
-                                <q-input
-                                  v-model="input.value"
-                                  placeholder="Вопрос"
-                                  @focus="
-                                    focusOnListElement(
-                                      question.answers,
-                                      i,
-                                      index
-                                    )
-                                  "
-                                  ><template v-slot:before>
-                                    {{ i + 1 }}
-                                  </template></q-input
+                            </q-media-player>
+                            <br />
+                            <ul style="list-style-type:none; padding: 0">
+                              <li
+                                v-for="(input, i) in question.answers"
+                                v-bind:key="i"
+                              >
+                                <div
+                                  class="fit row wrap justify-center items-start content-start"
                                 >
-                              </div>
-                              <div class="col offset-1" style="overflow: auto">
-                                <q-input
-                                  v-model="input.value"
-                                  placeholder="Ответ"
-                                  @focus="
-                                    focusOnListElement(
-                                      question.answers,
-                                      i,
-                                      index
-                                    )
-                                  "
-                                ></q-input>
-                              </div>
-                              <div class="col offset-1" style="overflow: auto">
-                                <q-input
-                                  v-model="input.value"
-                                  placeholder="Таймкод"
-                                  @focus="
-                                    focusOnListElement(
-                                      question.answers,
-                                      i,
-                                      index
-                                    )
-                                  "
-                                  ><template v-slot:before>
-                                    <q-btn
-                                      round
-                                      size="sm"
-                                      icon="schedule"
-                                      style="color: green"
-                                      @click="getTimecode(index, i)"
-                                      ><q-tooltip>
-                                        Использовать текущее время на видео
-                                      </q-tooltip></q-btn
-                                    ></template
-                                  ><template v-slot:after>
-                                    <div v-if="question.answers.length == 1">
-                                      <q-btn
-                                        round
-                                        style="color: grey"
-                                        icon="close"
-                                        size="xs"
-                                        disable
-                                      />
-                                    </div>
-                                    <div v-if="question.answers.length > 1">
-                                      <q-btn
-                                        round
-                                        style="color: grey"
-                                        icon="close"
-                                        size="xs"
-                                        @click="deleteInputRow(index, i)"
-                                      />
-                                    </div> </template
-                                ></q-input>
-                              </div>
-                            </div>
-                          </li>
-                          <br />
-                        </ul>
+                                  <div class="col" style="overflow: auto">
+                                    <q-input
+                                      v-model="input.value"
+                                      placeholder="Вопрос"
+                                      @focus="
+                                        focusOnListElement(
+                                          question.answers,
+                                          i,
+                                          index
+                                        )
+                                      "
+                                      ><template v-slot:before>
+                                        {{ i + 1 }}
+                                      </template></q-input
+                                    >
+                                  </div>
+                                  <div
+                                    class="col offset-1"
+                                    style="overflow: auto"
+                                  >
+                                    <q-input
+                                      v-model="input.value"
+                                      placeholder="Ответ"
+                                      @focus="
+                                        focusOnListElement(
+                                          question.answers,
+                                          i,
+                                          index
+                                        )
+                                      "
+                                    ></q-input>
+                                  </div>
+                                  <div
+                                    class="col offset-1"
+                                    style="overflow: auto"
+                                  >
+                                    <q-input
+                                      v-model="input.value"
+                                      placeholder="Таймкод"
+                                      @focus="
+                                        focusOnListElement(
+                                          question.answers,
+                                          i,
+                                          index
+                                        )
+                                      "
+                                      ><template v-slot:before>
+                                        <q-btn
+                                          round
+                                          size="sm"
+                                          icon="schedule"
+                                          style="color: green"
+                                          @click="getTimecode(index, i)"
+                                          ><q-tooltip>
+                                            Использовать текущее время на видео
+                                          </q-tooltip></q-btn
+                                        ></template
+                                      ><template v-slot:after>
+                                        <div
+                                          v-if="question.answers.length == 1"
+                                        >
+                                          <q-btn
+                                            round
+                                            style="color: grey"
+                                            icon="close"
+                                            size="xs"
+                                            disable
+                                          />
+                                        </div>
+                                        <div v-if="question.answers.length > 1">
+                                          <q-btn
+                                            round
+                                            style="color: grey"
+                                            icon="close"
+                                            size="xs"
+                                            @click="deleteInputRow(index, i)"
+                                          />
+                                        </div> </template
+                                    ></q-input>
+                                  </div>
+                                </div>
+                              </li>
+                              <br />
+                            </ul>
+                            <q-stepper-navigation>
+                              <q-btn
+                                @click="step = 4"
+                                color="primary"
+                                label="Continue"
+                              />
+                              <q-btn
+                                flat
+                                @click="step = 1"
+                                color="primary"
+                                label="Back"
+                                class="q-ml-sm"
+                              />
+                            </q-stepper-navigation>
+                          </q-step>
+                        </q-stepper>
                       </div>
                     </q-card-section>
                     <q-card-section>
@@ -389,11 +452,13 @@ export default {
           {
             src:
               'http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/tears_of_steel_720p.mov',
-            type: 'video/mp4'
+            type: 'text/json'//'video/mp4'
           }
         ]
       },
-      muted: true
+      muted: true,
+      step: 1,
+      videoLink: ''
     };
   },
   mounted() {
@@ -421,6 +486,10 @@ export default {
     },
     deleteQuestion(index) {
       this.questions.splice(index, 1);
+    },
+    videoLinkChosen() {
+      this.step = 2;
+      this.video.sources[0].src = this.videoLink;
     },
     getTimecode(index, i) {
       console.log(this.$refs.myPlayer[0].currentTime());
