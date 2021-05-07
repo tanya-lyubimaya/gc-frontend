@@ -498,7 +498,7 @@ export default {
     videoLinkChosen() {
       this.step = 2;
       //this.video.sources[0].src = this.videoLink;
-      //this.video.sources[0].src = this.videoFile;
+      this.video.sources[0].src = this.videoFile;
     },
     getTimecode(index, i) {
       console.log(this.$refs.myPlayer[0].currentTime());
