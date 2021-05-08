@@ -74,11 +74,11 @@ export default {
       chosenQuestionType: "Баг",
       question: "",
       desc: "",
-      email: this.$q.sessionStorage.getItem("hse_email")
+      email: this.$store.getters["user/userHSEEmail"]
     };
   },
   methods: {
     send(email, questionType, question, description) {}
   }
 };
-</script>S
+</script>

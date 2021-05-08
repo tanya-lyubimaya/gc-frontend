@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     email() {
-      return this.$store.getters["user/userHSEEmail"];
+      return this.$store.getters["user/userGoogleEmail"];
     }
   },
   mounted() {

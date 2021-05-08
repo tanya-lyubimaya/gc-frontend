@@ -22,8 +22,7 @@
                     <div style="overflow: auto; width: 40%">
                       <q-input filled v-model="email" type="email">
                         <template v-slot:before>
-                          <q-icon name="mail"
-                          />
+                          <q-icon name="mail" />
                         </template>
                       </q-input>
                     </div>
@@ -63,27 +62,27 @@ export default {
       hours: null,
       hours_options: [
         {
-          label: '1',
-          value: '1'
+          label: "1",
+          value: "1"
         },
         {
-          label: '2',
-          value: '2'
+          label: "2",
+          value: "2"
         },
         {
-          label: '3',
-          value: '3'
+          label: "3",
+          value: "3"
         },
         {
-          label: '4',
-          value: '4'
+          label: "4",
+          value: "4"
         }
       ]
     };
   },
   computed: {
     email() {
-      return this.$store.getters["user/userHSEEmail"];
+      return this.$store.getters["user/userGoogleEmail"];
     },
     jwt() {
       return this.$store.state.user.sharedInfoToken;
@@ -96,32 +95,43 @@ export default {
           user_info: this.jwt,
           time_for: this.hours
         });
+        this.$q.notify({
+              position: this.notificationsPos,
+              icon: "warning",
+              type: "negative",
+              multiLine: true,
+              message: "Возникла ошибка!"
+            });
         this.$axios
-          .post(`${process.env.NETWORK_TECHNOLOGIES_API}/requests/access`, res, {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            withCredentials: false
-          })
+          .post(
+            `${process.env.NETWORK_TECHNOLOGIES_API}/requests/access`,
+            res,
+            {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              withCredentials: false
+            }
+          )
           .then(res => {
             console.log(res);
           })
           .catch(err => {
             this.$q.notify({
               position: this.notificationsPos,
-              icon: 'warning',
-              type: 'negative',
+              icon: "warning",
+              type: "negative",
               multiLine: true,
-              message: 'Возникла ошибка!'
+              message: "Возникла ошибка!"
             });
           });
       } else {
         this.$q.notify({
           position: this.notificationsPos,
-          icon: 'warning',
-          type: 'negative',
+          icon: "warning",
+          type: "negative",
           multiLine: true,
-          message: 'Возникла ошибка!'
+          message: "Возникла ошибка!"
         });
       }
     }

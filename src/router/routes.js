@@ -44,7 +44,7 @@ const routes = [
       },
       {
         path: 'diagrams-task/c/:c_id/t/:t_id',
-        component: () => import('pages/misc/DiagramsRedirect')
+        component: () => import('pages/553/DiagramsRedirect')
       },
       {
         path: 'ci-cd',
@@ -84,7 +84,6 @@ const routes = [
           allowForUsers: ["60739ae61c79983c32b78b17"]
         }
       },
-
       {
         path: 'workbook-tasks',
         component: () => import('src/pages/590/Index.vue'),
@@ -92,6 +91,10 @@ const routes = [
           roles: ["DEVELOPER", "SUPER_ADMIN"],
           allowForUsers: ["60759b050928a277deb73715"]
         }
+      },
+      {
+        path: 'workbook-task-create',
+        component: () => import('src/pages/590/CreateTask.vue')
       },
       {
         path: 'nvt',
